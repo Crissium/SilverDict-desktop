@@ -1,10 +1,9 @@
 #include "remoterepository.h"
 
-#include <QtNetwork/QNetworkReply>
-
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QtNetwork/QNetworkReply>
 
 QFuture<QByteArray> RemoteRepository::get(const QUrl & url) const
 {
@@ -14,18 +13,18 @@ QFuture<QByteArray> RemoteRepository::get(const QUrl & url) const
 	QNetworkReply * reply = manager->get(QNetworkRequest(url));
 	QtFuture::connect(reply, &QNetworkReply::finished)
 		.then([promise, reply]()
-	{
-		if (reply->error() == QNetworkReply::NoError)
-		{
-			promise->addResult(reply->readAll());
-		}
-		else
-		{
-			promise->addResult(QByteArrayLiteral(""));
-		}
-		promise->finish();
-		reply->deleteLater();
-	});
+			  {
+				  if (reply->error() == QNetworkReply::NoError)
+				  {
+					  promise->addResult(reply->readAll());
+				  }
+				  else
+				  {
+					  promise->addResult(QByteArrayLiteral(""));
+				  }
+				  promise->finish();
+				  reply->deleteLater();
+			  });
 
 	return promise->future();
 }
@@ -38,18 +37,18 @@ QFuture<QByteArray> RemoteRepository::post(const QUrl & url, const QJsonDocument
 	QNetworkReply * reply = manager->post(QNetworkRequest(url), json.toJson());
 	QtFuture::connect(reply, &QNetworkReply::finished)
 		.then([promise, reply]()
-	{
-		if (reply->error() == QNetworkReply::NoError)
-		{
-			promise->addResult(reply->readAll());
-		}
-		else
-		{
-			promise->addResult(QByteArrayLiteral(""));
-		}
-		promise->finish();
-		reply->deleteLater();
-	});
+			  {
+				  if (reply->error() == QNetworkReply::NoError)
+				  {
+					  promise->addResult(reply->readAll());
+				  }
+				  else
+				  {
+					  promise->addResult(QByteArrayLiteral(""));
+				  }
+				  promise->finish();
+				  reply->deleteLater();
+			  });
 
 	return promise->future();
 }
@@ -62,18 +61,18 @@ QFuture<QByteArray> RemoteRepository::put(const QUrl & url, const QJsonDocument 
 	QNetworkReply * reply = manager->put(QNetworkRequest(url), json.toJson());
 	QtFuture::connect(reply, &QNetworkReply::finished)
 		.then([promise, reply]()
-	{
-		if (reply->error() == QNetworkReply::NoError)
-		{
-			promise->addResult(reply->readAll());
-		}
-		else
-		{
-			promise->addResult(QByteArrayLiteral(""));
-		}
-		promise->finish();
-		reply->deleteLater();
-	});
+			  {
+				  if (reply->error() == QNetworkReply::NoError)
+				  {
+					  promise->addResult(reply->readAll());
+				  }
+				  else
+				  {
+					  promise->addResult(QByteArrayLiteral(""));
+				  }
+				  promise->finish();
+				  reply->deleteLater();
+			  });
 
 	return promise->future();
 }
@@ -86,18 +85,18 @@ QFuture<QByteArray> RemoteRepository::del(const QUrl & url) const
 	QNetworkReply * reply = manager->deleteResource(QNetworkRequest(url));
 	QtFuture::connect(reply, &QNetworkReply::finished)
 		.then([promise, reply]()
-	{
-		if (reply->error() == QNetworkReply::NoError)
-		{
-			promise->addResult(reply->readAll());
-		}
-		else
-		{
-			promise->addResult(QByteArrayLiteral(""));
-		}
-		promise->finish();
-		reply->deleteLater();
-	});
+			  {
+				  if (reply->error() == QNetworkReply::NoError)
+				  {
+					  promise->addResult(reply->readAll());
+				  }
+				  else
+				  {
+					  promise->addResult(QByteArrayLiteral(""));
+				  }
+				  promise->finish();
+				  reply->deleteLater();
+			  });
 
 	return promise->future();
 }
@@ -257,9 +256,7 @@ bool RemoteRepository::initialise()
 		Groupings::fromJson(
 			groupingsData,
 			groups.data(),
-			dictionaries.data()
-		)
-	);
+			dictionaries.data()));
 
 	// Now initialise the rest
 	const QByteArray historyData = historyDataFuture.result();
@@ -326,9 +323,9 @@ void RemoteRepository::updateDictionaries(const QList<QSharedPointer<Dictionary>
 	for (const QString & name : deletedNames)
 	{
 		erase_if(*dictionaries, [&name](const QSharedPointer<Dictionary> & d)
-		{
-			return d->name == name;
-		});
+				 {
+					 return d->name == name;
+				 });
 	}
 
 	// Now find the new ones and add them
@@ -398,9 +395,9 @@ void RemoteRepository::updateGroups(const QList<QSharedPointer<Group>> & newGrou
 	for (const QString & name : deletedNames)
 	{
 		erase_if(*groups, [&name](const QSharedPointer<Group> & g)
-		{
-			return g->name == name;
-		});
+				 {
+					 return g->name == name;
+				 });
 	}
 
 	// Now find the new ones and add them
@@ -463,9 +460,7 @@ bool RemoteRepository::processDictionariesAndGroupings(const QByteArray & result
 		Groupings::fromJsonObj(
 			obj["groupings"].toObject(),
 			groups.data(),
-			dictionaries.data()
-		)
-	);
+			dictionaries.data()));
 
 	return true;
 }
@@ -495,9 +490,7 @@ bool RemoteRepository::processGroupsAndGroupings(const QByteArray & result)
 		Groupings::fromJsonObj(
 			obj["groupings"].toObject(),
 			groups.data(),
-			dictionaries.data()
-		)
-	);
+			dictionaries.data()));
 
 	return true;
 }
@@ -524,9 +517,7 @@ bool RemoteRepository::processGroupings(const QByteArray & result)
 		Groupings::fromJson(
 			result,
 			groups.data(),
-			dictionaries.data()
-		)
-	);
+			dictionaries.data()));
 
 	return true;
 }
@@ -678,9 +669,9 @@ QFuture<Suggestions> RemoteRepository::getSuggestions(const QString & key) const
 {
 	return get(suggestionsEndpoint(activeGroup->name, key))
 		.then([this](const QByteArray & result)
-	{
-		return Suggestions::fromJson(result);
-	});
+			  {
+				  return Suggestions::fromJson(result);
+			  });
 }
 
 QFuture<QueryResult> RemoteRepository::query(const QString & key) const
@@ -736,17 +727,17 @@ QFuture<bool> RemoteRepository::reorderDictionaries(const QList<const Dictionary
 
 	return put(dictionariesEndpoint(), QJsonDocument(array))
 		.then([this](const QByteArray & result)
-		{
-			if (!result.isEmpty())
-			{
-				updateDictionaries(dictionariesFromJsonArrayStack(QJsonDocument::fromJson(result).array()));
-				return true;
-			}
-			else
-			{
-				return false;
-			}
-		});
+			  {
+				  if (!result.isEmpty())
+				  {
+					  updateDictionaries(dictionariesFromJsonArrayStack(QJsonDocument::fromJson(result).array()));
+					  return true;
+				  }
+				  else
+				  {
+					  return false;
+				  }
+			  });
 }
 
 QFuture<bool> RemoteRepository::renameDictionary(
@@ -758,33 +749,33 @@ QFuture<bool> RemoteRepository::renameDictionary(
 	obj["display"] = newDisplayName;
 	return put(dictionariesEndpoint(), QJsonDocument(obj))
 		.then([this, dictionary, &newDisplayName](const QByteArray & result)
-		{
-			if (!result.isEmpty())
-			{
-				// It must be {"success": true}
-				if (QJsonDocument::fromJson(result).object().value(QStringLiteral("success")).toBool())
-				{
-					// Note the pointer is const, and we don't want a const_cast
-					for (auto const & d : *dictionaries)
-					{
-						if (d->name == dictionary->name)
-						{
-							d->displayName = newDisplayName;
-							return true;
-						}
-					}
-					return false;
-				}
-				else
-				{
-					return false;
-				}
-			}
-			else
-			{
-				return false;
-			}
-		});
+			  {
+				  if (!result.isEmpty())
+				  {
+					  // It must be {"success": true}
+					  if (QJsonDocument::fromJson(result).object().value(QStringLiteral("success")).toBool())
+					  {
+						  // Note the pointer is const, and we don't want a const_cast
+						  for (auto const & d : *dictionaries)
+						  {
+							  if (d->name == dictionary->name)
+							  {
+								  d->displayName = newDisplayName;
+								  return true;
+							  }
+						  }
+						  return false;
+					  }
+					  else
+					  {
+						  return false;
+					  }
+				  }
+				  else
+				  {
+					  return false;
+				  }
+			  });
 }
 
 QFuture<qsizetype> RemoteRepository::getHeadwordCount(const Dictionary * dictionary)
@@ -796,18 +787,18 @@ QFuture<qsizetype> RemoteRepository::getHeadwordCount(const Dictionary * diction
 
 	return post(headwordCountEndpoint(), nameToJson(dictionary->name))
 		.then([this, dictionary](const QByteArray & result)
-		{
-			if (!result.isEmpty())
-			{
-				const qsizetype count = QJsonDocument::fromJson(result).object().value(QStringLiteral("count")).toInt();
-				headwordCounts[dictionary] = count;
-				return count;
-			}
-			else
-			{
-				return 0;
-			}
-		});
+			  {
+				  if (!result.isEmpty())
+				  {
+					  const qsizetype count = QJsonDocument::fromJson(result).object().value(QStringLiteral("count")).toInt();
+					  headwordCounts[dictionary] = count;
+					  return count;
+				  }
+				  else
+				  {
+					  return 0;
+				  }
+			  });
 }
 
 const Sources & RemoteRepository::getSources() const
@@ -942,17 +933,17 @@ QFuture<bool> RemoteRepository::clearHistory()
 {
 	return del(historyEndpoint())
 		.then([this](const QByteArray & result)
-		{
-			if (!result.isEmpty())
-			{
-				history.reset(History::fromJson(result));
-				return true;
-			}
-			else
-			{
-				return false;
-			}
-		});
+			  {
+				  if (!result.isEmpty())
+				  {
+					  history.reset(History::fromJson(result));
+					  return true;
+				  }
+				  else
+				  {
+					  return false;
+				  }
+			  });
 }
 
 qsizetype RemoteRepository::getSizeSuggestions() const
@@ -964,17 +955,17 @@ QFuture<bool> RemoteRepository::setSizeSuggestions(qsizetype size)
 {
 	return put(suggestionsSizeEndpoint(), sizeToJson(size))
 		.then([this](const QByteArray & result)
-		{
-			if (!result.isEmpty())
-			{
-				sizeSuggestions = sizeFromJson(result);
-				return true;
-			}
-			else
-			{
-				return false;
-			}
-		});
+			  {
+				  if (!result.isEmpty())
+				  {
+					  sizeSuggestions = sizeFromJson(result);
+					  return true;
+				  }
+				  else
+				  {
+					  return false;
+				  }
+			  });
 }
 
 qsizetype RemoteRepository::getSizeHistory() const
@@ -986,18 +977,18 @@ QFuture<bool> RemoteRepository::setSizeHistory(qsizetype size)
 {
 	return put(historySizeEndpoint(), sizeToJson(size))
 		.then([this, size](const QByteArray & result)
-		{
-			if (!result.isEmpty())
-			{
-				sizeHistory = size;
-				history.reset(History::fromJson(result));
-				return true;
-			}
-			else
-			{
-				return false;
-			}
-		});
+			  {
+				  if (!result.isEmpty())
+				  {
+					  sizeHistory = size;
+					  history.reset(History::fromJson(result));
+					  return true;
+				  }
+				  else
+				  {
+					  return false;
+				  }
+			  });
 }
 
 const Formats & RemoteRepository::getFormats() const
@@ -1009,15 +1000,15 @@ QFuture<bool> RemoteRepository::createNgramIndex() const
 {
 	return get(createNgramIndexEndpoint())
 		.then([this](const QByteArray & result)
-		{
-			if (!result.isEmpty())
-			{
-				// It must be {"success": true}
-				return QJsonDocument::fromJson(result).object().value(QStringLiteral("success")).toBool();
-			}
-			else
-			{
-				return false;
-			}
-		});
+			  {
+				  if (!result.isEmpty())
+				  {
+					  // It must be {"success": true}
+					  return QJsonDocument::fromJson(result).object().value(QStringLiteral("success")).toBool();
+				  }
+				  else
+				  {
+					  return false;
+				  }
+			  });
 }

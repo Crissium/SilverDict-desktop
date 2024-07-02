@@ -52,8 +52,7 @@ struct QueryResult
 
 	static QueryResult fromJson(
 		const QByteArray & json,
-		const QList<QSharedPointer<Dictionary>> * availableDictionaries
-	);
+		const QList<QSharedPointer<Dictionary>> * availableDictionaries);
 };
 
 /*{
@@ -103,4 +102,4 @@ struct Sources : public QStringList
 	static Sources * fromJson(const QByteArray & json);
 };
 
-#endif //MODELS_H
+#endif // MODELS_H

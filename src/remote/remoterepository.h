@@ -3,13 +3,11 @@
 
 #include "models.h"
 
-#include <QtNetwork/QNetworkAccessManager>
-
 #include <QFuture>
-
 #include <QJsonDocument>
 #include <QMap>
 #include <QString>
+#include <QtNetwork/QNetworkAccessManager>
 
 class RemoteRepository : public QObject
 {
@@ -110,7 +108,6 @@ private:
 	bool processGroups(const QByteArray & result);
 	bool processGroupings(const QByteArray & result);
 
-
 public:
 	class InitialisationError final : public std::runtime_error
 	{
@@ -177,6 +174,4 @@ public:
 	[[nodiscard]] QFuture<bool> createNgramIndex() const;
 };
 
-
-
-#endif //REMOTEREPOSITORY_H
+#endif // REMOTEREPOSITORY_H

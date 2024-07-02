@@ -22,11 +22,10 @@ Suggestions Suggestions::fromJson(const QByteArray & json)
 
 Dictionary * Dictionary::fromJsonObj(const QJsonObject & obj)
 {
-	return new Dictionary({
-		obj["dictionary_name"].toString(),
-		obj["dictionary_display_name"].toString(),
-		obj["dictionary_format"].toString(),
-		obj["dictionary_filename"].toString()});
+	return new Dictionary({obj["dictionary_name"].toString(),
+						   obj["dictionary_display_name"].toString(),
+						   obj["dictionary_format"].toString(),
+						   obj["dictionary_filename"].toString()});
 }
 
 QJsonObject Dictionary::toJsonObj() const
@@ -85,9 +84,8 @@ Group * Group::fromJsonObj(const QJsonObject & obj)
 		languages.insert(QLocale::codeToLanguage(lang.toString(), QLocale::ISO639Part1));
 	}
 
-	return new Group({
-		obj["name"].toString(),
-		languages});
+	return new Group({obj["name"].toString(),
+					  languages});
 }
 
 QJsonObject Group::toJsonObj() const
@@ -141,7 +139,6 @@ Groupings * Groupings::fromJsonObj(
 	return groupings;
 }
 
-
 Groupings * Groupings::fromJson(
 	const QByteArray & json,
 	const QList<QSharedPointer<Group>> * availableGroups,
@@ -152,7 +149,7 @@ Groupings * Groupings::fromJson(
 	return fromJsonObj(obj, availableGroups, availableDictionaries);
 }
 
- Formats::Formats(QStringList formats)
+Formats::Formats(QStringList formats)
 	: QStringList(std::move(formats))
 {
 }
