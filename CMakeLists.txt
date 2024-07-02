@@ -19,8 +19,8 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(QT NAMES Qt6 REQUIRED COMPONENTS Widgets LinguistTools)
-find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets LinguistTools)
+find_package(QT NAMES Qt6 REQUIRED COMPONENTS Widgets LinguistTools Network Concurrent)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets LinguistTools Network Concurrent)
 
 set(TS_FILES
 	data/translations/${PROJECT_NAME}_en_GB.ts
@@ -34,13 +34,22 @@ qt_add_executable(SilverDict
 	src/mainwindow.cc
 	src/mainwindow.h
 	src/mainwindow.ui
+	src/remote/models.h
+	src/remote/models.cc
+	src/remote/remoterepository.cc
+	src/remote/remoterepository.h
 	${QM_FILES}
 )
 
 qt_add_lupdate(SilverDict TS_FILES ${TS_FILES})
 qt_add_lrelease(SilverDict TS_FILES ${TS_FILES})
 
-target_link_libraries(SilverDict PRIVATE Qt${QT_VERSION_MAJOR}::Core Qt${QT_VERSION_MAJOR}::Widgets)
+target_link_libraries(SilverDict PRIVATE
+	Qt${QT_VERSION_MAJOR}::Core
+	Qt${QT_VERSION_MAJOR}::Widgets
+	Qt${QT_VERSION_MAJOR}::Network
+	Qt${QT_VERSION_MAJOR}::Concurrent
+)
 
 set_target_properties(SilverDict PROPERTIES
 	MACOSX_BUNDLE_GUI_IDENTIFIER ${APPLICATION_ID}
