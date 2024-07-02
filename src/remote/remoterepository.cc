@@ -677,13 +677,13 @@ QFuture<Suggestions> RemoteRepository::getSuggestions(const QString & key) const
 QFuture<QueryResult> RemoteRepository::query(const QString & key) const
 {
 	return get(queryEndpoint(activeGroup->name, key))
-		.then(this->processQueryResult);
+		.then(std::bind(&RemoteRepository::processQueryResult, this, std::placeholders::_1));
 }
 
 QFuture<QueryResult> RemoteRepository::queryAnki(const QString & word) const
 {
 	return get(ankiEndpoint(activeGroup->name, word))
-		.then(this->processQueryResult);
+		.then(std::bind(&RemoteRepository::processQueryResult, this, std::placeholders::_1));
 }
 
 const QList<QSharedPointer<Dictionary>> & RemoteRepository::getDictionaries() const
@@ -708,13 +708,13 @@ QFuture<bool> RemoteRepository::addDictionary(const Dictionary & dictionary, con
 
 	dictObj["group_name"] = group->name;
 	return post(dictionariesEndpoint(), QJsonDocument(dictObj))
-		.then(this->processDictionariesAndGroupings);
+		.then(std::bind(&RemoteRepository::processDictionariesAndGroupings, this, std::placeholders::_1));
 }
 
 QFuture<bool> RemoteRepository::deleteDictionary(const Dictionary * dictionary)
 {
 	return del(dictionariesEndpoint(), nameToJson(dictionary->name))
-		.then(this->processDictionariesAndGroupings);
+		.then(std::bind(&RemoteRepository::processDictionariesAndGroupings, this, std::placeholders::_1));
 }
 
 QFuture<bool> RemoteRepository::reorderDictionaries(const QList<const Dictionary *> & dictionaries) const
@@ -796,7 +796,7 @@ QFuture<qsizetype> RemoteRepository::getHeadwordCount(const Dictionary * diction
 				  }
 				  else
 				  {
-					  return 0;
+					  return 0ll;
 				  }
 			  });
 }
@@ -822,19 +822,19 @@ QFuture<bool> RemoteRepository::addSource(const QString & source)
 	}
 
 	return post(sourcesEndpoint(), doc)
-		.then(this->processSources);
+		.then(std::bind(&RemoteRepository::processSources, this, std::placeholders::_1));
 }
 
 QFuture<bool> RemoteRepository::deleteSource(const QString & source)
 {
 	return del(sourcesEndpoint(), sourceToJson(source))
-		.then(this->processSources);
+		.then(std::bind(&RemoteRepository::processSources, this, std::placeholders::_1));
 }
 
 QFuture<bool> RemoteRepository::rescanSources()
 {
 	return post(scanEndpoint(), QJsonDocument())
-		.then(this->processDictionariesAndGroupings);
+		.then(std::bind(&RemoteRepository::processDictionariesAndGroupings, this, std::placeholders::_1));
 }
 
 const QList<QSharedPointer<Group>> & RemoteRepository::getGroups() const
@@ -845,13 +845,13 @@ const QList<QSharedPointer<Group>> & RemoteRepository::getGroups() const
 QFuture<bool> RemoteRepository::addGroup(const Group & group)
 {
 	return post(groupsEndpoint(), QJsonDocument(group.toJsonObj()))
-		.then(this->processGroupsAndGroupings);
+		.then(std::bind(&RemoteRepository::processGroupsAndGroupings, this, std::placeholders::_1));
 }
 
 QFuture<bool> RemoteRepository::deleteGroup(const Group * group)
 {
 	return del(groupsEndpoint(), nameToJson(group->name))
-		.then(this->processGroupsAndGroupings);
+		.then(std::bind(&RemoteRepository::processGroupsAndGroupings, this, std::placeholders::_1));
 }
 
 QFuture<bool> RemoteRepository::reorderGroups(const QList<const Group *> & groups)
@@ -863,7 +863,7 @@ QFuture<bool> RemoteRepository::reorderGroups(const QList<const Group *> & group
 	}
 
 	return put(groupsEndpoint(), QJsonDocument(array))
-		.then(this->processGroups);
+		.then(std::bind(&RemoteRepository::processGroups, this, std::placeholders::_1));
 }
 
 QFuture<bool> RemoteRepository::changeGroupLanguages(const Group * group, const QSet<QLocale::Language> & languages)
@@ -879,7 +879,7 @@ QFuture<bool> RemoteRepository::changeGroupLanguages(const Group * group, const 
 	obj["lang"] = langArray;
 
 	return put(groupLangChangeEndpoint(), QJsonDocument(obj))
-		.then(this->processGroups);
+		.then(std::bind(&RemoteRepository::processGroups, this, std::placeholders::_1));
 }
 
 QFuture<bool> RemoteRepository::renameGroup(const Group * group, const QString & newName)
@@ -888,7 +888,7 @@ QFuture<bool> RemoteRepository::renameGroup(const Group * group, const QString &
 	obj["old"] = group->name;
 	obj["new"] = newName;
 	return put(groupRenameEndpoint(), QJsonDocument(obj))
-		.then(this->processGroupsAndGroupings);
+		.then(std::bind(&RemoteRepository::processGroupsAndGroupings, this, std::placeholders::_1));
 }
 
 const Group * RemoteRepository::getActiveGroup() const
@@ -912,7 +912,7 @@ QFuture<bool> RemoteRepository::addDictionaryToGroup(const Dictionary * dictiona
 	obj["dictionary_name"] = dictionary->name;
 	obj["group_name"] = group->name;
 	return post(groupingsEndpoint(), QJsonDocument(obj))
-		.then(this->processGroupings);
+		.then(std::bind(&RemoteRepository::processGroupings, this, std::placeholders::_1));
 }
 
 QFuture<bool> RemoteRepository::removeDictionaryFromGroup(const Dictionary * dictionary, const Group * group)
@@ -921,7 +921,7 @@ QFuture<bool> RemoteRepository::removeDictionaryFromGroup(const Dictionary * dic
 	obj["dictionary_name"] = dictionary->name;
 	obj["group_name"] = group->name;
 	return del(groupingsEndpoint(), QJsonDocument(obj))
-		.then(this->processGroupings);
+		.then(std::bind(&RemoteRepository::processGroupings, this, std::placeholders::_1));
 }
 
 const History & RemoteRepository::getHistory() const
