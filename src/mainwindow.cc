@@ -8,17 +8,6 @@ MainWindow::MainWindow(QWidget * parent)
 	, remoteRepository(new RemoteRepository(QStringLiteral("http://localhost:2628/api/"), this))
 {
 	ui->setupUi(this);
-	remoteRepository->getSuggestions("word")
-		.then([](const Suggestions & suggestions)
-		{
-			qDebug() << suggestions.wordList;
-		});
-	remoteRepository->setActiveGroup(remoteRepository->getGroup("French"));
-	remoteRepository->getSuggestions("word")
-		.then([](const Suggestions & suggestions)
-		{
-			qDebug() << suggestions.wordList;
-		});
 }
 
 MainWindow::~MainWindow()
