@@ -73,8 +73,6 @@ private:
 
 	QScopedPointer<Sources> sources;
 
-	bool initialise();
-
 	/**
 	 * A dictionary can be deleted or added.
 	 * The list can also be reordered.
@@ -120,6 +118,8 @@ public:
 	public:
 		using std::runtime_error::runtime_error;
 	};
+
+	bool initialise();
 
 	explicit RemoteRepository(QUrl baseUrl, QObject * parent = nullptr);
 
