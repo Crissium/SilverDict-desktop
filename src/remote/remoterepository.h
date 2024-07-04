@@ -147,6 +147,7 @@ public:
 	QFuture<bool> rescanSources();
 
 	[[nodiscard]] const QList<QSharedPointer<Group>> & getGroups() const;
+	[[nodiscard]] const Group * getGroup(const QString & name) const;
 	QFuture<bool> addGroup(const Group & group);
 	QFuture<bool> deleteGroup(const Group * group);
 	QFuture<bool> reorderGroups(const QList<const Group *> & groups);

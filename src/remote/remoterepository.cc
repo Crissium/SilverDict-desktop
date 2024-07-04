@@ -1,131 +1,150 @@
 #include "remoterepository.h"
 
+#include <QEventLoop>
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
+#include <QtConcurrent/QtConcurrentRun>
 #include <QtNetwork/QNetworkReply>
 
 QFuture<QByteArray> RemoteRepository::get(const QUrl & url) const
 {
-	QSharedPointer<QPromise<QByteArray>> promise(new QPromise<QByteArray>());
-	promise->start();
+	auto networkOperation = [this, url]()
+	{
+		QNetworkReply * reply = manager->get(QNetworkRequest(url));
+		QEventLoop loop;
+		QObject::connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
+		loop.exec();
 
-	QNetworkReply * reply = manager->get(QNetworkRequest(url));
-	QtFuture::connect(reply, &QNetworkReply::finished)
-		.then([promise, reply]()
-			  {
-				  if (reply->error() == QNetworkReply::NoError)
-				  {
-					  promise->addResult(reply->readAll());
-				  }
-				  else
-				  {
-					  promise->addResult(QByteArrayLiteral(""));
-				  }
-				  promise->finish();
-				  reply->deleteLater();
-			  });
+		if (reply->error() == QNetworkReply::NoError)
+		{
+			QByteArray result = reply->readAll();
+			reply->deleteLater();
+			return result;
+		}
+		else
+		{
+			reply->deleteLater();
+			return QByteArrayLiteral("");
+		}
+	};
 
-	return promise->future();
+	QFuture<QByteArray> future = QtConcurrent::run(networkOperation);
+
+	return future;
 }
 
 QFuture<QByteArray> RemoteRepository::post(const QUrl & url, const QJsonDocument & json) const
 {
-	QSharedPointer<QPromise<QByteArray>> promise(new QPromise<QByteArray>());
-	promise->start();
+	auto networkOperation = [this, url, json]()
+	{
+		QNetworkReply * reply = manager->post(QNetworkRequest(url), json.toJson());
+		QEventLoop loop;
+		QObject::connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
+		loop.exec();
 
-	QNetworkReply * reply = manager->post(QNetworkRequest(url), json.toJson());
-	QtFuture::connect(reply, &QNetworkReply::finished)
-		.then([promise, reply]()
-			  {
-				  if (reply->error() == QNetworkReply::NoError)
-				  {
-					  promise->addResult(reply->readAll());
-				  }
-				  else
-				  {
-					  promise->addResult(QByteArrayLiteral(""));
-				  }
-				  promise->finish();
-				  reply->deleteLater();
-			  });
+		if (reply->error() == QNetworkReply::NoError)
+		{
+			QByteArray result = reply->readAll();
+			reply->deleteLater();
+			return result;
+		}
+		else
+		{
+			reply->deleteLater();
+			return QByteArrayLiteral("");
+		}
+	};
 
-	return promise->future();
+	QFuture<QByteArray> future = QtConcurrent::run(networkOperation);
+
+	return future;
 }
 
 QFuture<QByteArray> RemoteRepository::put(const QUrl & url, const QJsonDocument & json) const
 {
-	QSharedPointer<QPromise<QByteArray>> promise(new QPromise<QByteArray>());
-	promise->start();
+	auto networkOperation = [this, url, json]()
+	{
+		QNetworkReply * reply = manager->put(QNetworkRequest(url), json.toJson());
+		QEventLoop loop;
+		QObject::connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
+		loop.exec();
 
-	QNetworkReply * reply = manager->put(QNetworkRequest(url), json.toJson());
-	QtFuture::connect(reply, &QNetworkReply::finished)
-		.then([promise, reply]()
-			  {
-				  if (reply->error() == QNetworkReply::NoError)
-				  {
-					  promise->addResult(reply->readAll());
-				  }
-				  else
-				  {
-					  promise->addResult(QByteArrayLiteral(""));
-				  }
-				  promise->finish();
-				  reply->deleteLater();
-			  });
+		if (reply->error() == QNetworkReply::NoError)
+		{
+			QByteArray result = reply->readAll();
+			reply->deleteLater();
+			return result;
+		}
+		else
+		{
+			reply->deleteLater();
+			return QByteArrayLiteral("");
+		}
+	};
 
-	return promise->future();
+	QFuture<QByteArray> future = QtConcurrent::run(networkOperation);
+
+	return future;
 }
 
 QFuture<QByteArray> RemoteRepository::del(const QUrl & url) const
 {
-	QSharedPointer<QPromise<QByteArray>> promise(new QPromise<QByteArray>());
-	promise->start();
+	auto networkOperation = [this, url]()
+	{
+		QNetworkReply * reply = manager->deleteResource(QNetworkRequest(url));
+		QEventLoop loop;
+		QObject::connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
+		loop.exec();
 
-	QNetworkReply * reply = manager->deleteResource(QNetworkRequest(url));
-	QtFuture::connect(reply, &QNetworkReply::finished)
-		.then([promise, reply]()
-			  {
-				  if (reply->error() == QNetworkReply::NoError)
-				  {
-					  promise->addResult(reply->readAll());
-				  }
-				  else
-				  {
-					  promise->addResult(QByteArrayLiteral(""));
-				  }
-				  promise->finish();
-				  reply->deleteLater();
-			  });
+		if (reply->error() == QNetworkReply::NoError)
+		{
+			QByteArray result = reply->readAll();
+			reply->deleteLater();
+			return result;
+		}
+		else
+		{
+			reply->deleteLater();
+			return QByteArrayLiteral("");
+		}
+	};
 
-	return promise->future();
+	QFuture<QByteArray> future = QtConcurrent::run(networkOperation);
+
+	return future;
 }
 
 QFuture<QByteArray> RemoteRepository::del(const QUrl & url, const QJsonDocument & json) const
 {
-	QSharedPointer<QPromise<QByteArray>> promise(new QPromise<QByteArray>());
-	promise->start();
+	auto networkOperation = [this, url, json]()
+	{
+		QNetworkRequest request(url);
+		request.setHeader(QNetworkRequest::ContentTypeHeader, QStringLiteral("application/json"));
+		QNetworkReply * reply = manager->sendCustomRequest(
+			QNetworkRequest(url),
+			QByteArrayLiteral("DELETE"),
+			json.toJson());
+		QEventLoop loop;
+		QObject::connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
+		loop.exec();
 
-	QNetworkReply * reply = manager->sendCustomRequest(
-		QNetworkRequest(url),
-		QByteArrayLiteral("DELETE"),
-		json.toJson());
-	QtFuture::connect(reply, &QNetworkReply::finished)
-		.then([promise, reply]()
-			  {
-				  if (reply->error() == QNetworkReply::NoError)
-				  {
-					  promise->addResult(reply->readAll());
-				  }
-				  else
-				  {
-					  promise->addResult(QByteArrayLiteral(""));
-				  }
-				  promise->finish();
-				  reply->deleteLater();
-			  });
+		if (reply->error() == QNetworkReply::NoError)
+		{
+			QByteArray result = reply->readAll();
+			reply->deleteLater();
+			return result;
+		}
+		else
+		{
+			reply->deleteLater();
+			return QByteArrayLiteral("");
+		}
+	};
 
-	return promise->future();
+	QFuture<QByteArray> future = QtConcurrent::run(networkOperation);
+
+	return future;
 }
 
 QList<QSharedPointer<Dictionary>> RemoteRepository::dictionariesFromJsonArrayStack(const QJsonArray & array)
@@ -213,6 +232,7 @@ bool RemoteRepository::initialise()
 {
 	// First test connection. The endpoint always returns {"success": true}
 	const QByteArray testResult = get(testConnectionEndpoint()).result();
+	qDebug() << "Test result" << testResult;
 	if (!QJsonDocument::fromJson(testResult).object().value(QStringLiteral("success")).toBool())
 	{
 		return false;
@@ -835,6 +855,18 @@ QFuture<bool> RemoteRepository::rescanSources()
 {
 	return post(scanEndpoint(), QJsonDocument())
 		.then(std::bind(&RemoteRepository::processDictionariesAndGroupings, this, std::placeholders::_1));
+}
+
+const Group * RemoteRepository::getGroup(const QString & name) const
+{
+	for (auto const & g : *groups)
+	{
+		if (g->name == name)
+		{
+			return g.data();
+		}
+	}
+	return nullptr;
 }
 
 const QList<QSharedPointer<Group>> & RemoteRepository::getGroups() const
