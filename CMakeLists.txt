@@ -38,11 +38,18 @@ qt_add_executable(SilverDict
 	src/remote/models.cc
 	src/remote/remoterepository.cc
 	src/remote/remoterepository.h
+	src/query/queryscreen.h
+	src/query/queryscreen.cc
+	src/query/queryscreen.ui
 	${QM_FILES}
 )
 
 qt_add_lupdate(SilverDict TS_FILES ${TS_FILES})
 qt_add_lrelease(SilverDict TS_FILES ${TS_FILES})
+
+target_include_directories(SilverDict PRIVATE
+	src
+)
 
 target_link_libraries(SilverDict PRIVATE
 	Qt${QT_VERSION_MAJOR}::Core
