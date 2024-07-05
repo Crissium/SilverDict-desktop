@@ -8,6 +8,7 @@ MainWindow::MainWindow(QWidget * parent)
 	, remoteRepository(new RemoteRepository(QStringLiteral("http://localhost:2628/api/"), this))
 {
 	ui->setupUi(this);
+	ui->queryScreen->setRemoteRepository(remoteRepository.data());
 }
 
 MainWindow::~MainWindow()

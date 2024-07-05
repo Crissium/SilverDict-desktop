@@ -41,6 +41,10 @@ qt_add_executable(SilverDict
 	src/query/queryscreen.h
 	src/query/queryscreen.cc
 	src/query/queryscreen.ui
+	src/query/wordlistmodel.h
+	src/query/wordlistmodel.cc
+	src/query/querymodel.h
+	src/query/querymodel.cc
 	${QM_FILES}
 )
 
