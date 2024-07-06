@@ -35,11 +35,11 @@ private:
 	/* {"source": "/path/to/source"} */
 	static QJsonDocument sourceToJson(const QString & source);
 
-	QUrl baseUrl; // e.g. http://localhost:8080/api/
+	QUrl apiPrefix; // e.g. http://localhost:8080/api/
 	[[nodiscard]] QUrl testConnectionEndpoint() const;
 	[[nodiscard]] QUrl suggestionsEndpoint(const QString & groupName, const QString & key) const;
-	[[nodiscard]] QUrl queryEndpoint(const QString & groupName, const QString & key) const;
-	[[nodiscard]] QUrl ankiEndpoint(const QString & groupName, const QString & key) const;
+	[[nodiscard]] QUrl queryEndpoint(const QString & groupName, const QString & key, bool raw = false) const;
+	[[nodiscard]] QUrl ankiEndpoint(const QString & groupName, const QString & key, bool raw = false) const;
 	[[nodiscard]] QUrl formatsEndpoint() const;
 	[[nodiscard]] QUrl dictionariesEndpoint() const;
 	[[nodiscard]] QUrl dictionaryRenameEndpoint() const;
@@ -120,16 +120,19 @@ public:
 
 	bool initialise();
 
-	explicit RemoteRepository(QUrl baseUrl, QObject * parent = nullptr);
+	explicit RemoteRepository(QUrl apiPrefix, QObject * parent = nullptr);
 
-	[[nodiscard]] const QUrl & getBaseUrl() const;
-	bool setBaseUrl(const QUrl & url);
+	[[nodiscard]] QUrl getBaseUrl() const;
+	[[nodiscard]] const QUrl & getApiPrefix() const;
+	bool setApiPrefix(const QUrl & url);
 
 	[[nodiscard]] QFuture<Suggestions> getSuggestions(const QString & key) const;
 
 	[[nodiscard]] QFuture<QueryResult> query(const QString & key);
+	[[nodiscard]] QUrl getQueryUrl(const QString & key) const;
 
 	[[nodiscard]] QFuture<QueryResult> queryAnki(const QString & word) const;
+	[[nodiscard]] QUrl getQueryAnkiUrl(const QString & word) const;
 
 	[[nodiscard]] const QList<QSharedPointer<Dictionary>> & getDictionaries() const;
 	QFuture<bool> addDictionary(const Dictionary & dictionary, const Group * group);
@@ -161,6 +164,7 @@ public:
 	QFuture<bool> removeDictionaryFromGroup(const Dictionary * dictionary, const Group * group);
 
 	[[nodiscard]] const History & getHistory() const;
+	QFuture<bool> updateHistory();
 	QFuture<bool> clearHistory();
 
 	[[nodiscard]] qsizetype getSizeSuggestions() const;
