@@ -1,7 +1,9 @@
 #include "queryscreen.h"
 #include "ui_queryscreen.h"
 
-void QueryScreen::selectFirstWord()
+#include "articleview.h"
+
+void QueryScreen::selectFirstWord() const
 {
 	if (wordListModel->rowCount() > 0)
 	{
@@ -11,7 +13,32 @@ void QueryScreen::selectFirstWord()
 	}
 }
 
-void QueryScreen::resetDictionaries(const Group * activeGroup)
+void QueryScreen::setDictionaries(const QList<const Dictionary *> & dictionaries) const
+{
+	QStringList dictNames;
+	dictNames.reserve(dictionaries.size());
+	for (const Dictionary * dict : dictionaries)
+	{
+		dictNames.append(dict->displayName);
+	}
+	dictListModel->setStringList(dictNames);
+}
+
+void QueryScreen::setDictionaries(const QStringList & dictNames) const
+{
+	QStringList displayNames;
+	displayNames.reserve(dictNames.size());
+	for (auto const & d : remoteRepository->getDictionaries())
+	{
+		if (dictNames.contains(d->name))
+		{
+			displayNames.append(d->displayName);
+		}
+	}
+	dictListModel->setStringList(displayNames);
+}
+
+void QueryScreen::resetDictionaries(const Group * activeGroup) const
 {
 	const QSet<const Dictionary *> & currentDicts = remoteRepository->getGroupings().value(activeGroup);
 	QStringList dictNames;
@@ -26,7 +53,32 @@ void QueryScreen::resetDictionaries(const Group * activeGroup)
 	dictListModel->setStringList(dictNames);
 }
 
-void QueryScreen::onSearchTermChanged(const QString & searchTerm)
+ArticleView * QueryScreen::getCurrentArticleView() const
+{
+	return qobject_cast<ArticleView *>(ui->tabWidget->currentWidget());
+}
+
+QWebEngineView * QueryScreen::getCurrentWebView() const
+{
+	return qobject_cast<ArticleView *>(ui->tabWidget->currentWidget())->getWebView();
+}
+
+void QueryScreen::initialiseArticleView(ArticleView * articleView) const
+{
+	articleView->setRemoteRepository(remoteRepository);
+	connect(articleView, &ArticleView::articleLoaded, this, &QueryScreen::onArticleLoaded);
+	connect(articleView, &ArticleView::historyUpdated, this, &QueryScreen::onHistoryUpdated);
+	connect(articleView->getNewTabButton(), &QToolButton::clicked, this, &QueryScreen::addTab);
+}
+
+ArticleView * QueryScreen::createArticleView()
+{
+	auto * view = new ArticleView(this);
+	initialiseArticleView(view);
+	return view;
+}
+
+void QueryScreen::onSearchTermChanged(const QString & searchTerm) const
 {
 	if (searchTerm.isEmpty())
 	{
@@ -44,22 +96,17 @@ void QueryScreen::onSearchTermChanged(const QString & searchTerm)
 	}
 }
 
-void QueryScreen::onWordClicked(const QModelIndex & index)
+void QueryScreen::onWordClicked(const QModelIndex & index) const
 {
 	if (index.isValid())
 	{
-		int i = index.row();
-		if (wordListModel->isDisplayingHistory())
-		{
-		}
-		else
-		{
-			// wordListModel->setHighlight(i);
-		}
+		const QString word = wordListModel->data(index, Qt::DisplayRole).toString();
+		ui->tabWidget->setTabText(ui->tabWidget->currentIndex(), word);
+		getCurrentWebView()->load(remoteRepository->getQueryUrl(word));
 	}
 }
 
-void QueryScreen::onGroupsChanged()
+void QueryScreen::onGroupsChanged() const
 {
 	ui->dictSelectionBox->clear();
 	const QList<QSharedPointer<Group>> & groups = remoteRepository->getGroups();
@@ -83,7 +130,7 @@ void QueryScreen::onGroupsChanged()
 	}
 }
 
-void QueryScreen::onActiveGroupChanged(int i)
+void QueryScreen::onActiveGroupChanged(int i) const
 {
 	const Group * group = remoteRepository->getGroups().at(i).data();
 	remoteRepository->setActiveGroup(group);
@@ -91,9 +138,53 @@ void QueryScreen::onActiveGroupChanged(int i)
 	resetDictionaries(group);
 }
 
-void QueryScreen::onDictionariesChanged()
+void QueryScreen::onDictionariesChanged() const
 {
 	resetDictionaries(remoteRepository->getActiveGroup());
+}
+
+void QueryScreen::onArticleLoaded(const QStringList & dictNames) const
+{
+	setDictionaries(dictNames);
+}
+
+void QueryScreen::onHistoryUpdated() const
+{
+	if (wordListModel->isDisplayingHistory())
+	{
+		wordListModel->setWords(remoteRepository->getHistory());
+		selectFirstWord();
+	}
+}
+
+void QueryScreen::onDictionaryClicked(const QModelIndex & index) const
+{
+	if (index.isValid())
+	{
+		for (auto const & d : remoteRepository->getDictionaries())
+		{
+			// FIXME: display name is not unique
+			if (d->displayName == dictListModel->data(index, Qt::DisplayRole).toString())
+			{
+				getCurrentArticleView()->navigateTo(d->name);
+			}
+		}
+	}
+}
+
+void QueryScreen::addTab()
+{
+	auto * newArticleView = createArticleView();
+	ui->tabWidget->addTab(newArticleView, QStringLiteral());
+	ui->tabWidget->setCurrentWidget(newArticleView);
+}
+
+void QueryScreen::closeTab(int i) const
+{
+	if (ui->tabWidget->count() != 1)
+	{
+		ui->tabWidget->removeTab(i);
+	}
 }
 
 QueryScreen::QueryScreen(QWidget * parent)
@@ -111,6 +202,8 @@ QueryScreen::QueryScreen(QWidget * parent)
 	connect(ui->searchTermEdit, &QLineEdit::textEdited, this, &QueryScreen::onSearchTermChanged);
 	connect(ui->wordListView, &QListView::clicked, this, &QueryScreen::onWordClicked);
 	connect(ui->dictSelectionBox, &QComboBox::currentIndexChanged, this, &QueryScreen::onActiveGroupChanged);
+	connect(ui->dictListView, &QListView::clicked, this, &QueryScreen::onDictionaryClicked);
+	connect(ui->tabWidget, &QTabWidget::tabCloseRequested, this, &QueryScreen::closeTab);
 }
 
 QueryScreen::~QueryScreen()
@@ -127,6 +220,11 @@ void QueryScreen::setRemoteRepository(RemoteRepository * repo)
 	onSearchTermChanged(QStringLiteral());
 
 	onGroupsChanged();
+
+	if (auto * currentArticleView = qobject_cast<ArticleView *>(ui->tabWidget->currentWidget()))
+	{
+		initialiseArticleView(currentArticleView);
+	}
 
 	connect(remoteRepository, &RemoteRepository::groupsChanged, this, &QueryScreen::onGroupsChanged);
 	connect(remoteRepository, &RemoteRepository::dictionariesChanged, this, &QueryScreen::onDictionariesChanged);

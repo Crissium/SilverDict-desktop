@@ -34,7 +34,10 @@
    </item>
    <item>
     <widget class="QTabWidget" name="tabWidget">
-     <widget class="QWidget" name="tab">
+     <property name="tabsClosable">
+      <bool>true</bool>
+     </property>
+     <widget class="ArticleView" name="tab">
       <attribute name="title">
        <string>Tab 1</string>
       </attribute>
@@ -55,6 +58,14 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>ArticleView</class>
+   <extends>QWidget</extends>
+   <header>query/articleview.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
  <slots>

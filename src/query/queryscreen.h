@@ -1,11 +1,12 @@
 #ifndef QUERYSCREEN_H
 #define QUERYSCREEN_H
 
+#include "articleview.h"
 #include "wordlistmodel.h"
 #include "../remote/remoterepository.h"
 
 #include <QStringListModel>
-#include <QWidget>
+#include <QtWebEngineWidgets/QWebEngineView>
 
 namespace Ui
 {
@@ -22,15 +23,29 @@ private:
 	QAbstractItemModel * groupListModel; // within the combo box
 	QScopedPointer<QStringListModel> dictListModel;
 
-	void selectFirstWord();
-	void resetDictionaries(const Group * activeGroup);
+	void selectFirstWord() const;
+	void setDictionaries(const QList<const Dictionary *> & dictionaries) const;
+	void setDictionaries(const QStringList & dictNames) const;
+	void resetDictionaries(const Group * activeGroup) const;
+
+	[[nodiscard]] ArticleView * getCurrentArticleView() const;
+	[[nodiscard]] QWebEngineView * getCurrentWebView() const;
+
+	void initialiseArticleView(ArticleView * articleView) const;
+	ArticleView * createArticleView();
 
 private slots:
-	void onSearchTermChanged(const QString & searchTerm);
-	void onWordClicked(const QModelIndex & index);
-	void onGroupsChanged();
-	void onActiveGroupChanged(int i);
-	void onDictionariesChanged();
+	void onSearchTermChanged(const QString & searchTerm) const;
+	void onWordClicked(const QModelIndex & index) const;
+	void onGroupsChanged() const;
+	void onActiveGroupChanged(int i) const;
+	void onDictionariesChanged() const;
+	void onArticleLoaded(const QStringList & dictNames) const;
+	void onHistoryUpdated() const;
+	void onDictionaryClicked(const QModelIndex & index) const;
+
+	void addTab();
+	void closeTab(int i) const;
 
 public:
 	explicit QueryScreen(QWidget * parent = nullptr);

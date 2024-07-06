@@ -19,8 +19,8 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(QT NAMES Qt6 REQUIRED COMPONENTS Widgets LinguistTools Network Concurrent)
-find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets LinguistTools Network Concurrent)
+find_package(QT NAMES Qt6 REQUIRED COMPONENTS Widgets LinguistTools Network Concurrent WebEngineWidgets)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets LinguistTools Network Concurrent WebEngineWidgets)
 
 set(TS_FILES
 	data/translations/${PROJECT_NAME}_en_GB.ts
@@ -43,8 +43,9 @@ qt_add_executable(SilverDict
 	src/query/queryscreen.ui
 	src/query/wordlistmodel.h
 	src/query/wordlistmodel.cc
-	src/query/querymodel.h
-	src/query/querymodel.cc
+	src/query/articleview.h
+	src/query/articleview.cc
+	src/query/articleview.ui
 	${QM_FILES}
 )
 
@@ -60,6 +61,7 @@ target_link_libraries(SilverDict PRIVATE
 	Qt${QT_VERSION_MAJOR}::Widgets
 	Qt${QT_VERSION_MAJOR}::Network
 	Qt${QT_VERSION_MAJOR}::Concurrent
+	Qt${QT_VERSION_MAJOR}::WebEngineWidgets
 )
 
 set_target_properties(SilverDict PROPERTIES
