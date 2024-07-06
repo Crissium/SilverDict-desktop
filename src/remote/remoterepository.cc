@@ -7,10 +7,11 @@
 #include <QtConcurrent/QtConcurrentRun>
 #include <QtNetwork/QNetworkReply>
 
-QFuture<QByteArray> RemoteRepository::get(const QUrl & url) const
+QFuture<QByteArray> RemoteRepository::get(const QUrl & url)
 {
-	auto networkOperation = [this, url]()
+	auto networkOperation = [url]()
 	{
+		const QScopedPointer<QNetworkAccessManager> manager(new QNetworkAccessManager());
 		QNetworkReply * reply = manager->get(QNetworkRequest(url));
 		QEventLoop loop;
 		QObject::connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
@@ -18,7 +19,7 @@ QFuture<QByteArray> RemoteRepository::get(const QUrl & url) const
 
 		if (reply->error() == QNetworkReply::NoError)
 		{
-			QByteArray result = reply->readAll();
+			const QByteArray result = reply->readAll();
 			reply->deleteLater();
 			return result;
 		}
@@ -34,11 +35,15 @@ QFuture<QByteArray> RemoteRepository::get(const QUrl & url) const
 	return future;
 }
 
-QFuture<QByteArray> RemoteRepository::post(const QUrl & url, const QJsonDocument & json) const
+QFuture<QByteArray> RemoteRepository::post(const QUrl & url, const QJsonDocument & json)
 {
-	auto networkOperation = [this, url, json]()
+	auto networkOperation = [url, json]()
 	{
-		QNetworkReply * reply = manager->post(QNetworkRequest(url), json.toJson());
+		const QScopedPointer<QNetworkAccessManager> manager(new QNetworkAccessManager());
+		QNetworkRequest request(url);
+		request.setHeader(QNetworkRequest::ContentTypeHeader, QStringLiteral("application/json"));
+		QNetworkReply *reply = manager->post(request, json.toJson());
+
 		QEventLoop loop;
 		QObject::connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
 		loop.exec();
@@ -61,11 +66,15 @@ QFuture<QByteArray> RemoteRepository::post(const QUrl & url, const QJsonDocument
 	return future;
 }
 
-QFuture<QByteArray> RemoteRepository::put(const QUrl & url, const QJsonDocument & json) const
+QFuture<QByteArray> RemoteRepository::put(const QUrl & url, const QJsonDocument & json)
 {
-	auto networkOperation = [this, url, json]()
+	auto networkOperation = [url, json]()
 	{
-		QNetworkReply * reply = manager->put(QNetworkRequest(url), json.toJson());
+		const QScopedPointer<QNetworkAccessManager> manager(new QNetworkAccessManager());
+		QNetworkRequest request(url);
+		request.setHeader(QNetworkRequest::ContentTypeHeader, QStringLiteral("application/json"));
+		QNetworkReply *reply = manager->put(request, json.toJson());
+
 		QEventLoop loop;
 		QObject::connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
 		loop.exec();
@@ -88,10 +97,11 @@ QFuture<QByteArray> RemoteRepository::put(const QUrl & url, const QJsonDocument 
 	return future;
 }
 
-QFuture<QByteArray> RemoteRepository::del(const QUrl & url) const
+QFuture<QByteArray> RemoteRepository::del(const QUrl & url)
 {
-	auto networkOperation = [this, url]()
+	auto networkOperation = [url]()
 	{
+		const QScopedPointer<QNetworkAccessManager> manager(new QNetworkAccessManager());
 		QNetworkReply * reply = manager->deleteResource(QNetworkRequest(url));
 		QEventLoop loop;
 		QObject::connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
@@ -115,14 +125,16 @@ QFuture<QByteArray> RemoteRepository::del(const QUrl & url) const
 	return future;
 }
 
-QFuture<QByteArray> RemoteRepository::del(const QUrl & url, const QJsonDocument & json) const
+QFuture<QByteArray> RemoteRepository::del(const QUrl & url, const QJsonDocument & json)
 {
-	auto networkOperation = [this, url, json]()
+	auto networkOperation = [url, json]()
 	{
+		const QScopedPointer<QNetworkAccessManager> manager(new QNetworkAccessManager());
 		QNetworkRequest request(url);
 		request.setHeader(QNetworkRequest::ContentTypeHeader, QStringLiteral("application/json"));
 		QNetworkReply * reply = manager->sendCustomRequest(
-			QNetworkRequest(url),
+			// QNetworkRequest(url),
+			request,
 			QByteArrayLiteral("DELETE"),
 			json.toJson());
 		QEventLoop loop;
@@ -317,7 +329,7 @@ bool RemoteRepository::initialise()
 	return true;
 }
 
-void RemoteRepository::updateDictionaries(const QList<QSharedPointer<Dictionary>> & newDictionaries) const
+void RemoteRepository::updateDictionaries(const QList<QSharedPointer<Dictionary>> & newDictionaries)
 {
 	// Fist find those no longer present, then delete them.
 	// We'd better not do this in one go.
@@ -382,6 +394,8 @@ void RemoteRepository::updateDictionaries(const QList<QSharedPointer<Dictionary>
 			}
 		}
 	}
+
+	emit dictionariesChanged();
 }
 
 void RemoteRepository::updateGroups(const QList<QSharedPointer<Group>> & newGroups)
@@ -459,11 +473,24 @@ void RemoteRepository::updateGroups(const QList<QSharedPointer<Group>> & newGrou
 	{
 		activeGroup = groups->first().data();
 	}
+
+	emit groupsChanged();
 }
 
 QueryResult RemoteRepository::processQueryResult(const QByteArray & result) const
 {
 	return QueryResult::fromJson(result, dictionaries.data());
+}
+
+bool RemoteRepository::processHistory(const QByteArray & result)
+{
+	if (result.isEmpty())
+	{
+		return false;
+	}
+
+	history.reset(History::fromJson(result));
+	return true;
 }
 
 bool RemoteRepository::processDictionariesAndGroupings(const QByteArray & result)
@@ -549,7 +576,7 @@ QUrl RemoteRepository::testConnectionEndpoint() const
 
 QUrl RemoteRepository::suggestionsEndpoint(const QString & groupName, const QString & key) const
 {
-	return baseUrl.resolved(QUrl(QStringLiteral("suggestions/%1/%2").arg(groupName, key)));
+	return baseUrl.resolved(QUrl(QStringLiteral("suggestions/%1/%2?timestamp=%3").arg(groupName, key, QString::number(QDateTime::currentMSecsSinceEpoch()))));
 }
 
 QUrl RemoteRepository::queryEndpoint(const QString & groupName, const QString & key) const
@@ -644,7 +671,7 @@ QUrl RemoteRepository::validatorSourceEndpoint() const
 
 RemoteRepository::RemoteRepository(QUrl baseUrl, QObject * parent)
 	: QObject(parent)
-	, manager(new QNetworkAccessManager(this))
+	// , manager(new QNetworkAccessManager(this))
 	, baseUrl(std::move(baseUrl))
 	, dictionaries(nullptr)
 	, groups(nullptr)
@@ -694,10 +721,18 @@ QFuture<Suggestions> RemoteRepository::getSuggestions(const QString & key) const
 			  });
 }
 
-QFuture<QueryResult> RemoteRepository::query(const QString & key) const
+QFuture<QueryResult> RemoteRepository::query(const QString & key)
 {
 	return get(queryEndpoint(activeGroup->name, key))
-		.then(std::bind(&RemoteRepository::processQueryResult, this, std::placeholders::_1));
+		.then(std::bind(&RemoteRepository::processQueryResult, this, std::placeholders::_1))
+		.then([this](const QueryResult & result)
+			  {
+				  if (!processHistory(get(historyEndpoint()).result()))
+				  {
+					  qDebug() << "Failed to update history";
+				  }
+				  return result;
+			  });
 }
 
 QFuture<QueryResult> RemoteRepository::queryAnki(const QString & word) const
@@ -737,7 +772,7 @@ QFuture<bool> RemoteRepository::deleteDictionary(const Dictionary * dictionary)
 		.then(std::bind(&RemoteRepository::processDictionariesAndGroupings, this, std::placeholders::_1));
 }
 
-QFuture<bool> RemoteRepository::reorderDictionaries(const QList<const Dictionary *> & dictionaries) const
+QFuture<bool> RemoteRepository::reorderDictionaries(const QList<const Dictionary *> & dictionaries)
 {
 	QJsonArray array;
 	for (auto const & d : dictionaries)
@@ -762,12 +797,12 @@ QFuture<bool> RemoteRepository::reorderDictionaries(const QList<const Dictionary
 
 QFuture<bool> RemoteRepository::renameDictionary(
 	const Dictionary * dictionary,
-	const QString & newDisplayName) const
+	const QString & newDisplayName)
 {
-	QJsonObject obj;
+	QJsonObject obj;	
 	obj["name"] = dictionary->name;
 	obj["display"] = newDisplayName;
-	return put(dictionariesEndpoint(), QJsonDocument(obj))
+	return put(dictionaryRenameEndpoint(), QJsonDocument(obj))
 		.then([this, dictionary, &newDisplayName](const QByteArray & result)
 			  {
 				  if (!result.isEmpty())
@@ -781,6 +816,7 @@ QFuture<bool> RemoteRepository::renameDictionary(
 							  if (d->name == dictionary->name)
 							  {
 								  d->displayName = newDisplayName;
+								  emit dictionariesChanged();
 								  return true;
 							  }
 						  }
