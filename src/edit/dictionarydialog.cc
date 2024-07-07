@@ -1,5 +1,5 @@
-#include "editDictionary.h"
-#include "ui_editDictionary.h"
+#include "dictionarydialog.h"
+#include "ui_dictionarydialog.h"
 #include "remote/models.h"
 
 #include<QPushButton>
@@ -15,8 +15,6 @@ DictionaryDialog::DictionaryDialog(QWidget *parent, RemoteRepository *repo)
 	setRemoteRepository(repo);
 
 	populateListWidget();
-
-	// initializeDictionaryTable();
 }
 
 DictionaryDialog::~DictionaryDialog()
@@ -121,14 +119,13 @@ void DictionaryDialog::on_renameButton_clicked()
 			QFuture<bool> renameResult = remoteRepository->renameDictionary(dictionary.data(), newName);
 			QFutureWatcher<bool> *watcher = new QFutureWatcher<bool>(this);
 			watcher->setFuture(renameResult);
-			connect(watcher, &QFutureWatcher<bool>::finished, this, [this, watcher, newName, dictionary]() {
+			connect(watcher, &QFutureWatcher<bool>::finished, this, [this, watcher, newName]() {
 				if (watcher->result()) {
-
 					QListWidgetItem* item = ui->listWidget->currentItem();
-					if(item){
-						item->setText(newName);
-						updateTableWidget(dictionary);
-					}
+					item->setText(newName);
+					QTableWidget* tableWidget = findChild<QTableWidget *>(QStringLiteral("tableWidget"));
+					QTableWidgetItem* newNameItem = new QTableWidgetItem(newName);
+					tableWidget->setItem(0, 1, newNameItem);
 				}
 				watcher->deleteLater();
 			}, Qt::QueuedConnection);
@@ -158,13 +155,34 @@ void DictionaryDialog::on_deleteButton_clicked() {
 				if (watcher->result()) {
 					QListWidgetItem *itemToDelete = ui->listWidget->currentItem();
 					if (itemToDelete) {
-						QVariant data = itemToDelete->data(Qt::UserRole);
 						ui->listWidget->removeItemWidget(itemToDelete);
 						delete itemToDelete;
 					}
+					QTableWidget *tableWidget = findChild<QTableWidget *>(QStringLiteral("tableWidget"));
+					tableWidget->clearContents();
 				}
 				watcher->deleteLater();
 			}, Qt::QueuedConnection);
 		}
 	}
+}
+
+void DictionaryDialog::on_addButton_clicked()
+{
+	AddDictionaryDialog *addDialog = new AddDictionaryDialog(this, remoteRepository);
+	if (addDialog->exec() == QDialog::Accepted) {
+		Dictionary newDictionary = addDialog->getNewDictionary();
+		Group* selectGroup = addDialog->getSelectedGroup();
+
+		QFuture<bool> addResult = remoteRepository->addDictionary(newDictionary, selectGroup);
+		QFutureWatcher<bool> *watcher = new QFutureWatcher<bool>(this);
+		watcher->setFuture(addResult);
+		connect(watcher, &QFutureWatcher<bool>::finished, this, [this, watcher]() {
+			if (watcher->result()) {
+				populateListWidget();
+			}
+			watcher->deleteLater();
+		}, Qt::QueuedConnection);
+	}
+	delete addDialog;
 }

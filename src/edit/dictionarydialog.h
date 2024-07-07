@@ -1,5 +1,5 @@
-#ifndef EDITDICTIONARY_H
-#define EDITDICTIONARY_H
+#ifndef DICTIONARYDIALOG_H
+#define DICTIONARYDIALOG_H
 
 #include <QDialog>
 #include <QTableWidget>
@@ -7,6 +7,7 @@
 #include <QFutureWatcher>
 
 #include "remote/remoterepository.h"
+#include "edit/adddictionarydialog.h"
 
 namespace Ui
 {
@@ -27,6 +28,7 @@ private slots:
 
 	void on_renameButton_clicked();
 	void on_deleteButton_clicked();
+	void on_addButton_clicked();
 
 private:
 	Ui::DictionaryDialog * ui;
@@ -37,4 +39,4 @@ private:
 	void populateListWidget();
 };
 
-#endif // EDITDICTIONARY_H
+#endif // DICTIONARYDIALOG_H

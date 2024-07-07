@@ -661,7 +661,7 @@ QUrl RemoteRepository::createNgramIndexEndpoint() const
 
 QUrl RemoteRepository::validatorDictionaryEndpoint() const
 {
-	return baseUrl.resolved(QUrl(QStringLiteral("validator/dictionary")));
+	return baseUrl.resolved(QUrl(QStringLiteral("validator/dictionary_info")));
 }
 
 QUrl RemoteRepository::validatorSourceEndpoint() const
@@ -760,7 +760,6 @@ QFuture<bool> RemoteRepository::addDictionary(const Dictionary & dictionary, con
 	{
 		return QtFuture::makeReadyFuture(false);
 	}
-
 	dictObj["group_name"] = group->name;
 	return post(dictionariesEndpoint(), QJsonDocument(dictObj))
 		.then(std::bind(&RemoteRepository::processDictionariesAndGroupings, this, std::placeholders::_1));
