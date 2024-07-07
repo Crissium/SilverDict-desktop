@@ -14,12 +14,12 @@ class RemoteRepository : public QObject
 	Q_OBJECT
 
 private:
-	QScopedPointer<QNetworkAccessManager> manager;
-	[[nodiscard]] QFuture<QByteArray> get(const QUrl & url) const;
-	[[nodiscard]] QFuture<QByteArray> post(const QUrl & url, const QJsonDocument & json) const;
-	[[nodiscard]] QFuture<QByteArray> put(const QUrl & url, const QJsonDocument & json) const;
-	[[nodiscard]] QFuture<QByteArray> del(const QUrl & url) const;
-	[[nodiscard]] QFuture<QByteArray> del(const QUrl & url, const QJsonDocument & json) const;
+	// QScopedPointer<QNetworkAccessManager> manager;
+	[[nodiscard]] static QFuture<QByteArray> get(const QUrl & url);
+	[[nodiscard]] static QFuture<QByteArray> post(const QUrl & url, const QJsonDocument & json);
+	[[nodiscard]] static QFuture<QByteArray> put(const QUrl & url, const QJsonDocument & json);
+	[[nodiscard]] static QFuture<QByteArray> del(const QUrl & url);
+	[[nodiscard]] static QFuture<QByteArray> del(const QUrl & url, const QJsonDocument & json);
 
 	static QList<QSharedPointer<Dictionary>> dictionariesFromJsonArrayStack(const QJsonArray & array);
 	static QList<QSharedPointer<Dictionary>> * dictionariesFromJsonArray(const QJsonArray & array);
@@ -35,11 +35,11 @@ private:
 	/* {"source": "/path/to/source"} */
 	static QJsonDocument sourceToJson(const QString & source);
 
-	QUrl baseUrl; // e.g. http://localhost:8080/api/
+	QUrl apiPrefix; // e.g. http://localhost:8080/api/
 	[[nodiscard]] QUrl testConnectionEndpoint() const;
 	[[nodiscard]] QUrl suggestionsEndpoint(const QString & groupName, const QString & key) const;
-	[[nodiscard]] QUrl queryEndpoint(const QString & groupName, const QString & key) const;
-	[[nodiscard]] QUrl ankiEndpoint(const QString & groupName, const QString & key) const;
+	[[nodiscard]] QUrl queryEndpoint(const QString & groupName, const QString & key, bool raw = false) const;
+	[[nodiscard]] QUrl ankiEndpoint(const QString & groupName, const QString & key, bool raw = false) const;
 	[[nodiscard]] QUrl formatsEndpoint() const;
 	[[nodiscard]] QUrl dictionariesEndpoint() const;
 	[[nodiscard]] QUrl dictionaryRenameEndpoint() const;
@@ -80,11 +80,8 @@ private:
 	 * then add the new ones, and finally update the order.
 	 * During this process, the pointers to the dictionaries should remain the same,
 	 * that is, the objects themselves should not be recreated.
-	 *
-	 * Note: this method is really const because it does not change `dictionaries`,
-	 * which is a pointer.
 	 */
-	void updateDictionaries(const QList<QSharedPointer<Dictionary>> & newDictionaries) const;
+	void updateDictionaries(const QList<QSharedPointer<Dictionary>> & newDictionaries);
 
 	/**
 	 * A group can be added or deleted (renaming is essentially deleting and adding).
@@ -93,18 +90,20 @@ private:
 	 * then add the new ones, and finally update the order.
 	 * During this process, the pointers to the groups should remain the same,
 	 * that is, the objects themselves should not be recreated.
-	 *
-	 * Note: this method is not const unlike `updateDictionaries`,
-	 * because it changes `activeGroup`.
 	 */
 	void updateGroups(const QList<QSharedPointer<Group>> & newGroups);
 
 	[[nodiscard]] QueryResult processQueryResult(const QByteArray & result) const;
+	bool processHistory(const QByteArray & result);
 	bool processDictionariesAndGroupings(const QByteArray & result);
 	bool processSources(const QByteArray & result);
 	bool processGroupsAndGroupings(const QByteArray & result);
 	bool processGroups(const QByteArray & result);
 	bool processGroupings(const QByteArray & result);
+
+signals:
+	void dictionariesChanged();
+	void groupsChanged();
 
 public:
 	class InitialisationError final : public std::runtime_error
@@ -121,22 +120,25 @@ public:
 
 	bool initialise();
 
-	explicit RemoteRepository(QUrl baseUrl, QObject * parent = nullptr);
+	explicit RemoteRepository(QUrl apiPrefix, QObject * parent = nullptr);
 
-	[[nodiscard]] const QUrl & getBaseUrl() const;
-	bool setBaseUrl(const QUrl & url);
+	[[nodiscard]] QUrl getBaseUrl() const;
+	[[nodiscard]] const QUrl & getApiPrefix() const;
+	bool setApiPrefix(const QUrl & url);
 
 	[[nodiscard]] QFuture<Suggestions> getSuggestions(const QString & key) const;
 
-	[[nodiscard]] QFuture<QueryResult> query(const QString & key) const;
+	[[nodiscard]] QFuture<QueryResult> query(const QString & key);
+	[[nodiscard]] QUrl getQueryUrl(const QString & key) const;
 
 	[[nodiscard]] QFuture<QueryResult> queryAnki(const QString & word) const;
+	[[nodiscard]] QUrl getQueryAnkiUrl(const QString & word) const;
 
 	[[nodiscard]] const QList<QSharedPointer<Dictionary>> & getDictionaries() const;
 	QFuture<bool> addDictionary(const Dictionary & dictionary, const Group * group);
 	QFuture<bool> deleteDictionary(const Dictionary * dictionary);
-	[[nodiscard]] QFuture<bool> reorderDictionaries(const QList<const Dictionary *> & dictionaries) const;
-	QFuture<bool> renameDictionary(const Dictionary * dictionary, const QString & newDisplayName) const;
+	[[nodiscard]] QFuture<bool> reorderDictionaries(const QList<const Dictionary *> & dictionaries);
+	QFuture<bool> renameDictionary(const Dictionary * dictionary, const QString & newDisplayName);
 
 	QFuture<qsizetype> getHeadwordCount(const Dictionary * dictionary);
 
@@ -162,6 +164,7 @@ public:
 	QFuture<bool> removeDictionaryFromGroup(const Dictionary * dictionary, const Group * group);
 
 	[[nodiscard]] const History & getHistory() const;
+	QFuture<bool> updateHistory();
 	QFuture<bool> clearHistory();
 
 	[[nodiscard]] qsizetype getSizeSuggestions() const;

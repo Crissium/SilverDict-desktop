@@ -74,7 +74,7 @@ QFuture<QByteArray> RemoteRepository::put(const QUrl & url, const QJsonDocument 
 		QNetworkRequest request(url);
 		request.setHeader(QNetworkRequest::ContentTypeHeader, QStringLiteral("application/json"));
 		QNetworkReply *reply = manager->put(request, json.toJson());
-
+    
 		QEventLoop loop;
 		QObject::connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
 		loop.exec();
@@ -571,108 +571,122 @@ bool RemoteRepository::processGroupings(const QByteArray & result)
 
 QUrl RemoteRepository::testConnectionEndpoint() const
 {
-	return baseUrl.resolved(QUrl(QStringLiteral("validator/test_connection")));
+	return apiPrefix.resolved(QUrl(QStringLiteral("validator/test_connection")));
 }
 
 QUrl RemoteRepository::suggestionsEndpoint(const QString & groupName, const QString & key) const
 {
-	return baseUrl.resolved(QUrl(QStringLiteral("suggestions/%1/%2?timestamp=%3").arg(groupName, key, QString::number(QDateTime::currentMSecsSinceEpoch()))));
+	return apiPrefix.resolved(QUrl(QStringLiteral("suggestions/%1/%2?timestamp=%3").arg(groupName, key, QString::number(QDateTime::currentMSecsSinceEpoch()))));
 }
 
-QUrl RemoteRepository::queryEndpoint(const QString & groupName, const QString & key) const
+QUrl RemoteRepository::queryEndpoint(const QString & groupName, const QString & key, bool raw) const
 {
-	return baseUrl.resolved(QUrl(QStringLiteral("query/%1/%2").arg(groupName, key)));
+	if (raw)
+	{
+		return apiPrefix.resolved(QUrl(QStringLiteral("query/%1/%2").arg(groupName, key)));
+	}
+	else
+	{
+		return apiPrefix.resolved(QUrl(QStringLiteral("query/%1/%2?dicts=true").arg(groupName, key)));
+	}
 }
 
-QUrl RemoteRepository::ankiEndpoint(const QString & groupName, const QString & key) const
+QUrl RemoteRepository::ankiEndpoint(const QString & groupName, const QString & key, bool raw) const
 {
-	return baseUrl.resolved(QUrl(QStringLiteral("anki/%1/%2").arg(groupName, key)));
+	if (raw)
+	{
+		return apiPrefix.resolved(QUrl(QStringLiteral("anki/%1/%2").arg(groupName, key)));
+	}
+	else
+	{
+		return apiPrefix.resolved(QUrl(QStringLiteral("anki/%1/%2?dicts=True").arg(groupName, key)));
+	}
 }
 
 QUrl RemoteRepository::formatsEndpoint() const
 {
-	return baseUrl.resolved(QUrl(QStringLiteral("management/formats")));
+	return apiPrefix.resolved(QUrl(QStringLiteral("management/formats")));
 }
 
 QUrl RemoteRepository::dictionariesEndpoint() const
 {
-	return baseUrl.resolved(QUrl(QStringLiteral("management/dictionaries")));
+	return apiPrefix.resolved(QUrl(QStringLiteral("management/dictionaries")));
 }
 
 QUrl RemoteRepository::dictionaryRenameEndpoint() const
 {
-	return baseUrl.resolved(QUrl(QStringLiteral("management/dictionary_name")));
+	return apiPrefix.resolved(QUrl(QStringLiteral("management/dictionary_name")));
 }
 
 QUrl RemoteRepository::headwordCountEndpoint() const
 {
-	return baseUrl.resolved(QUrl(QStringLiteral("management/headword_count")));
+	return apiPrefix.resolved(QUrl(QStringLiteral("management/headword_count")));
 }
 
 QUrl RemoteRepository::sourcesEndpoint() const
 {
-	return baseUrl.resolved(QUrl(QStringLiteral("management/sources")));
+	return apiPrefix.resolved(QUrl(QStringLiteral("management/sources")));
 }
 
 QUrl RemoteRepository::scanEndpoint() const
 {
-	return baseUrl.resolved(QUrl(QStringLiteral("management/scan")));
+	return apiPrefix.resolved(QUrl(QStringLiteral("management/scan")));
 }
 
 QUrl RemoteRepository::groupsEndpoint() const
 {
-	return baseUrl.resolved(QUrl(QStringLiteral("management/groups")));
+	return apiPrefix.resolved(QUrl(QStringLiteral("management/groups")));
 }
 
 QUrl RemoteRepository::groupLangChangeEndpoint() const
 {
-	return baseUrl.resolved(QUrl(QStringLiteral("management/group_lang")));
+	return apiPrefix.resolved(QUrl(QStringLiteral("management/group_lang")));
 }
 
 QUrl RemoteRepository::groupRenameEndpoint() const
 {
-	return baseUrl.resolved(QUrl(QStringLiteral("management/group_name")));
+	return apiPrefix.resolved(QUrl(QStringLiteral("management/group_name")));
 }
 
 QUrl RemoteRepository::groupingsEndpoint() const
 {
-	return baseUrl.resolved(QUrl(QStringLiteral("management/dictionary_groupings")));
+	return apiPrefix.resolved(QUrl(QStringLiteral("management/dictionary_groupings")));
 }
 
 QUrl RemoteRepository::historyEndpoint() const
 {
-	return baseUrl.resolved(QUrl(QStringLiteral("management/history")));
+	return apiPrefix.resolved(QUrl(QStringLiteral("management/history")));
 }
 
 QUrl RemoteRepository::historySizeEndpoint() const
 {
-	return baseUrl.resolved(QUrl(QStringLiteral("management/history_size")));
+	return apiPrefix.resolved(QUrl(QStringLiteral("management/history_size")));
 }
 
 QUrl RemoteRepository::suggestionsSizeEndpoint() const
 {
-	return baseUrl.resolved(QUrl(QStringLiteral("management/num_suggestions")));
+	return apiPrefix.resolved(QUrl(QStringLiteral("management/num_suggestions")));
 }
 
 QUrl RemoteRepository::createNgramIndexEndpoint() const
 {
-	return baseUrl.resolved(QUrl(QStringLiteral("management/create_ngram_table")));
+	return apiPrefix.resolved(QUrl(QStringLiteral("management/create_ngram_table")));
 }
 
 QUrl RemoteRepository::validatorDictionaryEndpoint() const
 {
-	return baseUrl.resolved(QUrl(QStringLiteral("validator/dictionary_info")));
+	return apiPrefix.resolved(QUrl(QStringLiteral("validator/dictionary")));
 }
 
 QUrl RemoteRepository::validatorSourceEndpoint() const
 {
-	return baseUrl.resolved(QUrl(QStringLiteral("validator/source")));
+	return apiPrefix.resolved(QUrl(QStringLiteral("validator/source")));
 }
 
-RemoteRepository::RemoteRepository(QUrl baseUrl, QObject * parent)
+RemoteRepository::RemoteRepository(QUrl apiPrefix, QObject * parent)
 	: QObject(parent)
 	// , manager(new QNetworkAccessManager(this))
-	, baseUrl(std::move(baseUrl))
+	, apiPrefix(std::move(apiPrefix))
 	, dictionaries(nullptr)
 	, groups(nullptr)
 	, activeGroup(nullptr)
@@ -689,19 +703,24 @@ RemoteRepository::RemoteRepository(QUrl baseUrl, QObject * parent)
 	}
 }
 
-const QUrl & RemoteRepository::getBaseUrl() const
+QUrl RemoteRepository::getBaseUrl() const
 {
-	return baseUrl;
+	return apiPrefix.resolved(QStringLiteral(".."));
 }
 
-bool RemoteRepository::setBaseUrl(const QUrl & url)
+const QUrl & RemoteRepository::getApiPrefix() const
 {
-	const QUrl original = baseUrl;
+	return apiPrefix;
+}
+
+bool RemoteRepository::setApiPrefix(const QUrl & url)
+{
+	const QUrl original = apiPrefix;
 	const bool alreadyInitialised = dictionaries && groups && groupings && history && formats && sources;
-	baseUrl = url;
+	apiPrefix = url;
 	if (!initialise())
 	{
-		baseUrl = original;
+		apiPrefix = original;
 		if (alreadyInitialised)
 		{
 			initialise();
@@ -735,10 +754,20 @@ QFuture<QueryResult> RemoteRepository::query(const QString & key)
 			  });
 }
 
+QUrl RemoteRepository::getQueryUrl(const QString & key) const
+{
+	return queryEndpoint(activeGroup->name, key, true);
+}
+
 QFuture<QueryResult> RemoteRepository::queryAnki(const QString & word) const
 {
 	return get(ankiEndpoint(activeGroup->name, word))
 		.then(std::bind(&RemoteRepository::processQueryResult, this, std::placeholders::_1));
+}
+
+QUrl RemoteRepository::getQueryAnkiUrl(const QString & word) const
+{
+	return ankiEndpoint(activeGroup->name, word, true);
 }
 
 const QList<QSharedPointer<Dictionary>> & RemoteRepository::getDictionaries() const
@@ -994,6 +1023,15 @@ QFuture<bool> RemoteRepository::removeDictionaryFromGroup(const Dictionary * dic
 const History & RemoteRepository::getHistory() const
 {
 	return *history;
+}
+
+QFuture<bool> RemoteRepository::updateHistory()
+{
+	return get(historyEndpoint())
+		.then([this](const QByteArray & result)
+			  {
+				  return processHistory(result);
+			  });
 }
 
 QFuture<bool> RemoteRepository::clearHistory()
