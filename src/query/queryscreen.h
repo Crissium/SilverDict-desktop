@@ -37,6 +37,7 @@ private:
 private slots:
 	void onSearchTermChanged(const QString & searchTerm) const;
 	void onWordClicked(const QModelIndex & index) const;
+	void onReturnPressed() const;
 	void onGroupsChanged() const;
 	void onActiveGroupChanged(int i) const;
 	void onDictionariesChanged() const;

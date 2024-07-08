@@ -153,6 +153,9 @@
         <iconset theme="edit-copy">
          <normaloff>.</normaloff>.</iconset>
        </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
       </widget>
      </item>
      <item>
