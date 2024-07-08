@@ -20,8 +20,14 @@ private:
 
 	QScopedPointer<RemoteRepository> remoteRepository;
 
+<<<<<<< HEAD
 	void setupMenu();
 
+=======
+	void connectActions();
+
+private slots:
+>>>>>>> upstream/main
 	void editDictionary();
 
 public:

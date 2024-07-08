@@ -1,17 +1,25 @@
 #include "mainwindow.h"
 
 #include "./ui_mainwindow.h"
+#include "edit/dictionarydialog.h"
 
 #include "edit/editDictionary.h"
 
 MainWindow::MainWindow(QWidget * parent)
 	: QMainWindow(parent)
 	, ui(new Ui::MainWindow)
-	, remoteRepository(new RemoteRepository(QStringLiteral("http://localhost:2628/api/"), this))
+	, remoteRepository(new RemoteRepository(
+		  QStringLiteral("http://localhost:2628/api/"), this))
 {
 	ui->setupUi(this);
 
+<<<<<<< HEAD
 	setupMenu();
+=======
+	connectActions();
+
+	ui->queryScreen->setRemoteRepository(remoteRepository.data());
+>>>>>>> upstream/main
 }
 
 MainWindow::~MainWindow()
@@ -24,26 +32,21 @@ RemoteRepository * MainWindow::getRemoteRepository() const
 	return remoteRepository.data();
 }
 
-void MainWindow::setupMenu(){
-	QMenuBar *menuBar = this->menuBar();
-
-	QMenu *fileMenu = menuBar->addMenu(QStringLiteral("File"));
-	QAction *cutAction = fileMenu->addAction(QStringLiteral("Quit"));
-
-	QMenu *editMenu = menuBar->addMenu(QStringLiteral("Edit"));
-	QAction *dictionariesAction = editMenu->addAction(QStringLiteral("Dictionaries"));
-	connect(dictionariesAction, &QAction::triggered, this, &MainWindow::editDictionary);
-	QAction *groupsAction = editMenu->addAction(QStringLiteral("Groups"));
-	QAction *sourcesAction = editMenu->addAction(QStringLiteral("Sources"));
-	QAction *preferencesAction = editMenu->addAction(QStringLiteral("Preferences"));
-
-	QMenu *helpMenu = menuBar->addMenu(QStringLiteral("Help"));
-	QAction *aboutAction = helpMenu->addAction(QStringLiteral("About"));
-	QAction *aboutQtAction = helpMenu->addAction(QStringLiteral("About Qt"));
+void MainWindow::connectActions()
+{
+	QList<QAction *> actionsList = this->ui->menuEdit->actions();
+	foreach(QAction * action, actionsList)
+	{
+		if (action->text() == "Dictionaries")
+		{
+			connect(action, &QAction::triggered, this, &MainWindow::editDictionary);
+		}
+	}
 }
 
-void MainWindow::editDictionary() {
-	DictionaryDialog *dictionaryDialog = new DictionaryDialog(this, this->getRemoteRepository());
+void MainWindow::editDictionary()
+{
+	DictionaryDialog * dictionaryDialog =
+		new DictionaryDialog(this, this->getRemoteRepository());
 	dictionaryDialog->exec();
 }
-

@@ -1,22 +1,27 @@
-#include "editDictionary.h"
-#include "ui_editDictionary.h"
+#include "dictionarydialog.h"
+#include "ui_dictionarydialog.h"
+
 #include "remote/models.h"
 
-#include<QPushButton>
-#include<QMessageBox>
-#include<QInputDialog>
-
-DictionaryDialog::DictionaryDialog(QWidget *parent, RemoteRepository *repo)
+DictionaryDialog::DictionaryDialog(QWidget * parent, RemoteRepository * repo)
 	: QDialog(parent)
 	, ui(new Ui::DictionaryDialog)
-{	
+{
 	ui->setupUi(this);
 
 	setRemoteRepository(repo);
 
 	populateListWidget();
 
-	// initializeDictionaryTable();
+
+	connect(ui->listWidget, &QListWidget::itemClicked, this,
+			&DictionaryDialog::onListWidgetItemClicked);
+	connect(ui->renameButton, &QPushButton::clicked, this,
+			&DictionaryDialog::onRenameButtonClicked);
+	connect(ui->deleteButton, &QPushButton::clicked, this,
+			&DictionaryDialog::onDeleteButtonClicked);
+	connect(ui->addButton, &QPushButton::clicked, this,
+			&DictionaryDialog::onAddButtonClicked);
 }
 
 DictionaryDialog::~DictionaryDialog()
@@ -29,142 +34,122 @@ void DictionaryDialog::setRemoteRepository(RemoteRepository * repo)
 	remoteRepository = repo;
 }
 
-void DictionaryDialog::populateListWidget() {
-	QList<QSharedPointer<Dictionary>> dictionaries = remoteRepository->getDictionaries();
-	QListWidget *listWidget = findChild<QListWidget *>(QStringLiteral("listWidget"));
-	listWidget->clear();
-
-	QListWidgetItem *orderItem = new QListWidgetItem(QStringLiteral("dictionary order:"));
-	orderItem->setFlags(orderItem->flags() & ~Qt::ItemIsSelectable);
-	listWidget->addItem(orderItem);
-
-	connect(listWidget, &QListWidget::itemClicked, this, &DictionaryDialog::onListWidgetItemClicked);
-
-	foreach (const QSharedPointer<Dictionary> &dictionary, dictionaries) {
-		QListWidgetItem *nameItem = new QListWidgetItem(dictionary->displayName);
-		nameItem->setData(Qt::UserRole, QVariant::fromValue(dictionary));
-		listWidget->addItem(nameItem);
-	}
-}
-
-void DictionaryDialog::onListWidgetItemClicked(QListWidgetItem* item) {
-	QTableWidget *tableWidget = findChild<QTableWidget *>(QStringLiteral("tableWidget"));
-	QVariant data = item->data(Qt::UserRole);
-	if (data.canConvert<QSharedPointer<Dictionary>>()) {
-		QSharedPointer<Dictionary> dictionary = data.value<QSharedPointer<Dictionary>>();
-		updateTableWidget(dictionary);
-	}
-}
-
-void DictionaryDialog::updateTableWidget(const QSharedPointer<Dictionary>& dictionary) {
-	QTableWidget *tableWidget = findChild<QTableWidget *>(QStringLiteral("tableWidget"));
-	tableWidget->clearContents();
-
-	QTableWidgetItem *nameTitleItem = new QTableWidgetItem(QStringLiteral("Name"));
-	QTableWidgetItem *filenameTitleItem = new QTableWidgetItem(QStringLiteral("Filename"));
-	QTableWidgetItem *formatTitleItem = new QTableWidgetItem(QStringLiteral("Format"));
-	QTableWidgetItem *countTitleItem = new QTableWidgetItem(QStringLiteral("Headword Count"));
-
-	QTableWidgetItem *nameItem = new QTableWidgetItem(dictionary->displayName);
-	QTableWidgetItem *filenameItem = new QTableWidgetItem(dictionary->filename);
-	QTableWidgetItem *formatItem = new QTableWidgetItem(dictionary->format);
-	QTableWidgetItem *countItem = new QTableWidgetItem(QStringLiteral("Loading..."));
-
-	tableWidget->setItem(0, 0, nameTitleItem);
-	tableWidget->setItem(1, 0, filenameTitleItem);
-	tableWidget->setItem(2, 0, formatTitleItem);
-	tableWidget->setItem(3, 0, countTitleItem);
-
-	tableWidget->setItem(0, 1, nameItem);
-	tableWidget->setItem(1, 1, filenameItem);
-	tableWidget->setItem(2, 1, formatItem);
-	tableWidget->setItem(3, 1, countItem);
-
-	fetchHeadwordCount(countItem, dictionary.data());
-
-	tableWidget->resizeColumnsToContents();
-	tableWidget->resizeRowsToContents();
-}
-
-void DictionaryDialog::fetchHeadwordCount(QTableWidgetItem *countItem, Dictionary* dictionary) {
-	QFuture<qsizetype> futureCount = remoteRepository->getHeadwordCount(dictionary);
-	QFutureWatcher<qsizetype> *watcher = new QFutureWatcher<qsizetype>(this);
-
-	connect(watcher, &QFutureWatcher<qsizetype>::finished, this, [countItem, watcher]() {
-		if (!watcher->isCanceled()&&watcher->isFinished()) {
-			qsizetype headwordCount = watcher->result();
-			countItem->setText(QString::number(headwordCount));
-		}
-		watcher->deleteLater();
-	});
-	watcher->setFuture(futureCount);
-}
-
-void DictionaryDialog::on_renameButton_clicked()
+void DictionaryDialog::populateListWidget()
 {
-	QListWidget *listWidget = findChild<QListWidget *>(QStringLiteral("listWidget"));
-	QListWidgetItem *currentItem = listWidget->currentItem();
+	const QList<QSharedPointer<Dictionary>> & dictionaries =
+		remoteRepository->getDictionaries();
+	ui->listWidget->clear();
 
-	if (currentItem) {
-		QVariant data = currentItem->data(Qt::UserRole);
-		QSharedPointer<Dictionary> dictionary = data.value<QSharedPointer<Dictionary>>();
+	connect(ui->listWidget, &QListWidget::itemClicked, this,
+			&DictionaryDialog::onListWidgetItemClicked);
 
-		bool ok;
-		QString newName = QInputDialog::getText(this
-												, QStringLiteral("Rename dictionary")
-												, ""
-												, QLineEdit::Normal
-												, ""
-												, &ok);
-
-		if (ok && !newName.isEmpty()) {
-			QFuture<bool> renameResult = remoteRepository->renameDictionary(dictionary.data(), newName);
-			QFutureWatcher<bool> *watcher = new QFutureWatcher<bool>(this);
-			watcher->setFuture(renameResult);
-			connect(watcher, &QFutureWatcher<bool>::finished, this, [this, watcher, newName, dictionary]() {
-				if (watcher->result()) {
-
-					QListWidgetItem* item = ui->listWidget->currentItem();
-					if(item){
-						item->setText(newName);
-						updateTableWidget(dictionary);
-					}
-				}
-				watcher->deleteLater();
-			}, Qt::QueuedConnection);
-		}
+	foreach(const QSharedPointer<Dictionary> & dictionary, dictionaries)
+	{
+		QListWidgetItem * nameItem = new QListWidgetItem(dictionary->displayName);
+		nameItem->setData(Qt::UserRole, QVariant::fromValue(dictionary));
+		ui->listWidget->addItem(nameItem);
 	}
 }
 
-void DictionaryDialog::on_deleteButton_clicked() {
-	QListWidgetItem *currentItem = ui->listWidget->currentItem();
+void DictionaryDialog::onListWidgetItemClicked(QListWidgetItem * item)
+{
+	if(item){
+		currentDictionary = item->data(Qt::UserRole).value<QSharedPointer<Dictionary>>();
+		updateTableWidget();
+	}
+}
 
-	if (currentItem) {
-		QVariant data = currentItem->data(Qt::UserRole);
-		QSharedPointer<Dictionary> dictionary = data.value<QSharedPointer<Dictionary>>();
+void DictionaryDialog::updateTableWidget()
+{
+	// ui->tableWidget->clearContents();
 
+	QTableWidgetItem * nameItem =
+		new QTableWidgetItem(currentDictionary->displayName);
+	QTableWidgetItem * filenameItem =
+		new QTableWidgetItem(currentDictionary->filename);
+	QTableWidgetItem * formatItem =
+		new QTableWidgetItem(currentDictionary->format);
+	QTableWidgetItem * countItem = new QTableWidgetItem(tr("Loading..."));
+
+	ui->tableWidget->setItem(0, 1, nameItem);
+	ui->tableWidget->setItem(1, 1, filenameItem);
+	ui->tableWidget->setItem(2, 1, formatItem);
+	ui->tableWidget->setItem(3, 1, countItem);
+
+	remoteRepository->getHeadwordCount(currentDictionary.data())
+		.then([=](qsizetype headwordCount) {
+			qDebug() << QString::number(headwordCount);
+			ui->tableWidget->setItem(3,1,new QTableWidgetItem(QString::number(headwordCount)));
+		});
+
+	ui->tableWidget->resizeColumnsToContents();
+	ui->tableWidget->resizeRowsToContents();
+}
+
+void DictionaryDialog::onRenameButtonClicked()
+{
+	bool ok;
+	QString newName = QInputDialog::getText(this, tr("Rename dictionary"), "",
+											QLineEdit::Normal, "", &ok);
+
+	if (ok && !newName.isEmpty())
+	{
+		remoteRepository->renameDictionary(currentDictionary.data(), newName)
+			.then([=](bool result) {
+				if (result)
+				{
+					ui->listWidget->currentItem()->setText(newName);
+					ui->tableWidget->setItem(0, 1, new QTableWidgetItem(newName));
+				}
+			});
+	}
+}
+
+void DictionaryDialog::onDeleteButtonClicked()
+{
+	QListWidgetItem * currentItem = ui->listWidget->currentItem();
+
+	if (currentItem)
+	{
 		QMessageBox msgBox(this);
-		msgBox.setWindowTitle(QStringLiteral("Delete"));
-		msgBox.setText(QStringLiteral("Are you sure you want to delete ‘%1’? The dictionary files won't be deleted.").arg(dictionary->displayName));
+		msgBox.setWindowTitle(tr("Delete"));
+		msgBox.setText(tr("Are you sure you want to delete ‘%1’? The dictionary "
+						  "files won't be deleted.")
+						   .arg(currentDictionary->displayName));
 		msgBox.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
 		msgBox.setDefaultButton(QMessageBox::Ok);
 
 		int ret = msgBox.exec();
-		if (ret == QMessageBox::Ok) {
-			QFuture<bool> deletionResult = remoteRepository->deleteDictionary(dictionary.data());
-			QFutureWatcher<bool> *watcher = new QFutureWatcher<bool>(this);
-			watcher->setFuture(deletionResult);
-			connect(watcher, &QFutureWatcher<bool>::finished, this, [this, watcher]() {
-				if (watcher->result()) {
-					QListWidgetItem *itemToDelete = ui->listWidget->currentItem();
-					if (itemToDelete) {
-						QVariant data = itemToDelete->data(Qt::UserRole);
-						ui->listWidget->removeItemWidget(itemToDelete);
-						delete itemToDelete;
+		if (ret == QMessageBox::Ok)
+		{
+			remoteRepository->deleteDictionary(currentDictionary.data())
+				.then([=](bool result) {
+					if (result)
+					{
+						ui->listWidget->takeItem(ui->listWidget->currentRow());
+						ui->tableWidget->clearContents();
 					}
-				}
-				watcher->deleteLater();
-			}, Qt::QueuedConnection);
+				});
 		}
 	}
+}
+
+void DictionaryDialog::onAddButtonClicked()
+{
+	AddDictionaryDialog * addDialog =
+		new AddDictionaryDialog(this, remoteRepository);
+	if (addDialog->exec() == QDialog::Accepted)
+	{
+		Dictionary newDictionary = addDialog->getNewDictionary();
+		Group * selectGroup = addDialog->getSelectedGroup();
+
+		remoteRepository->addDictionary(newDictionary, selectGroup)
+			.then([=](bool result) {
+				if (result)
+				{
+					populateListWidget();
+				}
+			});
+	}
+	delete addDialog;
 }
