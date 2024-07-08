@@ -20,6 +20,11 @@ private:
 
 	QScopedPointer<RemoteRepository> remoteRepository;
 
+	void connectActions();
+
+private slots:
+	void editDictionary();
+
 public:
 	explicit MainWindow(QWidget * parent = nullptr);
 	~MainWindow() override;

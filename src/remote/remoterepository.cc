@@ -40,7 +40,10 @@ QFuture<QByteArray> RemoteRepository::post(const QUrl & url, const QJsonDocument
 	auto networkOperation = [url, json]()
 	{
 		const QScopedPointer<QNetworkAccessManager> manager(new QNetworkAccessManager());
-		QNetworkReply * reply = manager->post(QNetworkRequest(url), json.toJson());
+		QNetworkRequest request(url);
+		request.setHeader(QNetworkRequest::ContentTypeHeader, QStringLiteral("application/json"));
+		QNetworkReply *reply = manager->post(request, json.toJson());
+
 		QEventLoop loop;
 		QObject::connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
 		loop.exec();
@@ -68,7 +71,10 @@ QFuture<QByteArray> RemoteRepository::put(const QUrl & url, const QJsonDocument 
 	auto networkOperation = [url, json]()
 	{
 		const QScopedPointer<QNetworkAccessManager> manager(new QNetworkAccessManager());
-		QNetworkReply * reply = manager->put(QNetworkRequest(url), json.toJson());
+		QNetworkRequest request(url);
+		request.setHeader(QNetworkRequest::ContentTypeHeader, QStringLiteral("application/json"));
+		QNetworkReply *reply = manager->put(request, json.toJson());
+    
 		QEventLoop loop;
 		QObject::connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
 		loop.exec();
@@ -127,7 +133,8 @@ QFuture<QByteArray> RemoteRepository::del(const QUrl & url, const QJsonDocument 
 		QNetworkRequest request(url);
 		request.setHeader(QNetworkRequest::ContentTypeHeader, QStringLiteral("application/json"));
 		QNetworkReply * reply = manager->sendCustomRequest(
-			QNetworkRequest(url),
+			// QNetworkRequest(url),
+			request,
 			QByteArrayLiteral("DELETE"),
 			json.toJson());
 		QEventLoop loop;
@@ -668,7 +675,7 @@ QUrl RemoteRepository::createNgramIndexEndpoint() const
 
 QUrl RemoteRepository::validatorDictionaryEndpoint() const
 {
-	return apiPrefix.resolved(QUrl(QStringLiteral("validator/dictionary")));
+	return apiPrefix.resolved(QUrl(QStringLiteral("validator/dictionary_info")));
 }
 
 QUrl RemoteRepository::validatorSourceEndpoint() const
@@ -723,6 +730,7 @@ bool RemoteRepository::setApiPrefix(const QUrl & url)
 
 	return true;
 }
+
 
 QFuture<Suggestions> RemoteRepository::getSuggestions(const QString & key) const
 {
@@ -782,7 +790,6 @@ QFuture<bool> RemoteRepository::addDictionary(const Dictionary & dictionary, con
 	{
 		return QtFuture::makeReadyFuture(false);
 	}
-
 	dictObj["group_name"] = group->name;
 	return post(dictionariesEndpoint(), QJsonDocument(dictObj))
 		.then(std::bind(&RemoteRepository::processDictionariesAndGroupings, this, std::placeholders::_1));
@@ -821,10 +828,10 @@ QFuture<bool> RemoteRepository::renameDictionary(
 	const Dictionary * dictionary,
 	const QString & newDisplayName)
 {
-	QJsonObject obj;
+	QJsonObject obj;	
 	obj["name"] = dictionary->name;
 	obj["display"] = newDisplayName;
-	return put(dictionariesEndpoint(), QJsonDocument(obj))
+	return put(dictionaryRenameEndpoint(), QJsonDocument(obj))
 		.then([this, dictionary, &newDisplayName](const QByteArray & result)
 			  {
 				  if (!result.isEmpty())
