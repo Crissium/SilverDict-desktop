@@ -31,6 +31,8 @@ set_source_files_properties(${TS_FILES} PROPERTIES OUTPUT_LOCATION ${PROJECT_BIN
 qt_add_executable(SilverDict
 	MANUAL_FINALIZATION
 	src/main.cc
+	src/runguard.h
+	src/runguard.cc
 	src/mainwindow.cc
 	src/mainwindow.h
 	src/mainwindow.ui
