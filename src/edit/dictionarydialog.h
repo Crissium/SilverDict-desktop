@@ -1,13 +1,17 @@
 #ifndef DICTIONARYDIALOG_H
 #define DICTIONARYDIALOG_H
 
-#include <QDialog>
-#include <QTableWidget>
-#include <QListWidget>
-#include <QFutureWatcher>
-
-#include "remote/remoterepository.h"
 #include "edit/adddictionarydialog.h"
+#include "remote/remoterepository.h"
+
+#include <QDialog>
+#include <QFutureWatcher>
+#include <QInputDialog>
+#include <QListWidget>
+#include <QMessageBox>
+#include <QPushButton>
+#include <QTableWidget>
+#include <QTimer>
 
 namespace Ui
 {
@@ -19,23 +23,23 @@ class DictionaryDialog : public QDialog
 	Q_OBJECT
 
 public:
-	explicit DictionaryDialog(QWidget *parent, RemoteRepository *repo);
+	explicit DictionaryDialog(QWidget * parent, RemoteRepository * repo);
 	~DictionaryDialog();
 
 private slots:
-	void onListWidgetItemClicked(QListWidgetItem* item);
-	void updateTableWidget(const QSharedPointer<Dictionary>& dictionary);
+	void onListWidgetItemClicked(QListWidgetItem * item);
+	void updateTableWidget();
 
-	void on_renameButton_clicked();
-	void on_deleteButton_clicked();
-	void on_addButton_clicked();
+	void onRenameButtonClicked();
+	void onDeleteButtonClicked();
+	void onAddButtonClicked();
 
 private:
 	Ui::DictionaryDialog * ui;
-	RemoteRepository* remoteRepository;
+	RemoteRepository * remoteRepository;
+	QSharedPointer<Dictionary> currentDictionary;
 
 	void setRemoteRepository(RemoteRepository * repo);
-	void fetchHeadwordCount(QTableWidgetItem *countItem, Dictionary* dictionary);
 	void populateListWidget();
 };
 

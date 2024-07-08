@@ -1,10 +1,10 @@
 #ifndef ADDDICTIONARYDIALOG_H
 #define ADDDICTIONARYDIALOG_H
 
-#include <QDialog>
-
 #include "remote/models.h"
 #include "remote/remoterepository.h"
+
+#include <QDialog>
 
 namespace Ui
 {
@@ -16,20 +16,21 @@ class AddDictionaryDialog : public QDialog
 	Q_OBJECT
 
 public:
-	explicit AddDictionaryDialog(QWidget * parent = nullptr, RemoteRepository* repo = nullptr);
+	explicit AddDictionaryDialog(QWidget * parent = nullptr,
+								 RemoteRepository * repo = nullptr);
 	~AddDictionaryDialog();
 
 	Dictionary getNewDictionary();
-	Group* getSelectedGroup();
+	Group * getSelectedGroup();
 
 private slots:
-	void on_buttonBox_accepted();
+	void onButtonBoxAccepted();
 
 private:
 	Ui::AddDictionaryDialog * ui;
-	RemoteRepository* remoteRepository;
+	RemoteRepository * remoteRepository;
 	Dictionary newDictionary;
-	Group* selectedGroup = nullptr;
+	Group * selectedGroup;
 
 	void setRemoteRepository(RemoteRepository * repo);
 	void addFormatItem();
