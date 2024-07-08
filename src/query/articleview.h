@@ -52,6 +52,8 @@ public:
 	[[nodiscard]] QToolButton * getNewTabButton() const;
 
 	void navigateTo(const QString & id) const;
+
+	bool isInAnkiMode() const;
 };
 
 #endif // ARTICLEVIEW_H

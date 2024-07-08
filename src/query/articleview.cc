@@ -60,6 +60,7 @@ void ArticleView::injectJavaScript() const
 		    contrast: 100,
 		    sepia: 10
 		});)"));
+	ui->webView->page()->runJavaScript(QStringLiteral("let el;"));
 }
 
 void ArticleView::onLoadStarted() const
@@ -190,6 +191,22 @@ QToolButton * ArticleView::getNewTabButton() const
 
 void ArticleView::navigateTo(const QString & id) const
 {
+	ui->webView->setFocus(); // Chromium does not allow writing to the clipboard without focus
+	// Note: copying still does not work due to a bug: https://bugreports.qt.io/browse/QTBUG-77450
 	ui->webView->page()->runJavaScript(
-		QStringLiteral("document.getElementById(`%1`).scrollIntoView();").arg(id));
+		QStringLiteral(
+			R"(el = document.getElementById(`%1`);
+			   if (el)
+			   {
+				   el.scrollIntoView();
+			   	   %2
+			   })")
+			.arg(id,
+				 isInAnkiMode() ? QStringLiteral("navigator.clipboard.writeText(el.innerHTML);")
+								: QStringLiteral()));
+}
+
+bool ArticleView::isInAnkiMode() const
+{
+	return ui->ankiModeButton->isChecked();
 }

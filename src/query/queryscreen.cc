@@ -102,7 +102,29 @@ void QueryScreen::onWordClicked(const QModelIndex & index) const
 	{
 		const QString word = wordListModel->data(index, Qt::DisplayRole).toString();
 		ui->tabWidget->setTabText(ui->tabWidget->currentIndex(), word);
-		getCurrentWebView()->load(remoteRepository->getQueryUrl(word));
+		const ArticleView * currentArticleView = getCurrentArticleView();
+		QWebEngineView * currentWebView = currentArticleView->getWebView();
+		if (currentArticleView->isInAnkiMode())
+		{
+			currentWebView->load(remoteRepository->getQueryAnkiUrl(word));
+		}
+		else
+		{
+			currentWebView->load(remoteRepository->getQueryUrl(word));
+		}
+	}
+}
+
+void QueryScreen::onReturnPressed() const
+{
+	const QModelIndex i = ui->wordListView->currentIndex();
+	if (i.isValid())
+	{
+		onWordClicked(i);
+	}
+	else
+	{
+		onWordClicked(wordListModel->index(0, 0));
 	}
 }
 
@@ -200,6 +222,7 @@ QueryScreen::QueryScreen(QWidget * parent)
 	ui->dictListView->setModel(dictListModel.get());
 
 	connect(ui->searchTermEdit, &QLineEdit::textEdited, this, &QueryScreen::onSearchTermChanged);
+	connect(ui->searchTermEdit, &QLineEdit::returnPressed, this, &QueryScreen::onReturnPressed);
 	connect(ui->wordListView, &QListView::clicked, this, &QueryScreen::onWordClicked);
 	connect(ui->dictSelectionBox, &QComboBox::currentIndexChanged, this, &QueryScreen::onActiveGroupChanged);
 	connect(ui->dictListView, &QListView::clicked, this, &QueryScreen::onDictionaryClicked);
