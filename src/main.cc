@@ -1,4 +1,5 @@
 #include "mainwindow.h"
+#include "runguard.h"
 
 #include <QApplication>
 #include <QDebug>
@@ -7,6 +8,10 @@
 
 int main(int argc, char * argv[])
 {
+	RunGuard guard("SilverDict");
+	if (!guard.tryToRun())
+		return 0;
+
 	QApplication a(argc, argv);
 
 	QTranslator translator;

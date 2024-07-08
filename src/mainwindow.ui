@@ -11,7 +11,12 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+      <string>SilverDict</string>
+  </property>
+     <property name="windowIcon">
+         <iconset theme="accessories-dictionary">
+             <normaloff>.</normaloff>.
+         </iconset>
   </property>
   <widget class="QueryScreen" name="queryScreen"/>
   <widget class="QMenuBar" name="menubar">
@@ -20,7 +25,7 @@
      <x>0</x>
      <y>0</y>
      <width>800</width>
-     <height>17</height>
+        <height>31</height>
     </rect>
    </property>
    <property name="defaultUp">
@@ -30,6 +35,7 @@
     <property name="title">
      <string>File</string>
     </property>
+       <addaction name="actionCloseToTray"/>
     <addaction name="actionQuit"/>
    </widget>
    <widget class="QMenu" name="menuEdit">
@@ -45,23 +51,12 @@
     <property name="title">
      <string>About</string>
     </property>
-    <addaction name="actionAbout_Qt"/>
+       <addaction name="actionAboutQt"/>
     <addaction name="actionAbout"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
    <addaction name="menuAbou"/>
-  </widget>
-  <widget class="QToolBar" name="toolBar">
-   <property name="windowTitle">
-    <string>toolBar</string>
-   </property>
-   <attribute name="toolBarArea">
-    <enum>TopToolBarArea</enum>
-   </attribute>
-   <attribute name="toolBarBreak">
-    <bool>false</bool>
-   </attribute>
   </widget>
   <action name="actionQuit">
    <property name="checkable">
@@ -71,7 +66,7 @@
     <string>Quit</string>
    </property>
   </action>
-  <action name="actionAbout_Qt">
+     <action name="actionAboutQt">
    <property name="checkable">
     <bool>false</bool>
    </property>
@@ -117,6 +112,11 @@
    </property>
    <property name="text">
     <string>Sources</string>
+   </property>
+  </action>
+     <action name="actionCloseToTray">
+         <property name="text">
+             <string>Close to tray</string>
    </property>
   </action>
  </widget>

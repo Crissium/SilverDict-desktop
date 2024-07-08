@@ -4,6 +4,7 @@
 #include "remote/remoterepository.h"
 
 #include <QMainWindow>
+#include <QSystemTrayIcon>
 
 QT_BEGIN_NAMESPACE
 namespace Ui
@@ -16,14 +17,18 @@ class MainWindow : public QMainWindow
 {
 	Q_OBJECT
 private:
-	Ui::MainWindow * ui{};
+	Ui::MainWindow * ui;
 
 	QScopedPointer<RemoteRepository> remoteRepository;
 
-	void connectActions();
+	QScopedPointer<QSystemTrayIcon> trayIcon;
+	QScopedPointer<QMenu> trayIconMenu;
+	QScopedPointer<QAction> actionRestore;
+
+	void closeEvent(QCloseEvent * event) override;
 
 private slots:
-	void editDictionary();
+	void manageDictionaries();
 
 public:
 	explicit MainWindow(QWidget * parent = nullptr);
