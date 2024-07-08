@@ -74,7 +74,7 @@ QFuture<QByteArray> RemoteRepository::put(const QUrl & url, const QJsonDocument 
 		QNetworkRequest request(url);
 		request.setHeader(QNetworkRequest::ContentTypeHeader, QStringLiteral("application/json"));
 		QNetworkReply *reply = manager->put(request, json.toJson());
-
+    
 		QEventLoop loop;
 		QObject::connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
 		loop.exec();
@@ -581,12 +581,26 @@ QUrl RemoteRepository::suggestionsEndpoint(const QString & groupName, const QStr
 
 QUrl RemoteRepository::queryEndpoint(const QString & groupName, const QString & key, bool raw) const
 {
-	return apiPrefix.resolved(QUrl(QStringLiteral("query/%1/%2").arg(groupName, key)));
+	if (raw)
+	{
+		return apiPrefix.resolved(QUrl(QStringLiteral("query/%1/%2").arg(groupName, key)));
+	}
+	else
+	{
+		return apiPrefix.resolved(QUrl(QStringLiteral("query/%1/%2?dicts=true").arg(groupName, key)));
+	}
 }
 
 QUrl RemoteRepository::ankiEndpoint(const QString & groupName, const QString & key, bool raw) const
 {
-	return apiPrefix.resolved(QUrl(QStringLiteral("anki/%1/%2").arg(groupName, key)));
+	if (raw)
+	{
+		return apiPrefix.resolved(QUrl(QStringLiteral("anki/%1/%2").arg(groupName, key)));
+	}
+	else
+	{
+		return apiPrefix.resolved(QUrl(QStringLiteral("anki/%1/%2?dicts=True").arg(groupName, key)));
+	}
 }
 
 QUrl RemoteRepository::formatsEndpoint() const
@@ -741,10 +755,20 @@ QFuture<QueryResult> RemoteRepository::query(const QString & key)
 			  });
 }
 
+QUrl RemoteRepository::getQueryUrl(const QString & key) const
+{
+	return queryEndpoint(activeGroup->name, key, true);
+}
+
 QFuture<QueryResult> RemoteRepository::queryAnki(const QString & word) const
 {
 	return get(ankiEndpoint(activeGroup->name, word))
 		.then(std::bind(&RemoteRepository::processQueryResult, this, std::placeholders::_1));
+}
+
+QUrl RemoteRepository::getQueryAnkiUrl(const QString & word) const
+{
+	return ankiEndpoint(activeGroup->name, word, true);
 }
 
 const QList<QSharedPointer<Dictionary>> & RemoteRepository::getDictionaries() const
@@ -1000,6 +1024,15 @@ QFuture<bool> RemoteRepository::removeDictionaryFromGroup(const Dictionary * dic
 const History & RemoteRepository::getHistory() const
 {
 	return *history;
+}
+
+QFuture<bool> RemoteRepository::updateHistory()
+{
+	return get(historyEndpoint())
+		.then([this](const QByteArray & result)
+			  {
+				  return processHistory(result);
+			  });
 }
 
 QFuture<bool> RemoteRepository::clearHistory()

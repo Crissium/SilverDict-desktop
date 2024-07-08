@@ -12,6 +12,8 @@ MainWindow::MainWindow(QWidget * parent)
 	ui->setupUi(this);
 
 	connectActions();
+
+	ui->queryScreen->setRemoteRepository(remoteRepository.data());
 }
 
 MainWindow::~MainWindow()

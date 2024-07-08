@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>703</width>
-    <height>495</height>
+    <width>806</width>
+    <height>559</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -19,7 +19,7 @@
   <property name="autoFillBackground">
    <bool>false</bool>
   </property>
-  <layout class="QHBoxLayout" name="horizontalLayout">
+  <layout class="QHBoxLayout" name="horizontalLayout" stretch="2,5,3">
    <item>
     <widget class="QWidget" name="searchPane" native="true">
      <layout class="QVBoxLayout" name="verticalLayout">
@@ -34,7 +34,10 @@
    </item>
    <item>
     <widget class="QTabWidget" name="tabWidget">
-     <widget class="QWidget" name="tab">
+     <property name="tabsClosable">
+      <bool>true</bool>
+     </property>
+     <widget class="ArticleView" name="tab">
       <attribute name="title">
        <string>Tab 1</string>
       </attribute>
@@ -55,6 +58,17 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>ArticleView</class>
+   <extends>QWidget</extends>
+   <header>query/articleview.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
+ <slots>
+  <slot>onSearchTermChanged(QString)</slot>
+ </slots>
 </ui>
