@@ -70,6 +70,7 @@ void QueryScreen::initialiseArticleView(ArticleView * articleView) const
 	connect(articleView, &ArticleView::historyUpdated, this, &QueryScreen::onHistoryUpdated);
 	connect(remoteRepository, &RemoteRepository::historyCleared, articleView, &ArticleView::historyUpdated);
 	connect(articleView->getNewTabButton(), &QToolButton::clicked, this, &QueryScreen::addTab);
+	connect(articleView, &ArticleView::openLinkInNewTabRequested, this, &QueryScreen::openLinkInNewTab);
 }
 
 ArticleView * QueryScreen::createArticleView()
@@ -103,16 +104,7 @@ void QueryScreen::onWordClicked(const QModelIndex & index) const
 	{
 		const QString word = wordListModel->data(index, Qt::DisplayRole).toString();
 		ui->tabWidget->setTabText(ui->tabWidget->currentIndex(), word);
-		const ArticleView * currentArticleView = getCurrentArticleView();
-		QWebEngineView * currentWebView = currentArticleView->getWebView();
-		if (currentArticleView->isInAnkiMode())
-		{
-			currentWebView->load(remoteRepository->getQueryAnkiUrl(word));
-		}
-		else
-		{
-			currentWebView->load(remoteRepository->getQueryUrl(word));
-		}
+		getCurrentArticleView()->lookup(word);
 	}
 }
 
@@ -208,6 +200,12 @@ void QueryScreen::closeTab(int i) const
 	{
 		ui->tabWidget->removeTab(i);
 	}
+}
+
+void QueryScreen::openLinkInNewTab(const QUrl & url)
+{
+	addTab();
+	getCurrentWebView()->load(url);
 }
 
 QueryScreen::QueryScreen(QWidget * parent)

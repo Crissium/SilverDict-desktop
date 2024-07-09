@@ -3,6 +3,7 @@
 
 #include <QFileDialog>
 #include <QMessageBox>
+#include <QStandardPaths>
 #include <QSaveFile>
 #include <QTextStream>
 
@@ -72,17 +73,24 @@ void PreferencesDialogue::clearHistory()
 
 void PreferencesDialogue::exportHistory()
 {
-	const QString fileName = QFileDialog::getSaveFileName(this,
-														  tr("Export History"),
-														  tr("history.txt"),
-														  tr("Text Files (*.txt)"));
+	const QString fileName = QFileDialog::getSaveFileName(
+		this,
+		tr("Export History"),
+		QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation),
+		tr("Text Files (*.txt)"));
+
+	if (fileName.isEmpty())
+	{
+		return;
+	}
 
 	QSaveFile file(fileName);
 	if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
 	{
-		QMessageBox::critical(this,
-							  tr("Error"),
-							  tr("Failed to open file for writing."));
+		QMessageBox::critical(
+			this,
+			tr("Error"),
+			tr("Failed to open file for writing."));
 		return;
 	}
 

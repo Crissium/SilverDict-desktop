@@ -48,6 +48,7 @@ private slots:
 
 	void addTab();
 	void closeTab(int i) const;
+	void openLinkInNewTab(const QUrl & url);
 
 public:
 	explicit QueryScreen(QWidget * parent = nullptr);

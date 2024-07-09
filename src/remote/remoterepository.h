@@ -180,6 +180,8 @@ public:
 	[[nodiscard]] const Formats & getFormats() const;
 
 	[[nodiscard]] QFuture<bool> createNgramIndex() const;
+
+	static QFuture<QByteArray> download(const QUrl & url); // it's just a wrapper around get
 };
 
 #endif // REMOTEREPOSITORY_H

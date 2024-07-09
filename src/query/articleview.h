@@ -30,6 +30,8 @@ private:
 
 	void injectCSS(const QString & css) const;
 
+	void saveMedia(const QUrl & url);
+
 private slots:
 	void injectJavaScript() const;
 	void onLoadStarted() const;
@@ -38,10 +40,12 @@ private slots:
 	void zoomOut() const;
 	void zoomReset() const;
 	void playFirstAudio() const;
+	void createContextMenu(const QPoint & pos);
 
 signals:
 	void articleLoaded(QStringList dictNames) const;
 	void historyUpdated() const;
+	void openLinkInNewTabRequested(const QUrl & url) const;
 
 public:
 	explicit ArticleView(QWidget * parent = nullptr); // the parent is NOT the tab widget
@@ -52,9 +56,11 @@ public:
 	[[nodiscard]] QWebEngineView * getWebView() const;
 	[[nodiscard]] QToolButton * getNewTabButton() const;
 
-	void navigateTo(const QString & id) const;
-
 	[[nodiscard]] bool isInAnkiMode() const;
+
+	void lookup(const QString & word) const;
+
+	void navigateTo(const QString & id) const;
 };
 
 #endif // ARTICLEVIEW_H
