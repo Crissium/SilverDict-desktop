@@ -31,6 +31,8 @@ set_source_files_properties(${TS_FILES} PROPERTIES OUTPUT_LOCATION ${PROJECT_BIN
 qt_add_executable(SilverDict
 	MANUAL_FINALIZATION
 	src/main.cc
+	src/runguard.h
+	src/runguard.cc
 	src/mainwindow.cc
 	src/mainwindow.h
 	src/mainwindow.ui
@@ -38,6 +40,11 @@ qt_add_executable(SilverDict
 	src/remote/models.cc
 	src/remote/remoterepository.cc
 	src/remote/remoterepository.h
+	src/preferences/preferences.h
+	src/preferences/preferences.cc
+	src/preferences/preferencesdialogue.h
+	src/preferences/preferencesdialogue.cc
+	src/preferences/preferencesdialogue.ui
 	src/query/queryscreen.h
 	src/query/queryscreen.cc
 	src/query/queryscreen.ui
@@ -48,12 +55,18 @@ qt_add_executable(SilverDict
 	src/query/articleview.h
 	src/query/articleview.cc
 	src/query/articleview.ui
-        src/edit/dictionarydialog.h
-        src/edit/dictionarydialog.cc
-        src/edit/dictionarydialog.ui
-        src/edit/adddictionarydialog.h
-        src/edit/adddictionarydialog.cc
-        src/edit/adddictionarydialog.ui
+	src/edit/dictionarydialog.h
+	src/edit/dictionarydialog.cc
+	src/edit/dictionarydialog.ui
+	src/edit/adddictionarydialog.h
+	src/edit/adddictionarydialog.cc
+	src/edit/adddictionarydialog.ui
+	src/edit/groupdialog.h
+	src/edit/groupdialog.cc
+	src/edit/groupdialog.ui
+	src/edit/addgroupdialog.h
+	src/edit/addgroupdialog.cc
+	src/edit/addgroupdialog.ui
 	${QM_FILES}
 )
 

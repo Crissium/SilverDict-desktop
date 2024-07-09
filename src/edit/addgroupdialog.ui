@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>AddDictionaryDialog</class>
- <widget class="QDialog" name="AddDictionaryDialog">
+ <class>AddGroupDialog</class>
+ <widget class="QDialog" name="AddGroupDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>320</width>
-    <height>240</height>
+       <width>525</width>
+       <height>152</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -22,61 +22,60 @@
                          <verstretch>0</verstretch>
                      </sizepolicy>
                  </property>
+                 <property name="maximumSize">
+                     <size>
+                         <width>16777215</width>
+                         <height>40</height>
+                     </size>
+                 </property>
+                 <property name="text">
+                     <string/>
+                 </property>
                  <property name="placeholderText">
-                     <string>Name</string>
+                     <string>Group Name</string>
                  </property>
              </widget>
          </item>
          <item>
-             <widget class="QLineEdit" name="filenameLineEdit">
+             <widget class="QLineEdit" name="languageLineEdit">
                  <property name="sizePolicy">
                      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
                          <horstretch>0</horstretch>
                          <verstretch>0</verstretch>
                      </sizepolicy>
                  </property>
+                 <property name="maximumSize">
+                     <size>
+                         <width>16777215</width>
+                         <height>40</height>
+                     </size>
+                 </property>
                  <property name="placeholderText">
-                     <string>Filename</string>
+                     <string>Group Language(s)</string>
                  </property>
              </widget>
          </item>
          <item>
-             <widget class="QComboBox" name="formatComboBox">
-                 <property name="sizePolicy">
-                     <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-                         <horstretch>0</horstretch>
-                         <verstretch>0</verstretch>
-                     </sizepolicy>
+             <widget class="QLabel" name="label">
+                 <property name="minimumSize">
+                     <size>
+                         <width>0</width>
+                         <height>20</height>
+                     </size>
                  </property>
-                 <property name="currentIndex">
-                     <number>-1</number>
-                 </property>
-                 <property name="maxVisibleItems">
-                     <number>10</number>
-                 </property>
-                 <property name="insertPolicy">
-                     <enum>QComboBox::InsertAfterCurrent</enum>
-                 </property>
-                 <property name="placeholderText">
-                     <string>Format</string>
-                 </property>
-             </widget>
-         </item>
-         <item>
-             <widget class="QComboBox" name="groupComboBox">
-                 <property name="sizePolicy">
-                     <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-                         <horstretch>0</horstretch>
-                         <verstretch>0</verstretch>
-                     </sizepolicy>
-                 </property>
-                 <property name="placeholderText">
-                     <string>Group</string>
+                 <property name="text">
+                     <string>A comma separated list of two-letter ISO-639-1 language codes.</string>
                  </property>
              </widget>
          </item>
          <item>
              <widget class="QDialogButtonBox" name="buttonBox">
+                 <property name="minimumSize">
+                     <size>
+                         <width>0</width>
+                         <height>30</height>
+                     </size>
+                 </property>
                  <property name="orientation">
                      <enum>Qt::Horizontal</enum>
                  </property>
@@ -92,7 +91,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>accepted()</signal>
-   <receiver>AddDictionaryDialog</receiver>
+   <receiver>AddGroupDialog</receiver>
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -108,7 +107,7 @@
   <connection>
    <sender>buttonBox</sender>
    <signal>rejected()</signal>
-   <receiver>AddDictionaryDialog</receiver>
+   <receiver>AddGroupDialog</receiver>
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">

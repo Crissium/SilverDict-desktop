@@ -153,6 +153,9 @@
         <iconset theme="edit-copy">
          <normaloff>.</normaloff>.</iconset>
        </property>
+       <property name="checkable">
+        <bool>true</bool>
+       </property>
       </widget>
      </item>
      <item>
@@ -172,6 +175,9 @@
    </item>
    <item>
     <widget class="QWebEngineView" name="webView">
+        <property name="contextMenuPolicy">
+            <enum>Qt::CustomContextMenu</enum>
+        </property>
      <property name="url">
       <url>
        <string>about:blank</string>

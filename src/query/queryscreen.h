@@ -19,6 +19,7 @@ class QueryScreen : public QWidget
 private:
 	Ui::QueryScreen * ui;
 	RemoteRepository * remoteRepository;
+	Preferences * preferences;
 	QScopedPointer<WordListModel> wordListModel;
 	QAbstractItemModel * groupListModel; // within the combo box
 	QScopedPointer<QStringListModel> dictListModel;
@@ -37,6 +38,7 @@ private:
 private slots:
 	void onSearchTermChanged(const QString & searchTerm) const;
 	void onWordClicked(const QModelIndex & index) const;
+	void onReturnPressed() const;
 	void onGroupsChanged() const;
 	void onActiveGroupChanged(int i) const;
 	void onDictionariesChanged() const;
@@ -46,12 +48,13 @@ private slots:
 
 	void addTab();
 	void closeTab(int i) const;
+	void openLinkInNewTab(const QUrl & url);
 
 public:
 	explicit QueryScreen(QWidget * parent = nullptr);
 	~QueryScreen() override;
 
-	void setRemoteRepository(RemoteRepository * repo); // to be called after initialisation
+	void setup(RemoteRepository * repo, Preferences * preferences); // to be called after initialisation
 };
 
 #endif // QUERYSCREEN_H

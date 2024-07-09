@@ -65,10 +65,12 @@ QWebEngineView * QueryScreen::getCurrentWebView() const
 
 void QueryScreen::initialiseArticleView(ArticleView * articleView) const
 {
-	articleView->setRemoteRepository(remoteRepository);
+	articleView->setup(remoteRepository, preferences);
 	connect(articleView, &ArticleView::articleLoaded, this, &QueryScreen::onArticleLoaded);
 	connect(articleView, &ArticleView::historyUpdated, this, &QueryScreen::onHistoryUpdated);
+	connect(remoteRepository, &RemoteRepository::historyCleared, articleView, &ArticleView::historyUpdated);
 	connect(articleView->getNewTabButton(), &QToolButton::clicked, this, &QueryScreen::addTab);
+	connect(articleView, &ArticleView::openLinkInNewTabRequested, this, &QueryScreen::openLinkInNewTab);
 }
 
 ArticleView * QueryScreen::createArticleView()
@@ -102,7 +104,20 @@ void QueryScreen::onWordClicked(const QModelIndex & index) const
 	{
 		const QString word = wordListModel->data(index, Qt::DisplayRole).toString();
 		ui->tabWidget->setTabText(ui->tabWidget->currentIndex(), word);
-		getCurrentWebView()->load(remoteRepository->getQueryUrl(word));
+		getCurrentArticleView()->lookup(word);
+	}
+}
+
+void QueryScreen::onReturnPressed() const
+{
+	const QModelIndex i = ui->wordListView->currentIndex();
+	if (i.isValid())
+	{
+		onWordClicked(i);
+	}
+	else
+	{
+		onWordClicked(wordListModel->index(0, 0));
 	}
 }
 
@@ -132,6 +147,11 @@ void QueryScreen::onGroupsChanged() const
 
 void QueryScreen::onActiveGroupChanged(int i) const
 {
+	if (i < 0 || i >= remoteRepository->getGroups().size())
+	{
+		return;
+	}
+
 	const Group * group = remoteRepository->getGroups().at(i).data();
 	remoteRepository->setActiveGroup(group);
 
@@ -187,10 +207,17 @@ void QueryScreen::closeTab(int i) const
 	}
 }
 
+void QueryScreen::openLinkInNewTab(const QUrl & url)
+{
+	addTab();
+	getCurrentWebView()->load(url);
+}
+
 QueryScreen::QueryScreen(QWidget * parent)
 	: QWidget(parent)
 	, ui(new Ui::QueryScreen)
 	, remoteRepository(nullptr)
+	, preferences(nullptr)
 	, wordListModel(new WordListModel(this))
 	, groupListModel(nullptr)
 	, dictListModel(new QStringListModel(this))
@@ -200,6 +227,7 @@ QueryScreen::QueryScreen(QWidget * parent)
 	ui->dictListView->setModel(dictListModel.get());
 
 	connect(ui->searchTermEdit, &QLineEdit::textEdited, this, &QueryScreen::onSearchTermChanged);
+	connect(ui->searchTermEdit, &QLineEdit::returnPressed, this, &QueryScreen::onReturnPressed);
 	connect(ui->wordListView, &QListView::clicked, this, &QueryScreen::onWordClicked);
 	connect(ui->dictSelectionBox, &QComboBox::currentIndexChanged, this, &QueryScreen::onActiveGroupChanged);
 	connect(ui->dictListView, &QListView::clicked, this, &QueryScreen::onDictionaryClicked);
@@ -211,9 +239,10 @@ QueryScreen::~QueryScreen()
 	delete ui;
 }
 
-void QueryScreen::setRemoteRepository(RemoteRepository * repo)
+void QueryScreen::setup(RemoteRepository * repo, Preferences * preferences)
 {
 	remoteRepository = repo;
+	this->preferences = preferences;
 
 	// wordListModel->setWords(remoteRepository->getHistory());
 	ui->wordListView->setModel(wordListModel.get());

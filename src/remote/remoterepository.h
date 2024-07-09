@@ -15,11 +15,11 @@ class RemoteRepository : public QObject
 
 private:
 	// QScopedPointer<QNetworkAccessManager> manager;
-	[[nodiscard]] static QFuture<QByteArray> get(const QUrl & url);
-	[[nodiscard]] static QFuture<QByteArray> post(const QUrl & url, const QJsonDocument & json);
-	[[nodiscard]] static QFuture<QByteArray> put(const QUrl & url, const QJsonDocument & json);
-	[[nodiscard]] static QFuture<QByteArray> del(const QUrl & url);
-	[[nodiscard]] static QFuture<QByteArray> del(const QUrl & url, const QJsonDocument & json);
+	static QFuture<QByteArray> get(const QUrl & url);
+	static QFuture<QByteArray> post(const QUrl & url, const QJsonDocument & json);
+	static QFuture<QByteArray> put(const QUrl & url, const QJsonDocument & json);
+	static QFuture<QByteArray> del(const QUrl & url);
+	static QFuture<QByteArray> del(const QUrl & url, const QJsonDocument & json);
 
 	static QList<QSharedPointer<Dictionary>> dictionariesFromJsonArrayStack(const QJsonArray & array);
 	static QList<QSharedPointer<Dictionary>> * dictionariesFromJsonArray(const QJsonArray & array);
@@ -34,6 +34,8 @@ private:
 	static QJsonDocument nameToJson(const QString & name);
 	/* {"source": "/path/to/source"} */
 	static QJsonDocument sourceToJson(const QString & source);
+	/* {"success": true} */
+	static bool successFromJson(const QByteArray & json);
 
 	QUrl apiPrefix; // e.g. http://localhost:8080/api/
 	[[nodiscard]] QUrl testConnectionEndpoint() const;
@@ -104,6 +106,7 @@ private:
 signals:
 	void dictionariesChanged();
 	void groupsChanged();
+	void historyCleared();
 
 public:
 	class InitialisationError final : public std::runtime_error
@@ -120,9 +123,10 @@ public:
 
 	bool initialise();
 
-	explicit RemoteRepository(QUrl apiPrefix, QObject * parent = nullptr);
+	explicit RemoteRepository(QObject * parent = nullptr);
 
 	[[nodiscard]] QUrl getBaseUrl() const;
+	static QFuture<bool> apiPrefixValid(const QUrl & prefix);
 	[[nodiscard]] const QUrl & getApiPrefix() const;
 	bool setApiPrefix(const QUrl & url);
 
@@ -137,7 +141,7 @@ public:
 	[[nodiscard]] const QList<QSharedPointer<Dictionary>> & getDictionaries() const;
 	QFuture<bool> addDictionary(const Dictionary & dictionary, const Group * group);
 	QFuture<bool> deleteDictionary(const Dictionary * dictionary);
-	[[nodiscard]] QFuture<bool> reorderDictionaries(const QList<const Dictionary *> & dictionaries);
+	QFuture<bool> reorderDictionaries(const QList<const Dictionary *> & dictionaries);
 	QFuture<bool> renameDictionary(const Dictionary * dictionary, const QString & newDisplayName);
 
 	QFuture<qsizetype> getHeadwordCount(const Dictionary * dictionary);
@@ -176,6 +180,8 @@ public:
 	[[nodiscard]] const Formats & getFormats() const;
 
 	[[nodiscard]] QFuture<bool> createNgramIndex() const;
+
+	static QFuture<QByteArray> download(const QUrl & url); // it's just a wrapper around get
 };
 
 #endif // REMOTEREPOSITORY_H

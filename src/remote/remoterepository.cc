@@ -42,7 +42,7 @@ QFuture<QByteArray> RemoteRepository::post(const QUrl & url, const QJsonDocument
 		const QScopedPointer<QNetworkAccessManager> manager(new QNetworkAccessManager());
 		QNetworkRequest request(url);
 		request.setHeader(QNetworkRequest::ContentTypeHeader, QStringLiteral("application/json"));
-		QNetworkReply *reply = manager->post(request, json.toJson());
+		QNetworkReply * reply = manager->post(request, json.toJson());
 
 		QEventLoop loop;
 		QObject::connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
@@ -73,8 +73,8 @@ QFuture<QByteArray> RemoteRepository::put(const QUrl & url, const QJsonDocument 
 		const QScopedPointer<QNetworkAccessManager> manager(new QNetworkAccessManager());
 		QNetworkRequest request(url);
 		request.setHeader(QNetworkRequest::ContentTypeHeader, QStringLiteral("application/json"));
-		QNetworkReply *reply = manager->put(request, json.toJson());
-    
+		QNetworkReply * reply = manager->put(request, json.toJson());
+
 		QEventLoop loop;
 		QObject::connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
 		loop.exec();
@@ -240,12 +240,17 @@ QJsonDocument RemoteRepository::sourceToJson(const QString & source)
 	return QJsonDocument(obj);
 }
 
+bool RemoteRepository::successFromJson(const QByteArray & json)
+{
+	return !json.isEmpty() && QJsonDocument::fromJson(json).object().value(QStringLiteral("success")).toBool();
+}
+
 bool RemoteRepository::initialise()
 {
 	// First test connection. The endpoint always returns {"success": true}
 	const QByteArray testResult = get(testConnectionEndpoint()).result();
 	qDebug() << "Test result" << testResult;
-	if (!QJsonDocument::fromJson(testResult).object().value(QStringLiteral("success")).toBool())
+	if (!successFromJson(testResult))
 	{
 		return false;
 	}
@@ -683,10 +688,10 @@ QUrl RemoteRepository::validatorSourceEndpoint() const
 	return apiPrefix.resolved(QUrl(QStringLiteral("validator/source")));
 }
 
-RemoteRepository::RemoteRepository(QUrl apiPrefix, QObject * parent)
+RemoteRepository::RemoteRepository(QObject * parent)
 	: QObject(parent)
 	// , manager(new QNetworkAccessManager(this))
-	, apiPrefix(std::move(apiPrefix))
+	// , apiPrefix(std::move(apiPrefix))
 	, dictionaries(nullptr)
 	, groups(nullptr)
 	, activeGroup(nullptr)
@@ -697,15 +702,25 @@ RemoteRepository::RemoteRepository(QUrl apiPrefix, QObject * parent)
 	, formats(nullptr)
 	, sources(nullptr)
 {
-	if (!initialise())
-	{
-		throw InitialisationError("Failed to initialise RemoteRepository");
-	}
+	// if (!initialise())
+	// {
+	// 	throw InitialisationError("Failed to initialise RemoteRepository");
+	// }
+	// Initialisation is now done in setApiPrefix
 }
 
 QUrl RemoteRepository::getBaseUrl() const
 {
 	return apiPrefix.resolved(QStringLiteral(".."));
+}
+
+QFuture<bool> RemoteRepository::apiPrefixValid(const QUrl & prefix)
+{
+	return get(prefix.resolved(QStringLiteral("validator/test_connection")))
+		.then([](const QByteArray & result)
+			  {
+				  return successFromJson(result);
+			  });
 }
 
 const QUrl & RemoteRepository::getApiPrefix() const
@@ -837,7 +852,7 @@ QFuture<bool> RemoteRepository::renameDictionary(
 				  if (!result.isEmpty())
 				  {
 					  // It must be {"success": true}
-					  if (QJsonDocument::fromJson(result).object().value(QStringLiteral("success")).toBool())
+					  if (successFromJson(result))
 					  {
 						  // Note the pointer is const, and we don't want a const_cast
 						  for (auto const & d : *dictionaries)
@@ -1043,6 +1058,7 @@ QFuture<bool> RemoteRepository::clearHistory()
 				  if (!result.isEmpty())
 				  {
 					  history.reset(History::fromJson(result));
+					  emit historyCleared();
 					  return true;
 				  }
 				  else
@@ -1107,14 +1123,11 @@ QFuture<bool> RemoteRepository::createNgramIndex() const
 	return get(createNgramIndexEndpoint())
 		.then([this](const QByteArray & result)
 			  {
-				  if (!result.isEmpty())
-				  {
-					  // It must be {"success": true}
-					  return QJsonDocument::fromJson(result).object().value(QStringLiteral("success")).toBool();
-				  }
-				  else
-				  {
-					  return false;
-				  }
+				  return successFromJson(result);
 			  });
+}
+
+QFuture<QByteArray> RemoteRepository::download(const QUrl & url)
+{
+	return get(url);
 }

@@ -13,6 +13,7 @@ DictionaryDialog::DictionaryDialog(QWidget * parent, RemoteRepository * repo)
 
 	populateListWidget();
 
+
 	connect(ui->listWidget, &QListWidget::itemClicked, this,
 			&DictionaryDialog::onListWidgetItemClicked);
 	connect(ui->renameButton, &QPushButton::clicked, this,
