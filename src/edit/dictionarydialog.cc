@@ -13,7 +13,6 @@ DictionaryDialog::DictionaryDialog(QWidget * parent, RemoteRepository * repo)
 
 	populateListWidget();
 
-
 	connect(ui->listWidget, &QListWidget::itemClicked, this,
 			&DictionaryDialog::onListWidgetItemClicked);
 	connect(ui->renameButton, &QPushButton::clicked, this,
@@ -49,6 +48,9 @@ void DictionaryDialog::populateListWidget()
 		nameItem->setData(Qt::UserRole, QVariant::fromValue(dictionary));
 		ui->listWidget->addItem(nameItem);
 	}
+
+	ui->tableWidget->resizeColumnsToContents();
+	ui->tableWidget->resizeRowsToContents();
 }
 
 void DictionaryDialog::onListWidgetItemClicked(QListWidgetItem * item)
@@ -94,14 +96,15 @@ void DictionaryDialog::onRenameButtonClicked()
 
 	if (ok && !newName.isEmpty())
 	{
-		remoteRepository->renameDictionary(currentDictionary.data(), newName)
-			.then([=](bool result) {
-				if (result)
-				{
-					ui->listWidget->currentItem()->setText(newName);
-					ui->tableWidget->setItem(0, 1, new QTableWidgetItem(newName));
-				}
-			});
+		QFutureWatcher<bool> *watcher = new QFutureWatcher<bool>(this);
+		connect(watcher, &QFutureWatcher<bool>::finished, watcher, &QFutureWatcher<bool>::deleteLater);
+		QFuture<bool> future = remoteRepository->renameDictionary(currentDictionary.data(), newName);
+		watcher->setFuture(future);
+		if (watcher->result())
+		{
+			ui->listWidget->currentItem()->setText(newName);
+			ui->tableWidget->setItem(0, 1, new QTableWidgetItem(newName));
+		}
 	}
 }
 
@@ -127,7 +130,10 @@ void DictionaryDialog::onDeleteButtonClicked()
 					if (result)
 					{
 						ui->listWidget->takeItem(ui->listWidget->currentRow());
-						ui->tableWidget->clearContents();
+						for (int row = 0; row < ui->tableWidget->rowCount(); ++row)
+						{
+							ui->tableWidget->item(row, 1)->setText("");
+						}
 					}
 				});
 		}
