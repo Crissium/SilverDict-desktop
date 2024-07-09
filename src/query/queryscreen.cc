@@ -147,6 +147,11 @@ void QueryScreen::onGroupsChanged() const
 
 void QueryScreen::onActiveGroupChanged(int i) const
 {
+	if (i < 0 || i >= remoteRepository->getGroups().size())
+	{
+		return;
+	}
+
 	const Group * group = remoteRepository->getGroups().at(i).data();
 	remoteRepository->setActiveGroup(group);
 
