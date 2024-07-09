@@ -3,7 +3,15 @@
 
 #include "queryscreen.h"
 
+#include <QClipboard>
+#include <QDesktopServices>
+#include <QFileDialog>
+#include <QMenu>
+#include <QMessageBox>
+#include <QSaveFile>
+#include <QStandardPaths>
 #include <QTabWidget>
+#include <QWebEngineContextMenuRequest>
 #include <QWebEngineHistory>
 #include <QWebEngineScriptCollection>
 
@@ -35,6 +43,38 @@ void ArticleView::injectCSS(const QString & css) const
 							 .arg(css));
 	script.setWorldId(QWebEngineScript::ApplicationWorld);
 	ui->webView->page()->scripts().insert(script);
+}
+
+void ArticleView::saveMedia(const QUrl & url)
+{
+	const QDir downloadDir(QStandardPaths::writableLocation(QStandardPaths::DownloadLocation));
+	const QString fileName = QFileDialog::getSaveFileName(
+		this,
+		tr("Save media"),
+		downloadDir.filePath(url.fileName()),
+		QStringLiteral());
+
+	if (fileName.isEmpty())
+	{
+		return;
+	}
+
+	QSharedPointer<QSaveFile> file(new QSaveFile(fileName));
+	if (!file->open(QIODevice::WriteOnly))
+	{
+		QMessageBox::critical(
+			this,
+			tr("Error"),
+			tr("Failed to save media."));
+		return;
+	}
+
+	RemoteRepository::download(url)
+		.then([file](const QByteArray & data)
+			  {
+				  file->write(data);
+				  file->commit();
+			  });
 }
 
 ArticleView::ArticleView(QWidget * parent)
@@ -161,6 +201,71 @@ void ArticleView::playFirstAudio() const
 		QStringLiteral("document.querySelector('audio')?.play();"));
 }
 
+void ArticleView::createContextMenu(const QPoint & pos)
+{
+	QMenu menu(this);
+
+	const QWebEngineContextMenuRequest * request = ui->webView->lastContextMenuRequest();
+
+	const QUrl linkUrl = request->linkUrl();
+	if (!linkUrl.isEmpty())
+	{
+		if (linkUrl.host() == remoteRepository->getBaseUrl().host())
+		{
+			const QAction * openLinkAction = menu.addAction(tr("Open link in new tab"));
+			connect(openLinkAction, &QAction::triggered, [this, linkUrl]()
+					{
+						emit openLinkInNewTabRequested(linkUrl);
+					});
+		}
+		else
+		{
+			const QAction * openLinkAction = menu.addAction(tr("Open link in browser"));
+			connect(openLinkAction, &QAction::triggered, [linkUrl]()
+					{
+						QDesktopServices::openUrl(linkUrl);
+					});
+		}
+	}
+
+	const QUrl mediaUrl = request->mediaUrl();
+	if (!mediaUrl.isEmpty())
+	{
+		const QAction * saveMediaAction = menu.addAction(tr("Save media"));
+		connect(saveMediaAction, &QAction::triggered, [this, mediaUrl]()
+				{
+					saveMedia(mediaUrl);
+				});
+	}
+
+	const QString selectedText = request->selectedText();
+	if (!selectedText.isEmpty())
+	{
+		const QAction * copyTextAction = menu.addAction(tr("Copy"));
+		connect(copyTextAction, &QAction::triggered, [selectedText]()
+				{
+					QApplication::clipboard()->setText(selectedText);
+				});
+
+		const QAction * searchAction = menu.addAction(tr("Search"));
+		connect(searchAction, &QAction::triggered, [this, selectedText]()
+				{
+					lookup(selectedText);
+				});
+
+		const QAction * searchInNewTabAction = menu.addAction(tr("Search in new tab"));
+		connect(searchInNewTabAction, &QAction::triggered, [this, selectedText]()
+				{
+					emit openLinkInNewTabRequested(remoteRepository->getQueryUrl(selectedText));
+				});
+	}
+
+	if (!menu.isEmpty())
+	{
+		menu.exec(ui->webView->mapToGlobal(pos));
+	}
+}
+
 void ArticleView::setup(RemoteRepository * repo, Preferences * preferences)
 {
 	remoteRepository = repo;
@@ -177,6 +282,7 @@ void ArticleView::setup(RemoteRepository * repo, Preferences * preferences)
 	// connect(ui->webView, &QWebEngineView::loadStarted, this, &ArticleView::injectJavaScript);
 	// connect(ui->webView, &QWebEngineView::loadStarted, this, &ArticleView::onLoadStarted);
 	connect(ui->webView, &QWebEngineView::loadFinished, this, &ArticleView::onLoadFinished);
+	connect(ui->webView, &QWebEngineView::customContextMenuRequested, this, &ArticleView::createContextMenu);
 
 	connect(ui->backwardsButton, &QToolButton::clicked, ui->webView, &QWebEngineView::back);
 	connect(ui->forwardsButton, &QToolButton::clicked, ui->webView, &QWebEngineView::forward);
@@ -196,6 +302,23 @@ QToolButton * ArticleView::getNewTabButton() const
 	return ui->newTabButton;
 }
 
+bool ArticleView::isInAnkiMode() const
+{
+	return ui->ankiModeButton->isChecked();
+}
+
+void ArticleView::lookup(const QString & word) const
+{
+	if (isInAnkiMode())
+	{
+		ui->webView->load(remoteRepository->getQueryAnkiUrl(word));
+	}
+	else
+	{
+		ui->webView->load(remoteRepository->getQueryUrl(word));
+	}
+}
+
 void ArticleView::navigateTo(const QString & id) const
 {
 	ui->webView->setFocus(); // Chromium does not allow writing to the clipboard without focus
@@ -211,9 +334,4 @@ void ArticleView::navigateTo(const QString & id) const
 			.arg(id,
 				 isInAnkiMode() ? QStringLiteral("navigator.clipboard.writeText(el.innerHTML);")
 								: QStringLiteral()));
-}
-
-bool ArticleView::isInAnkiMode() const
-{
-	return ui->ankiModeButton->isChecked();
 }

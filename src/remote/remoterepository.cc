@@ -1125,3 +1125,8 @@ QFuture<bool> RemoteRepository::createNgramIndex() const
 				  return successFromJson(result);
 			  });
 }
+
+QFuture<QByteArray> RemoteRepository::download(const QUrl & url)
+{
+	return get(url);
+}
