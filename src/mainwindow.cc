@@ -2,8 +2,7 @@
 
 #include "./ui_mainwindow.h"
 #include "edit/dictionarydialog.h"
-
-#include "edit/editDictionary.h"
+#include "edit/groupdialog.h"
 
 MainWindow::MainWindow(QWidget * parent)
 	: QMainWindow(parent)
@@ -13,13 +12,8 @@ MainWindow::MainWindow(QWidget * parent)
 {
 	ui->setupUi(this);
 
-<<<<<<< HEAD
-	setupMenu();
-=======
-	connectActions();
-
-	ui->queryScreen->setRemoteRepository(remoteRepository.data());
->>>>>>> upstream/main
+	connect(ui->actionDictionaries, &QAction::triggered, this, &MainWindow::manageDictionaries);
+	connect(ui->actionDictionaries, &QAction::triggered, this, &MainWindow::manageGroups);
 }
 
 MainWindow::~MainWindow()
@@ -32,21 +26,16 @@ RemoteRepository * MainWindow::getRemoteRepository() const
 	return remoteRepository.data();
 }
 
-void MainWindow::connectActions()
-{
-	QList<QAction *> actionsList = this->ui->menuEdit->actions();
-	foreach(QAction * action, actionsList)
-	{
-		if (action->text() == "Dictionaries")
-		{
-			connect(action, &QAction::triggered, this, &MainWindow::editDictionary);
-		}
-	}
-}
-
-void MainWindow::editDictionary()
+void MainWindow::manageDictionaries()
 {
 	DictionaryDialog * dictionaryDialog =
 		new DictionaryDialog(this, this->getRemoteRepository());
 	dictionaryDialog->exec();
+}
+
+void MainWindow::manageGroups()
+{
+	GroupDialog * groupDialog =
+		new GroupDialog(this, this->getRemoteRepository());
+	groupDialog->exec();
 }

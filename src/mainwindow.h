@@ -20,15 +20,10 @@ private:
 
 	QScopedPointer<RemoteRepository> remoteRepository;
 
-<<<<<<< HEAD
-	void setupMenu();
-
-=======
-	void connectActions();
 
 private slots:
->>>>>>> upstream/main
-	void editDictionary();
+	void manageDictionaries();
+	void manageGroups();
 
 public:
 	explicit MainWindow(QWidget * parent = nullptr);
