@@ -40,6 +40,11 @@ qt_add_executable(SilverDict
 	src/remote/models.cc
 	src/remote/remoterepository.cc
 	src/remote/remoterepository.h
+	src/preferences/preferences.h
+	src/preferences/preferences.cc
+	src/preferences/preferencesdialogue.h
+	src/preferences/preferencesdialogue.cc
+	src/preferences/preferencesdialogue.ui
 	src/query/queryscreen.h
 	src/query/queryscreen.cc
 	src/query/queryscreen.ui

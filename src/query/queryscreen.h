@@ -19,6 +19,7 @@ class QueryScreen : public QWidget
 private:
 	Ui::QueryScreen * ui;
 	RemoteRepository * remoteRepository;
+	Preferences * preferences;
 	QScopedPointer<WordListModel> wordListModel;
 	QAbstractItemModel * groupListModel; // within the combo box
 	QScopedPointer<QStringListModel> dictListModel;
@@ -52,7 +53,7 @@ public:
 	explicit QueryScreen(QWidget * parent = nullptr);
 	~QueryScreen() override;
 
-	void setRemoteRepository(RemoteRepository * repo); // to be called after initialisation
+	void setup(RemoteRepository * repo, Preferences * preferences); // to be called after initialisation
 };
 
 #endif // QUERYSCREEN_H
