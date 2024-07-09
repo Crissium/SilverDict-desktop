@@ -33,6 +33,7 @@ protected:
 private slots:
 	void onQuit() const;
 	void manageDictionaries();
+  void manageGroups();
 	void openPreferencesDialogue();
 
 public:

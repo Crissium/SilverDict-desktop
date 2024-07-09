@@ -2,6 +2,7 @@
 
 #include "./ui_mainwindow.h"
 #include "edit/dictionarydialog.h"
+#include "edit/groupdialog.h"
 #include "preferences/preferencesdialogue.h"
 
 #include <QCloseEvent>
@@ -37,6 +38,9 @@ MainWindow::MainWindow(QWidget * parent)
 	connect(ui->actionDictionaries, &QAction::triggered, this, &MainWindow::manageDictionaries);
 	connect(ui->actionPreferences, &QAction::triggered, this, &MainWindow::openPreferencesDialogue);
 
+	connect(ui->actionDictionaries, &QAction::triggered, this, &MainWindow::manageDictionaries);
+	connect(ui->actionGroups, &QAction::triggered, this, &MainWindow::manageGroups);
+    
 	// Set up tray icon
 	trayIconMenu->addAction(actionRestore.data());
 	trayIconMenu->addAction(ui->actionQuit);
@@ -93,4 +97,11 @@ void MainWindow::openPreferencesDialogue()
 {
 	PreferencesDialogue dialogue(remoteRepository.data(), preferences.data(), this);
 	dialogue.exec();
+}
+
+void MainWindow::manageGroups()
+{
+	GroupDialog * groupDialog =
+		new GroupDialog(this, this->getRemoteRepository());
+	groupDialog->exec();
 }

@@ -1,3 +1,14 @@
+<<<<<<< HEAD
+#ifndef EDITDICTIONARY_H
+#define EDITDICTIONARY_H
+
+#include <QDialog>
+#include <QTableWidget>
+#include <QListWidget>
+#include <QFutureWatcher>
+
+#include "remote/remoterepository.h"
+=======
 #ifndef DICTIONARYDIALOG_H
 #define DICTIONARYDIALOG_H
 
@@ -12,6 +23,7 @@
 #include <QPushButton>
 #include <QTableWidget>
 #include <QTimer>
+>>>>>>> upstream/main
 
 namespace Ui
 {
