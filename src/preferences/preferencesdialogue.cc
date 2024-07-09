@@ -3,8 +3,8 @@
 
 #include <QFileDialog>
 #include <QMessageBox>
-#include <QStandardPaths>
 #include <QSaveFile>
+#include <QStandardPaths>
 #include <QTextStream>
 
 const QStringList PreferencesDialogue::ThemesNames{tr("Light"), tr("Dark")};
