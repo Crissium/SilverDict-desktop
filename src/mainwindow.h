@@ -1,6 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "preferences/preferences.h"
 #include "remote/remoterepository.h"
 
 #include <QMainWindow>
@@ -20,15 +21,19 @@ private:
 	Ui::MainWindow * ui;
 
 	QScopedPointer<RemoteRepository> remoteRepository;
+	QScopedPointer<Preferences> preferences;
 
 	QScopedPointer<QSystemTrayIcon> trayIcon;
 	QScopedPointer<QMenu> trayIconMenu;
 	QScopedPointer<QAction> actionRestore;
 
+protected:
 	void closeEvent(QCloseEvent * event) override;
 
 private slots:
+	void onQuit() const;
 	void manageDictionaries();
+	void openPreferencesDialogue();
 
 public:
 	explicit MainWindow(QWidget * parent = nullptr);

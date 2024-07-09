@@ -65,9 +65,10 @@ QWebEngineView * QueryScreen::getCurrentWebView() const
 
 void QueryScreen::initialiseArticleView(ArticleView * articleView) const
 {
-	articleView->setRemoteRepository(remoteRepository);
+	articleView->setup(remoteRepository, preferences);
 	connect(articleView, &ArticleView::articleLoaded, this, &QueryScreen::onArticleLoaded);
 	connect(articleView, &ArticleView::historyUpdated, this, &QueryScreen::onHistoryUpdated);
+	connect(remoteRepository, &RemoteRepository::historyCleared, articleView, &ArticleView::historyUpdated);
 	connect(articleView->getNewTabButton(), &QToolButton::clicked, this, &QueryScreen::addTab);
 }
 
@@ -213,6 +214,7 @@ QueryScreen::QueryScreen(QWidget * parent)
 	: QWidget(parent)
 	, ui(new Ui::QueryScreen)
 	, remoteRepository(nullptr)
+	, preferences(nullptr)
 	, wordListModel(new WordListModel(this))
 	, groupListModel(nullptr)
 	, dictListModel(new QStringListModel(this))
@@ -234,9 +236,10 @@ QueryScreen::~QueryScreen()
 	delete ui;
 }
 
-void QueryScreen::setRemoteRepository(RemoteRepository * repo)
+void QueryScreen::setup(RemoteRepository * repo, Preferences * preferences)
 {
 	remoteRepository = repo;
+	this->preferences = preferences;
 
 	// wordListModel->setWords(remoteRepository->getHistory());
 	ui->wordListView->setModel(wordListModel.get());
