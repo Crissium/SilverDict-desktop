@@ -69,6 +69,9 @@ qt_add_executable(SilverDict
 	src/edit/addgroupdialog.h
 	src/edit/addgroupdialog.cc
 	src/edit/addgroupdialog.ui
+	src/about/aboutdialogue.h
+	src/about/aboutdialogue.cc
+	src/about/aboutdialogue.ui
 	${QM_FILES}
 )
 

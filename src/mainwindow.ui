@@ -47,16 +47,16 @@
     <addaction name="actionSources"/>
     <addaction name="actionPreferences"/>
    </widget>
-   <widget class="QMenu" name="menuAbou">
+      <widget class="QMenu" name="menuHelp">
     <property name="title">
-     <string>About</string>
+        <string>Help</string>
     </property>
-       <addaction name="actionAboutQt"/>
-    <addaction name="actionAbout"/>
+          <addaction name="actionAbout"/>
+          <addaction name="actionAboutQt"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
-   <addaction name="menuAbou"/>
+      <addaction name="menuHelp"/>
   </widget>
   <action name="actionQuit">
    <property name="checkable">
@@ -64,6 +64,9 @@
    </property>
    <property name="text">
     <string>Quit</string>
+   </property>
+      <property name="iconVisibleInMenu">
+          <bool>false</bool>
    </property>
   </action>
      <action name="actionAboutQt">
@@ -73,6 +76,9 @@
    <property name="text">
     <string>About Qt</string>
    </property>
+         <property name="iconVisibleInMenu">
+             <bool>false</bool>
+   </property>
   </action>
   <action name="actionAbout">
    <property name="checkable">
@@ -81,6 +87,9 @@
    <property name="text">
     <string> About</string>
    </property>
+      <property name="iconVisibleInMenu">
+          <bool>false</bool>
+      </property>
   </action>
   <action name="actionDictionaries">
    <property name="checkable">
@@ -89,6 +98,9 @@
    <property name="text">
     <string>Dictionaries</string>
    </property>
+      <property name="iconVisibleInMenu">
+          <bool>false</bool>
+      </property>
   </action>
   <action name="actionGroups">
    <property name="checkable">
@@ -97,6 +109,9 @@
    <property name="text">
     <string>Groups</string>
    </property>
+      <property name="iconVisibleInMenu">
+          <bool>false</bool>
+      </property>
   </action>
   <action name="actionPreferences">
    <property name="checkable">
@@ -105,6 +120,9 @@
    <property name="text">
     <string>Preferences</string>
    </property>
+      <property name="iconVisibleInMenu">
+          <bool>false</bool>
+      </property>
   </action>
   <action name="actionSources">
    <property name="checkable">
@@ -113,10 +131,16 @@
    <property name="text">
     <string>Sources</string>
    </property>
+      <property name="iconVisibleInMenu">
+          <bool>false</bool>
+      </property>
   </action>
      <action name="actionCloseToTray">
          <property name="text">
              <string>Close to tray</string>
+         </property>
+         <property name="iconVisibleInMenu">
+             <bool>false</bool>
    </property>
   </action>
  </widget>

@@ -33,8 +33,10 @@ protected:
 private slots:
 	void onQuit() const;
 	void manageDictionaries();
-  void manageGroups();
+	void manageGroups();
 	void openPreferencesDialogue();
+	void openAboutDialogue();
+	void openAboutQtDialogue();
 
 public:
 	explicit MainWindow(QWidget * parent = nullptr);
