@@ -123,7 +123,7 @@ type = "unfinished" > </translation>
 <name>ArticleView < /name>
 < message >
 <location filename = "../../src/query/articleview.ui"
-line = "175" / >
+line = "177" / >
     <source>about
 :
 blank < /source>
@@ -225,21 +225,21 @@ type = "unfinished" > </translation>
 < /message>
 < message >
 <location filename = "../../src/edit/dictionarydialog.ui"
-line = "97" / >
+line = "99" / >
     <source>Filename < /source>
     < translation
 type = "unfinished" > </translation>
 < /message>
 < message >
 <location filename = "../../src/edit/dictionarydialog.ui"
-line = "113" / >
+line = "117" / >
     <source>Format < /source>
     < translation
 type = "unfinished" > </translation>
 < /message>
 < message >
 <location filename = "../../src/edit/dictionarydialog.ui"
-line = "129" / >
+line = "135" / >
     <source>Headword
 Count < /source>
 < translation
@@ -247,14 +247,14 @@ type = "unfinished" > </translation>
 < /message>
 < message >
 <location filename = "../../src/edit/dictionarydialog.ui"
-line = "154" / >
+line = "162" / >
     <source>Rename < /source>
     < translation
 type = "unfinished" > </translation>
 < /message>
 < message >
 <location filename = "../../src/edit/dictionarydialog.ui"
-line = "176" / >
+line = "184" / >
     <source>Add
 Dictionary < /source>
 < translation
@@ -262,7 +262,7 @@ type = "unfinished" > </translation>
 < /message>
 < message >
 <location filename = "../../src/edit/dictionarydialog.ui"
-line = "198" / >
+line = "206" / >
 <location filename = "../../src/edit/dictionarydialog.cc"
 line = "115" / >
     <source>Delete < /source>
@@ -325,7 +325,7 @@ type = "unfinished" > </translation>
 < /message>
 < message >
 <location filename = "../../src/edit/groupdialog.ui"
-line = "61" / >
+line = "62" / >
     <source>Group
 language(s) < /source>
 < translation
@@ -333,21 +333,21 @@ type = "unfinished" > </translation>
 < /message>
 < message >
 <location filename = "../../src/edit/groupdialog.ui"
-line = "69" / >
+line = "71" / >
     <source>Dictionaries < /source>
     < translation
 type = "unfinished" > </translation>
 < /message>
 < message >
 <location filename = "../../src/edit/groupdialog.ui"
-line = "92" / >
+line = "95" / >
     <source>Rename < /source>
     < translation
 type = "unfinished" > </translation>
 < /message>
 < message >
 <location filename = "../../src/edit/groupdialog.ui"
-line = "111" / >
+line = "114" / >
     <source>Edit
 Languages < /source>
 < translation
@@ -355,7 +355,7 @@ type = "unfinished" > </translation>
 < /message>
 < message >
 <location filename = "../../src/edit/groupdialog.ui"
-line = "130" / >
+line = "133" / >
     <source>Edit
 Dictionaries < /source>
 < translation
@@ -363,7 +363,7 @@ type = "unfinished" > </translation>
 < /message>
 < message >
 <location filename = "../../src/edit/groupdialog.ui"
-line = "149" / >
+line = "152" / >
     <source>Add
 Group < /source>
 < translation
@@ -371,7 +371,7 @@ type = "unfinished" > </translation>
 < /message>
 < message >
 <location filename = "../../src/edit/groupdialog.ui"
-line = "168" / >
+line = "171" / >
     <source>Detele < /source>
     < translation
 type = "unfinished" > </translation>
@@ -387,35 +387,35 @@ type = "unfinished" > </translation>
 < /message>
 < message >
 <location filename = "../../src/mainwindow.ui"
-line = "35" / >
+line = "36" / >
     <source>File < /source>
     < translation
 type = "unfinished" > </translation>
 < /message>
 < message >
 <location filename = "../../src/mainwindow.ui"
-line = "42" / >
+line = "43" / >
     <source>Edit < /source>
     < translation
 type = "unfinished" > </translation>
 < /message>
 < message >
 <location filename = "../../src/mainwindow.ui"
-line = "51" / >
+line = "52" / >
     <source>Help < /source>
     < translation
 type = "unfinished" > </translation>
 < /message>
 < message >
 <location filename = "../../src/mainwindow.ui"
-line = "65" / >
+line = "66" / >
     <source>Quit < /source>
     < translation
 type = "unfinished" > </translation>
 < /message>
 < message >
 <location filename = "../../src/mainwindow.ui"
-line = "76" / >
+line = "77" / >
     <source>About
 Qt < /source>
 < translation
@@ -423,42 +423,42 @@ type = "unfinished" > </translation>
 < /message>
 < message >
 <location filename = "../../src/mainwindow.ui"
-line = "87" / >
+line = "88" / >
     <source>About < /source>
     < translation
 type = "unfinished" > </translation>
 < /message>
 < message >
 <location filename = "../../src/mainwindow.ui"
-line = "98" / >
+line = "99" / >
     <source>Dictionaries < /source>
     < translation
 type = "unfinished" > </translation>
 < /message>
 < message >
 <location filename = "../../src/mainwindow.ui"
-line = "109" / >
+line = "110" / >
     <source>Groups < /source>
     < translation
 type = "unfinished" > </translation>
 < /message>
 < message >
 <location filename = "../../src/mainwindow.ui"
-line = "120" / >
+line = "121" / >
     <source>Preferences < /source>
     < translation
 type = "unfinished" > </translation>
 < /message>
 < message >
 <location filename = "../../src/mainwindow.ui"
-line = "131" / >
+line = "132" / >
     <source>Sources < /source>
     < translation
 type = "unfinished" > </translation>
 < /message>
 < message >
 <location filename = "../../src/mainwindow.ui"
-line = "139" / >
+line = "140" / >
     <source>Close
 to
 tray < /source>
