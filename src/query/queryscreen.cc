@@ -3,7 +3,7 @@
 
 #include "articleview.h"
 #ifdef _WIN32
-	#include <windows.h>
+#include <windows.h>
 #endif
 
 #include <QClipboard>
@@ -245,10 +245,10 @@ QueryScreen::QueryScreen(QWidget * parent)
 	, groupListModel(nullptr)
 	, dictListModel(new QStringListModel(this))
 	, clipboardHotkey(
-		new QHotkey(
-			QKeySequence(Qt::CTRL | Qt::Key_C | Qt::Key_C),
-			true,
-			this))
+		  new QHotkey(
+			  QKeySequence(Qt::CTRL | Qt::Key_C | Qt::Key_C),
+			  true,
+			  this))
 {
 	ui->setupUi(this);
 	groupListModel = ui->dictSelectionBox->model();
