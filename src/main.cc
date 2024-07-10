@@ -3,6 +3,7 @@
 
 #include <QApplication>
 #include <QDebug>
+#include <QLibraryInfo>
 #include <QLocale>
 #include <QTranslator>
 
@@ -15,13 +16,29 @@ int main(int argc, char * argv[])
 	QApplication a(argc, argv);
 
 	QTranslator translator;
+	QTranslator qtTranslator; // library strings
 	for (const QString & locale : QLocale::system().uiLanguages())
 	{
-		if (translator.load(QLocale(locale), "SilverDict", "_", "./translations"))
+		if (translator.load(
+				QLocale(locale),
+				QStringLiteral("SilverDict"),
+				QStringLiteral("_"),
+				QStringLiteral("./translations")))
 		{
 			qDebug() << "Loaded translation for" << locale;
 			a.installTranslator(&translator);
-			break;
+
+			if (qtTranslator.load(
+					QLocale(locale),
+					QStringLiteral("qtbase"),
+					QStringLiteral("_"),
+					QLibraryInfo::path(QLibraryInfo::TranslationsPath)))
+			{
+				qDebug() << "Loaded Qt translation for" << locale;
+				a.installTranslator(&qtTranslator);
+			}
+
+			break; // Library strings I think could be guaranteed to be loaded
 		}
 	}
 
