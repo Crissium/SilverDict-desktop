@@ -387,35 +387,35 @@ type = "unfinished" > </translation>
 < /message>
 < message >
 <location filename = "../../src/mainwindow.ui"
-line = "36" / >
+line = "35" / >
     <source>File < /source>
     < translation
 type = "unfinished" > </translation>
 < /message>
 < message >
 <location filename = "../../src/mainwindow.ui"
-line = "43" / >
+line = "42" / >
     <source>Edit < /source>
     < translation
 type = "unfinished" > </translation>
 < /message>
 < message >
 <location filename = "../../src/mainwindow.ui"
-line = "52" / >
+line = "51" / >
     <source>Help < /source>
     < translation
 type = "unfinished" > </translation>
 < /message>
 < message >
 <location filename = "../../src/mainwindow.ui"
-line = "66" / >
+line = "65" / >
     <source>Quit < /source>
     < translation
 type = "unfinished" > </translation>
 < /message>
 < message >
 <location filename = "../../src/mainwindow.ui"
-line = "77" / >
+line = "76" / >
     <source>About
 Qt < /source>
 < translation
@@ -423,42 +423,42 @@ type = "unfinished" > </translation>
 < /message>
 < message >
 <location filename = "../../src/mainwindow.ui"
-line = "88" / >
+line = "87" / >
     <source>About < /source>
     < translation
 type = "unfinished" > </translation>
 < /message>
 < message >
 <location filename = "../../src/mainwindow.ui"
-line = "99" / >
+line = "98" / >
     <source>Dictionaries < /source>
     < translation
 type = "unfinished" > </translation>
 < /message>
 < message >
 <location filename = "../../src/mainwindow.ui"
-line = "110" / >
+line = "109" / >
     <source>Groups < /source>
     < translation
 type = "unfinished" > </translation>
 < /message>
 < message >
 <location filename = "../../src/mainwindow.ui"
-line = "121" / >
+line = "120" / >
     <source>Preferences < /source>
     < translation
 type = "unfinished" > </translation>
 < /message>
 < message >
 <location filename = "../../src/mainwindow.ui"
-line = "132" / >
+line = "131" / >
     <source>Sources < /source>
     < translation
 type = "unfinished" > </translation>
 < /message>
 < message >
 <location filename = "../../src/mainwindow.ui"
-line = "140" / >
+line = "139" / >
     <source>Close
 to
 tray < /source>

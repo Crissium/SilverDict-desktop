@@ -39,7 +39,7 @@
      </property>
      <widget class="ArticleView" name="tab">
       <attribute name="title">
-          <string/>
+       <string/>
       </attribute>
      </widget>
     </widget>
