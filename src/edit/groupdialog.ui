@@ -17,7 +17,7 @@
    </sizepolicy>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+      <string>Groups</string>
   </property>
   <property name="sizeGripEnabled">
    <bool>true</bool>
