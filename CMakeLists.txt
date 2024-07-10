@@ -18,9 +18,13 @@ set(CMAKE_AUTORCC ON)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(QT_DEFAULT_MAJOR_VERSION 6)
 
 find_package(QT NAMES Qt6 REQUIRED COMPONENTS Widgets LinguistTools Network Concurrent WebEngineWidgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets LinguistTools Network Concurrent WebEngineWidgets)
+
+add_subdirectory(src/qhotkey)
+include_directories(src/qhotkey/QHotkey)
 
 set(TS_FILES
 	data/translations/${PROJECT_NAME}_en_GB.ts
@@ -81,6 +85,7 @@ target_link_libraries(SilverDict PRIVATE
 	Qt${QT_VERSION_MAJOR}::Network
 	Qt${QT_VERSION_MAJOR}::Concurrent
 	Qt${QT_VERSION_MAJOR}::WebEngineWidgets
+	qhotkey
 )
 
 set_target_properties(SilverDict PROPERTIES
