@@ -12,7 +12,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout" stretch="0,1">
    <item>
-    <layout class="QHBoxLayout" name="toolbar" stretch="0,0,0,0,0,0,0,0,0">
+       <layout class="QHBoxLayout" name="toolbar" stretch="0,0,0,0,0,0,0,0,0,0,0">
      <item>
       <widget class="QToolButton" name="newTabButton">
        <property name="sizePolicy">
@@ -155,6 +155,26 @@
        </property>
        <property name="checkable">
         <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+           <item>
+               <widget class="QToolButton" name="printButton">
+                   <property name="text">
+                       <string>...</string>
+                   </property>
+                   <property name="icon">
+                       <iconset theme="document-print"/>
+                   </property>
+               </widget>
+           </item>
+           <item>
+               <widget class="QToolButton" name="printPreviewButton">
+                   <property name="text">
+                       <string>...</string>
+                   </property>
+                   <property name="icon">
+                       <iconset theme="document-print-preview"/>
        </property>
       </widget>
      </item>

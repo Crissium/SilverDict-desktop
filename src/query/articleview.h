@@ -4,6 +4,8 @@
 #include "../remote/remoterepository.h"
 #include "preferences/preferences.h"
 
+#include <QEventLoop>
+#include <QPrinter>
 #include <QRegularExpression>
 #include <QToolButton>
 #include <QtWebEngineWidgets/QWebEngineView>
@@ -26,6 +28,10 @@ private:
 	Preferences * preferences;
 	std::function<void(const QString &)> updateTabTitle;
 
+	QScopedPointer<QPrinter> printer;
+	QScopedPointer<QEventLoop> waitForPrintResult;
+	bool inPrintPreview;
+
 	void extractDictNames(const QString & html) const;
 
 	void injectCSS(const QString & css) const;
@@ -41,6 +47,10 @@ private slots:
 	void zoomReset() const;
 	void playFirstAudio() const;
 	void createContextMenu(const QPoint & pos);
+	void printArticle(QPrinter * printer) const;
+	void createPrintDialogue();
+	void createPrintPreviewDialogue();
+	void onPrintFinished(bool success);
 
 signals:
 	void articleLoaded(QStringList dictNames) const;

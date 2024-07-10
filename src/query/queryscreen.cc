@@ -246,7 +246,7 @@ QueryScreen::QueryScreen(QWidget * parent)
 	, dictListModel(new QStringListModel(this))
 	, clipboardHotkey(
 		  new QHotkey(
-			  QKeySequence(Qt::CTRL | Qt::Key_C | Qt::Key_C),
+			  QKeySequence(Qt::CTRL | Qt::Key_C | Qt::Key_C), // Deprecated but works
 			  true,
 			  this))
 {
