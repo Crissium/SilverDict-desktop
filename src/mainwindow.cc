@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 
 #include "./ui_mainwindow.h"
+#include "about/aboutdialogue.h"
 #include "edit/dictionarydialog.h"
 #include "edit/groupdialog.h"
 #include "preferences/preferencesdialogue.h"
@@ -36,11 +37,11 @@ MainWindow::MainWindow(QWidget * parent)
 	connect(ui->actionQuit, &QAction::triggered, qApp, &QCoreApplication::quit);
 	connect(actionRestore.data(), &QAction::triggered, this, &QMainWindow::showNormal);
 	connect(ui->actionDictionaries, &QAction::triggered, this, &MainWindow::manageDictionaries);
-	connect(ui->actionPreferences, &QAction::triggered, this, &MainWindow::openPreferencesDialogue);
-
-	connect(ui->actionDictionaries, &QAction::triggered, this, &MainWindow::manageDictionaries);
 	connect(ui->actionGroups, &QAction::triggered, this, &MainWindow::manageGroups);
-    
+	connect(ui->actionPreferences, &QAction::triggered, this, &MainWindow::openPreferencesDialogue);
+	connect(ui->actionAbout, &QAction::triggered, this, &MainWindow::openAboutDialogue);
+	connect(ui->actionAboutQt, &QAction::triggered, this, &MainWindow::openAboutQtDialogue);
+
 	// Set up tray icon
 	trayIconMenu->addAction(actionRestore.data());
 	trayIconMenu->addAction(ui->actionQuit);
@@ -93,15 +94,26 @@ void MainWindow::manageDictionaries()
 	dictionaryDialog->exec();
 }
 
+void MainWindow::manageGroups()
+{
+	GroupDialog * groupDialog =
+		new GroupDialog(this, this->getRemoteRepository());
+	groupDialog->exec();
+}
+
 void MainWindow::openPreferencesDialogue()
 {
 	PreferencesDialogue dialogue(remoteRepository.data(), preferences.data(), this);
 	dialogue.exec();
 }
 
-void MainWindow::manageGroups()
+void MainWindow::openAboutDialogue()
 {
-	GroupDialog * groupDialog =
-		new GroupDialog(this, this->getRemoteRepository());
-	groupDialog->exec();
+	AboutDialogue dialogue(this);
+	dialogue.exec();
+}
+
+void MainWindow::openAboutQtDialogue()
+{
+	QMessageBox::aboutQt(this);
 }
