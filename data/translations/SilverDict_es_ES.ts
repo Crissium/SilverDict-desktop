@@ -138,53 +138,53 @@
       <translation type="unfinished">Dictionaries</translation>
     </message>
     <message>
-      <location filename="../../src/edit/dictionarydialog.ui" line="81"/>
+      <location filename="../../src/edit/dictionarydialog.ui" line="155"/>
       <source>Name</source>
       <translation type="unfinished">Name</translation>
     </message>
     <message>
-      <location filename="../../src/edit/dictionarydialog.ui" line="99"/>
+      <location filename="../../src/edit/dictionarydialog.ui" line="171"/>
       <source>Filename</source>
       <translation type="unfinished">Filename</translation>
     </message>
     <message>
-      <location filename="../../src/edit/dictionarydialog.ui" line="117"/>
+      <location filename="../../src/edit/dictionarydialog.ui" line="187"/>
       <source>Format</source>
       <translation type="unfinished">Format</translation>
     </message>
     <message>
-      <location filename="../../src/edit/dictionarydialog.ui" line="135"/>
+      <location filename="../../src/edit/dictionarydialog.ui" line="203"/>
       <source>Headword Count</source>
       <translation type="unfinished">Headword Count</translation>
     </message>
     <message>
-      <location filename="../../src/edit/dictionarydialog.ui" line="162"/>
+      <location filename="../../src/edit/dictionarydialog.ui" line="72"/>
       <source>Rename</source>
       <translation type="unfinished">Rename</translation>
     </message>
     <message>
-      <location filename="../../src/edit/dictionarydialog.ui" line="184"/>
+      <location filename="../../src/edit/dictionarydialog.ui" line="44"/>
       <source>Add Dictionary</source>
       <translation type="unfinished">Add Dictionary</translation>
     </message>
     <message>
-      <location filename="../../src/edit/dictionarydialog.ui" line="206"/>
-      <location filename="../../src/edit/dictionarydialog.cc" line="115"/>
+      <location filename="../../src/edit/dictionarydialog.ui" line="91"/>
+      <location filename="../../src/edit/dictionarydialog.cc" line="120"/>
       <source>Delete</source>
       <translation type="unfinished">Delete</translation>
     </message>
     <message>
-      <location filename="../../src/edit/dictionarydialog.cc" line="72"/>
+      <location filename="../../src/edit/dictionarydialog.cc" line="75"/>
       <source>Loading...</source>
       <translation type="unfinished">Loading...</translation>
     </message>
     <message>
-      <location filename="../../src/edit/dictionarydialog.cc" line="92"/>
+      <location filename="../../src/edit/dictionarydialog.cc" line="96"/>
       <source>Rename dictionary</source>
       <translation type="unfinished">Rename dictionary</translation>
     </message>
     <message>
-      <location filename="../../src/edit/dictionarydialog.cc" line="116"/>
+      <location filename="../../src/edit/dictionarydialog.cc" line="121"/>
       <source>Are you sure you want to delete ‘%1’? The dictionary files won&apos;t be deleted.</source>
       <translation type="unfinished">Are you sure you want to delete ‘%1’? The dictionary files won&apos;t be deleted.</translation>
     </message>
@@ -197,42 +197,42 @@
       <translation type="unfinished">Groups</translation>
     </message>
     <message>
-      <location filename="../../src/edit/groupdialog.ui" line="53"/>
+      <location filename="../../src/edit/groupdialog.ui" line="58"/>
       <source>Group name</source>
       <translation type="unfinished">Group name</translation>
     </message>
     <message>
-      <location filename="../../src/edit/groupdialog.ui" line="62"/>
+      <location filename="../../src/edit/groupdialog.ui" line="66"/>
       <source>Group language(s)</source>
       <translation type="unfinished">Group language(s)</translation>
     </message>
     <message>
-      <location filename="../../src/edit/groupdialog.ui" line="71"/>
+      <location filename="../../src/edit/groupdialog.ui" line="74"/>
       <source>Dictionaries</source>
       <translation type="unfinished">Dictionaries</translation>
     </message>
     <message>
-      <location filename="../../src/edit/groupdialog.ui" line="95"/>
+      <location filename="../../src/edit/groupdialog.ui" line="97"/>
       <source>Rename</source>
       <translation type="unfinished">Rename</translation>
     </message>
     <message>
-      <location filename="../../src/edit/groupdialog.ui" line="114"/>
+      <location filename="../../src/edit/groupdialog.ui" line="116"/>
       <source>Edit Languages</source>
       <translation type="unfinished">Edit Languages</translation>
     </message>
     <message>
-      <location filename="../../src/edit/groupdialog.ui" line="133"/>
+      <location filename="../../src/edit/groupdialog.ui" line="135"/>
       <source>Edit Dictionaries</source>
       <translation type="unfinished">Edit Dictionaries</translation>
     </message>
     <message>
-      <location filename="../../src/edit/groupdialog.ui" line="152"/>
+      <location filename="../../src/edit/groupdialog.ui" line="154"/>
       <source>Add Group</source>
       <translation type="unfinished">Add Group</translation>
     </message>
     <message>
-      <location filename="../../src/edit/groupdialog.ui" line="171"/>
+      <location filename="../../src/edit/groupdialog.ui" line="173"/>
       <source>Detele</source>
       <translation type="unfinished">Detele</translation>
     </message>
@@ -300,22 +300,22 @@
       <translation type="unfinished">Close to tray</translation>
     </message>
     <message>
-      <location filename="../../src/mainwindow.cc" line="29"/>
+      <location filename="../../src/mainwindow.cc" line="30"/>
       <source>Restore</source>
       <translation type="unfinished">Restore</translation>
     </message>
     <message>
-      <location filename="../../src/mainwindow.cc" line="60"/>
+      <location filename="../../src/mainwindow.cc" line="62"/>
       <source>Please enter the server address</source>
       <translation type="unfinished">Please enter the server address</translation>
     </message>
     <message>
-      <location filename="../../src/mainwindow.cc" line="74"/>
+      <location filename="../../src/mainwindow.cc" line="76"/>
       <source>Error</source>
       <translation type="unfinished">Error</translation>
     </message>
     <message>
-      <location filename="../../src/mainwindow.cc" line="74"/>
+      <location filename="../../src/mainwindow.cc" line="76"/>
       <source>Failed to initialise application.</source>
       <translation type="unfinished">Failed to initialise application.</translation>
     </message>
@@ -425,6 +425,37 @@
       <location filename="../../src/preferences/preferencesdialogue.cc" line="113"/>
       <source>Failed to create n-gram index.</source>
       <translation type="unfinished">Failed to create n-gram index.</translation>
+    </message>
+  </context>
+  <context>
+    <name>SelectDictionaryDialog</name>
+    <message>
+      <location filename="../../src/edit/selectdictionarydialog.ui" line="14"/>
+      <source>Dialog</source>
+      <translation type="unfinished">Dialog</translation>
+    </message>
+    <message>
+      <location filename="../../src/edit/selectdictionarydialog.cc" line="10"/>
+      <source>Select Dictionaries</source>
+      <translation type="unfinished">Select Dictionaries</translation>
+    </message>
+  </context>
+  <context>
+    <name>SourceDialog</name>
+    <message>
+      <location filename="../../src/edit/sourcedialog.ui" line="14"/>
+      <source>Dialog</source>
+      <translation type="unfinished">Dialog</translation>
+    </message>
+    <message>
+      <location filename="../../src/edit/sourcedialog.ui" line="26"/>
+      <source>Scan</source>
+      <translation type="unfinished">Scan</translation>
+    </message>
+    <message>
+      <location filename="../../src/edit/sourcedialog.ui" line="39"/>
+      <source>Add Source</source>
+      <translation type="unfinished">Add Source</translation>
     </message>
   </context>
 </TS>
