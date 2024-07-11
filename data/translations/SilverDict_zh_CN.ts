@@ -6,22 +6,22 @@
     <message>
       <location filename="../../src/about/aboutdialogue.ui" line="20"/>
       <source>About</source>
-      <translation type="unfinished">About</translation>
+      <translation>关于</translation>
     </message>
     <message>
       <location filename="../../src/about/aboutdialogue.ui" line="45"/>
       <source>SilverDict desktop client</source>
-      <translation type="unfinished">SilverDict desktop client</translation>
+      <translation>SilverDict 桌面客户端</translation>
     </message>
     <message>
       <location filename="../../src/about/aboutdialogue.ui" line="68"/>
       <source>Licensed under GPLv3</source>
-      <translation type="unfinished">Licensed under GPLv3</translation>
+      <translation>根据 GPLv3 授权</translation>
     </message>
     <message>
       <location filename="../../src/about/aboutdialogue.ui" line="78"/>
       <source>&lt;a href=&quot;https://silverdict.lecoteauverdoyant.co.uk/&quot;&gt;Official website&lt;/a&gt;</source>
-      <translation type="unfinished">&lt;a href=&quot;https://silverdict.lecoteauverdoyant.co.uk/&quot;&gt;Official website&lt;/a&gt;</translation>
+      <translation>&lt;a href=&quot;https://silverdict.lecoteauverdoyant.co.uk/&quot;&gt; 官网&lt;/a&gt;</translation>
     </message>
   </context>
   <context>
@@ -29,27 +29,27 @@
     <message>
       <location filename="../../src/edit/adddictionarydialog.ui" line="14"/>
       <source>New Dictionary</source>
-      <translation type="unfinished">New Dictionary</translation>
+      <translation>新增词典</translation>
     </message>
     <message>
       <location filename="../../src/edit/adddictionarydialog.ui" line="26"/>
       <source>Name</source>
-      <translation type="unfinished">Name</translation>
+      <translation>词典名称</translation>
     </message>
     <message>
       <location filename="../../src/edit/adddictionarydialog.ui" line="39"/>
       <source>Filename</source>
-      <translation type="unfinished">Filename</translation>
+      <translation>文件名</translation>
     </message>
     <message>
       <location filename="../../src/edit/adddictionarydialog.ui" line="61"/>
       <source>Format</source>
-      <translation type="unfinished">Format</translation>
+      <translation>格式</translation>
     </message>
     <message>
       <location filename="../../src/edit/adddictionarydialog.ui" line="74"/>
       <source>Group</source>
-      <translation type="unfinished">Group</translation>
+      <translation>分组</translation>
     </message>
   </context>
   <context>
@@ -57,22 +57,22 @@
     <message>
       <location filename="../../src/edit/addgroupdialog.ui" line="14"/>
       <source>New Group</source>
-      <translation type="unfinished">New Group</translation>
+      <translation>新增分组</translation>
     </message>
     <message>
       <location filename="../../src/edit/addgroupdialog.ui" line="35"/>
       <source>Group Name</source>
-      <translation type="unfinished">Group Name</translation>
+      <translation>分组名称</translation>
     </message>
     <message>
       <location filename="../../src/edit/addgroupdialog.ui" line="54"/>
       <source>Group Language(s)</source>
-      <translation type="unfinished">Group Language(s)</translation>
+      <translation>分组语言</translation>
     </message>
     <message>
       <location filename="../../src/edit/addgroupdialog.ui" line="67"/>
       <source>A comma separated list of two-letter ISO-639-1 language codes.</source>
-      <translation type="unfinished">A comma separated list of two-letter ISO-639-1 language codes.</translation>
+      <translation>ISO-639-1 双字母语言代码列表，逗号隔开。</translation>
     </message>
   </context>
   <context>
@@ -80,54 +80,54 @@
     <message>
       <location filename="../../src/query/articleview.ui" line="177"/>
       <source>about:blank</source>
-      <translation type="unfinished">about:blank</translation>
+      <translation>关于</translation>
     </message>
     <message>
       <location filename="../../src/query/articleview.cc" line="55"/>
       <location filename="../../src/query/articleview.cc" line="239"/>
       <source>Save media</source>
-      <translation type="unfinished">Save media</translation>
+      <translation>保存媒体</translation>
     </message>
     <message>
       <location filename="../../src/query/articleview.cc" line="69"/>
       <location filename="../../src/query/articleview.cc" line="312"/>
       <source>Error</source>
-      <translation type="unfinished">Error</translation>
+      <translation>错误</translation>
     </message>
     <message>
       <location filename="../../src/query/articleview.cc" line="70"/>
       <source>Failed to save media.</source>
-      <translation type="unfinished">Failed to save media.</translation>
+      <translation>保存媒体失败</translation>
     </message>
     <message>
       <location filename="../../src/query/articleview.cc" line="220"/>
       <source>Open link in new tab</source>
-      <translation type="unfinished">Open link in new tab</translation>
+      <translation>在新标签页中打开链接</translation>
     </message>
     <message>
       <location filename="../../src/query/articleview.cc" line="228"/>
       <source>Open link in browser</source>
-      <translation type="unfinished">Open link in browser</translation>
+      <translation>在浏览器中打开链接</translation>
     </message>
     <message>
       <location filename="../../src/query/articleview.cc" line="249"/>
       <source>Copy</source>
-      <translation type="unfinished">Copy</translation>
+      <translation>复制</translation>
     </message>
     <message>
       <location filename="../../src/query/articleview.cc" line="255"/>
       <source>Search</source>
-      <translation type="unfinished">Search</translation>
+      <translation>搜索</translation>
     </message>
     <message>
       <location filename="../../src/query/articleview.cc" line="261"/>
       <source>Search in new tab</source>
-      <translation type="unfinished">Search in new tab</translation>
+      <translation>在新标签页中搜索</translation>
     </message>
     <message>
       <location filename="../../src/query/articleview.cc" line="313"/>
       <source>Failed to print article.</source>
-      <translation type="unfinished">Failed to print article.</translation>
+      <translation>打印文章失败</translation>
     </message>
   </context>
   <context>
@@ -135,58 +135,58 @@
     <message>
       <location filename="../../src/edit/dictionarydialog.ui" line="20"/>
       <source>Dictionaries</source>
-      <translation type="unfinished">Dictionaries</translation>
+      <translation>词典</translation>
     </message>
     <message>
       <location filename="../../src/edit/dictionarydialog.ui" line="155"/>
       <source>Name</source>
-      <translation type="unfinished">Name</translation>
+      <translation>词典名称</translation>
     </message>
     <message>
       <location filename="../../src/edit/dictionarydialog.ui" line="171"/>
       <source>Filename</source>
-      <translation type="unfinished">Filename</translation>
+      <translation>文件名</translation>
     </message>
     <message>
       <location filename="../../src/edit/dictionarydialog.ui" line="187"/>
       <source>Format</source>
-      <translation type="unfinished">Format</translation>
+      <translation>格式</translation>
     </message>
     <message>
       <location filename="../../src/edit/dictionarydialog.ui" line="203"/>
       <source>Headword Count</source>
-      <translation type="unfinished">Headword Count</translation>
+      <translation>词头计数</translation>
     </message>
     <message>
       <location filename="../../src/edit/dictionarydialog.ui" line="72"/>
       <source>Rename</source>
-      <translation type="unfinished">Rename</translation>
+      <translation>重命名</translation>
     </message>
     <message>
       <location filename="../../src/edit/dictionarydialog.ui" line="44"/>
       <source>Add Dictionary</source>
-      <translation type="unfinished">Add Dictionary</translation>
+      <translation>新增词典</translation>
     </message>
     <message>
       <location filename="../../src/edit/dictionarydialog.ui" line="91"/>
       <location filename="../../src/edit/dictionarydialog.cc" line="120"/>
       <source>Delete</source>
-      <translation type="unfinished">Delete</translation>
+      <translation>删除</translation>
     </message>
     <message>
       <location filename="../../src/edit/dictionarydialog.cc" line="75"/>
       <source>Loading...</source>
-      <translation type="unfinished">Loading...</translation>
+      <translation>加载中...</translation>
     </message>
     <message>
       <location filename="../../src/edit/dictionarydialog.cc" line="96"/>
       <source>Rename dictionary</source>
-      <translation type="unfinished">Rename dictionary</translation>
+      <translation>重命名</translation>
     </message>
     <message>
       <location filename="../../src/edit/dictionarydialog.cc" line="121"/>
       <source>Are you sure you want to delete ‘%1’? The dictionary files won&apos;t be deleted.</source>
-      <translation type="unfinished">Are you sure you want to delete ‘%1’? The dictionary files won&apos;t be deleted.</translation>
+      <translation>您确定要删'%1'吗？词典文件不会被删除。</translation>
     </message>
   </context>
   <context>
@@ -194,47 +194,47 @@
     <message>
       <location filename="../../src/edit/groupdialog.ui" line="20"/>
       <source>Groups</source>
-      <translation type="unfinished">Groups</translation>
+      <translation>分组</translation>
     </message>
     <message>
       <location filename="../../src/edit/groupdialog.ui" line="58"/>
       <source>Group name</source>
-      <translation type="unfinished">Group name</translation>
+      <translation>分组名称</translation>
     </message>
     <message>
       <location filename="../../src/edit/groupdialog.ui" line="66"/>
       <source>Group language(s)</source>
-      <translation type="unfinished">Group language(s)</translation>
+      <translation>分组语言</translation>
     </message>
     <message>
       <location filename="../../src/edit/groupdialog.ui" line="74"/>
       <source>Dictionaries</source>
-      <translation type="unfinished">Dictionaries</translation>
+      <translation>词典</translation>
     </message>
     <message>
       <location filename="../../src/edit/groupdialog.ui" line="97"/>
       <source>Rename</source>
-      <translation type="unfinished">Rename</translation>
+      <translation>重命名</translation>
     </message>
     <message>
       <location filename="../../src/edit/groupdialog.ui" line="116"/>
       <source>Edit Languages</source>
-      <translation type="unfinished">Edit Languages</translation>
+      <translation>编辑语言</translation>
     </message>
     <message>
       <location filename="../../src/edit/groupdialog.ui" line="135"/>
       <source>Edit Dictionaries</source>
-      <translation type="unfinished">Edit Dictionaries</translation>
+      <translation>编辑词典</translation>
     </message>
     <message>
       <location filename="../../src/edit/groupdialog.ui" line="154"/>
       <source>Add Group</source>
-      <translation type="unfinished">Add Group</translation>
+      <translation>新增分组</translation>
     </message>
     <message>
       <location filename="../../src/edit/groupdialog.ui" line="173"/>
       <source>Detele</source>
-      <translation type="unfinished">Detele</translation>
+      <translation>删除</translation>
     </message>
   </context>
   <context>
@@ -242,82 +242,82 @@
     <message>
       <location filename="../../src/mainwindow.ui" line="14"/>
       <source>SilverDict</source>
-      <translation type="unfinished">SilverDict</translation>
+      <translation>SilverDict</translation>
     </message>
     <message>
       <location filename="../../src/mainwindow.ui" line="36"/>
       <source>File</source>
-      <translation type="unfinished">File</translation>
+      <translation>文件</translation>
     </message>
     <message>
       <location filename="../../src/mainwindow.ui" line="43"/>
       <source>Edit</source>
-      <translation type="unfinished">Edit</translation>
+      <translation>编辑</translation>
     </message>
     <message>
       <location filename="../../src/mainwindow.ui" line="52"/>
       <source>Help</source>
-      <translation type="unfinished">Help</translation>
+      <translation>帮助</translation>
     </message>
     <message>
       <location filename="../../src/mainwindow.ui" line="66"/>
       <source>Quit</source>
-      <translation type="unfinished">Quit</translation>
+      <translation>退出</translation>
     </message>
     <message>
       <location filename="../../src/mainwindow.ui" line="77"/>
       <source>About Qt</source>
-      <translation type="unfinished">About Qt</translation>
+      <translation>关于Qt</translation>
     </message>
     <message>
       <location filename="../../src/mainwindow.ui" line="88"/>
       <source> About</source>
-      <translation type="unfinished"> About</translation>
+      <translation>关于</translation>
     </message>
     <message>
       <location filename="../../src/mainwindow.ui" line="99"/>
       <source>Dictionaries</source>
-      <translation type="unfinished">Dictionaries</translation>
+      <translation>词典</translation>
     </message>
     <message>
       <location filename="../../src/mainwindow.ui" line="110"/>
       <source>Groups</source>
-      <translation type="unfinished">Groups</translation>
+      <translation>分组</translation>
     </message>
     <message>
       <location filename="../../src/mainwindow.ui" line="121"/>
       <source>Preferences</source>
-      <translation type="unfinished">Preferences</translation>
+      <translation>偏好</translation>
     </message>
     <message>
       <location filename="../../src/mainwindow.ui" line="132"/>
       <source>Sources</source>
-      <translation type="unfinished">Sources</translation>
+      <translation>来源</translation>
     </message>
     <message>
       <location filename="../../src/mainwindow.ui" line="140"/>
       <source>Close to tray</source>
-      <translation type="unfinished">Close to tray</translation>
+      <translation>最小化到托盘</translation>
     </message>
     <message>
       <location filename="../../src/mainwindow.cc" line="30"/>
       <source>Restore</source>
-      <translation type="unfinished">Restore</translation>
+      <translation>恢复</translation>
     </message>
     <message>
       <location filename="../../src/mainwindow.cc" line="62"/>
       <source>Please enter the server address</source>
-      <translation type="unfinished">Please enter the server address</translation>
+      <translation>请输入服务器网址</translation>
     </message>
     <message>
       <location filename="../../src/mainwindow.cc" line="76"/>
       <source>Error</source>
-      <translation type="unfinished">Error</translation>
+      <translation>错误</translation>
     </message>
     <message>
       <location filename="../../src/mainwindow.cc" line="76"/>
       <source>Failed to initialise application.</source>
-      <translation type="unfinished">Failed to initialise application.</translation>
+      <translation>初始化应用失败</translation>
     </message>
   </context>
   <context>
@@ -325,62 +325,62 @@
     <message>
       <location filename="../../src/preferences/preferencesdialogue.ui" line="20"/>
       <source>Preferences</source>
-      <translation type="unfinished">Preferences</translation>
+      <translation>偏好</translation>
     </message>
     <message>
       <location filename="../../src/preferences/preferencesdialogue.ui" line="30"/>
       <source>Local</source>
-      <translation type="unfinished">Local</translation>
+      <translation>本地</translation>
     </message>
     <message>
       <location filename="../../src/preferences/preferencesdialogue.ui" line="36"/>
       <source>Default zoom factor</source>
-      <translation type="unfinished">Default zoom factor</translation>
+      <translation>默认缩放系数</translation>
     </message>
     <message>
       <location filename="../../src/preferences/preferencesdialogue.ui" line="65"/>
       <source>Article view theme</source>
-      <translation type="unfinished">Article view theme</translation>
+      <translation>文章主题</translation>
     </message>
     <message>
       <location filename="../../src/preferences/preferencesdialogue.ui" line="83"/>
       <source>Remote</source>
-      <translation type="unfinished">Remote</translation>
+      <translation>远程</translation>
     </message>
     <message>
       <location filename="../../src/preferences/preferencesdialogue.ui" line="89"/>
       <source>Export history</source>
-      <translation type="unfinished">Export history</translation>
+      <translation>导出历史记录</translation>
     </message>
     <message>
       <location filename="../../src/preferences/preferencesdialogue.ui" line="96"/>
       <source>History Size</source>
-      <translation type="unfinished">History Size</translation>
+      <translation>历史数量</translation>
     </message>
     <message>
       <location filename="../../src/preferences/preferencesdialogue.ui" line="116"/>
       <source>Suggestion Size</source>
-      <translation type="unfinished">Suggestion Size</translation>
+      <translation>建议数量</translation>
     </message>
     <message>
       <location filename="../../src/preferences/preferencesdialogue.ui" line="136"/>
       <source>Clear history</source>
-      <translation type="unfinished">Clear history</translation>
+      <translation>清除历史记录</translation>
     </message>
     <message>
       <location filename="../../src/preferences/preferencesdialogue.ui" line="143"/>
       <source>Create n-gram index</source>
-      <translation type="unfinished">Create n-gram index</translation>
+      <translation>创建 n-gram 索引</translation>
     </message>
     <message>
       <location filename="../../src/preferences/preferencesdialogue.cc" line="10"/>
       <source>Light</source>
-      <translation type="unfinished">Light</translation>
+      <translation>亮色模式</translation>
     </message>
     <message>
       <location filename="../../src/preferences/preferencesdialogue.cc" line="10"/>
       <source>Dark</source>
-      <translation type="unfinished">Dark</translation>
+      <translation>暗色模式</translation>
     </message>
     <message>
       <location filename="../../src/preferences/preferencesdialogue.cc" line="38"/>
@@ -389,42 +389,42 @@
       <location filename="../../src/preferences/preferencesdialogue.cc" line="92"/>
       <location filename="../../src/preferences/preferencesdialogue.cc" line="112"/>
       <source>Error</source>
-      <translation type="unfinished">Error</translation>
+      <translation>错误</translation>
     </message>
     <message>
       <location filename="../../src/preferences/preferencesdialogue.cc" line="39"/>
       <source>Failed to update history size.</source>
-      <translation type="unfinished">Failed to update history size.</translation>
+      <translation>更新历史数量失败</translation>
     </message>
     <message>
       <location filename="../../src/preferences/preferencesdialogue.cc" line="54"/>
       <source>Failed to update suggestion size.</source>
-      <translation type="unfinished">Failed to update suggestion size.</translation>
+      <translation>更新建议数量失败</translation>
     </message>
     <message>
       <location filename="../../src/preferences/preferencesdialogue.cc" line="69"/>
       <source>Failed to clear history.</source>
-      <translation type="unfinished">Failed to clear history.</translation>
+      <translation>清楚历史记录失败</translation>
     </message>
     <message>
       <location filename="../../src/preferences/preferencesdialogue.cc" line="78"/>
       <source>Export History</source>
-      <translation type="unfinished">Export History</translation>
+      <translation>导出历史记录</translation>
     </message>
     <message>
       <location filename="../../src/preferences/preferencesdialogue.cc" line="80"/>
       <source>Text Files (*.txt)</source>
-      <translation type="unfinished">Text Files (*.txt)</translation>
+      <translation>文本文件（*.txt）</translation>
     </message>
     <message>
       <location filename="../../src/preferences/preferencesdialogue.cc" line="93"/>
       <source>Failed to open file for writing.</source>
-      <translation type="unfinished">Failed to open file for writing.</translation>
+      <translation>打开文件写入失败</translation>
     </message>
     <message>
       <location filename="../../src/preferences/preferencesdialogue.cc" line="113"/>
       <source>Failed to create n-gram index.</source>
-      <translation type="unfinished">Failed to create n-gram index.</translation>
+      <translation>创建 n-gram 索引失败</translation>
     </message>
   </context>
   <context>
@@ -432,12 +432,12 @@
     <message>
       <location filename="../../src/edit/selectdictionarydialog.ui" line="14"/>
       <source>Dialog</source>
-      <translation type="unfinished">Dialog</translation>
+      <translation>选择词典</translation>
     </message>
     <message>
       <location filename="../../src/edit/selectdictionarydialog.cc" line="10"/>
       <source>Select Dictionaries</source>
-      <translation type="unfinished">Select Dictionaries</translation>
+      <translation>选择词典</translation>
     </message>
   </context>
   <context>
@@ -445,17 +445,17 @@
     <message>
       <location filename="../../src/edit/sourcedialog.ui" line="14"/>
       <source>Dialog</source>
-      <translation type="unfinished">Dialog</translation>
+      <translation>来源</translation>
     </message>
     <message>
       <location filename="../../src/edit/sourcedialog.ui" line="26"/>
       <source>Scan</source>
-      <translation type="unfinished">Scan</translation>
+      <translation>扫描</translation>
     </message>
     <message>
       <location filename="../../src/edit/sourcedialog.ui" line="39"/>
       <source>Add Source</source>
-      <translation type="unfinished">Add Source</translation>
+      <translation>新增来源</translation>
     </message>
   </context>
 </TS>
