@@ -138,53 +138,53 @@
       <translation>Словари</translation>
     </message>
     <message>
-      <location filename="../../src/edit/dictionarydialog.ui" line="81"/>
+      <location filename="../../src/edit/dictionarydialog.ui" line="155"/>
       <source>Name</source>
       <translation>Имя</translation>
     </message>
     <message>
-      <location filename="../../src/edit/dictionarydialog.ui" line="99"/>
+      <location filename="../../src/edit/dictionarydialog.ui" line="171"/>
       <source>Filename</source>
       <translation>Имя файла</translation>
     </message>
     <message>
-      <location filename="../../src/edit/dictionarydialog.ui" line="117"/>
+      <location filename="../../src/edit/dictionarydialog.ui" line="187"/>
       <source>Format</source>
       <translation>Формат</translation>
     </message>
     <message>
-      <location filename="../../src/edit/dictionarydialog.ui" line="135"/>
+      <location filename="../../src/edit/dictionarydialog.ui" line="203"/>
       <source>Headword Count</source>
       <translation>Количество слов</translation>
     </message>
     <message>
-      <location filename="../../src/edit/dictionarydialog.ui" line="162"/>
+      <location filename="../../src/edit/dictionarydialog.ui" line="72"/>
       <source>Rename</source>
       <translation>Переименовать</translation>
     </message>
     <message>
-      <location filename="../../src/edit/dictionarydialog.ui" line="184"/>
+      <location filename="../../src/edit/dictionarydialog.ui" line="44"/>
       <source>Add Dictionary</source>
       <translation>Добавить словарь</translation>
     </message>
     <message>
-      <location filename="../../src/edit/dictionarydialog.ui" line="206"/>
-      <location filename="../../src/edit/dictionarydialog.cc" line="115"/>
+      <location filename="../../src/edit/dictionarydialog.ui" line="91"/>
+      <location filename="../../src/edit/dictionarydialog.cc" line="120"/>
       <source>Delete</source>
       <translation>Удалить</translation>
     </message>
     <message>
-      <location filename="../../src/edit/dictionarydialog.cc" line="72"/>
+      <location filename="../../src/edit/dictionarydialog.cc" line="75"/>
       <source>Loading...</source>
       <translation>Загрузка...</translation>
     </message>
     <message>
-      <location filename="../../src/edit/dictionarydialog.cc" line="92"/>
+      <location filename="../../src/edit/dictionarydialog.cc" line="96"/>
       <source>Rename dictionary</source>
       <translation>Переименовать словарь</translation>
     </message>
     <message>
-      <location filename="../../src/edit/dictionarydialog.cc" line="116"/>
+      <location filename="../../src/edit/dictionarydialog.cc" line="121"/>
       <source>Are you sure you want to delete ‘%1’? The dictionary files won&apos;t be deleted.</source>
       <translation>Вы уверены, что хотите удалить '%1'? Файлы словаря не будут удалены.</translation>
     </message>
@@ -197,42 +197,42 @@
       <translation>Группы</translation>
     </message>
     <message>
-      <location filename="../../src/edit/groupdialog.ui" line="53"/>
+      <location filename="../../src/edit/groupdialog.ui" line="58"/>
       <source>Group name</source>
       <translation>Имя группы</translation>
     </message>
     <message>
-      <location filename="../../src/edit/groupdialog.ui" line="62"/>
+      <location filename="../../src/edit/groupdialog.ui" line="66"/>
       <source>Group language(s)</source>
       <translation>Язык(и) группы</translation>
     </message>
     <message>
-      <location filename="../../src/edit/groupdialog.ui" line="71"/>
+      <location filename="../../src/edit/groupdialog.ui" line="74"/>
       <source>Dictionaries</source>
       <translation>Словари</translation>
     </message>
     <message>
-      <location filename="../../src/edit/groupdialog.ui" line="95"/>
+      <location filename="../../src/edit/groupdialog.ui" line="97"/>
       <source>Rename</source>
       <translation>Переименовать</translation>
     </message>
     <message>
-      <location filename="../../src/edit/groupdialog.ui" line="114"/>
+      <location filename="../../src/edit/groupdialog.ui" line="116"/>
       <source>Edit Languages</source>
       <translation>Редактировать языки</translation>
     </message>
     <message>
-      <location filename="../../src/edit/groupdialog.ui" line="133"/>
+      <location filename="../../src/edit/groupdialog.ui" line="135"/>
       <source>Edit Dictionaries</source>
       <translation>Редактировать словари</translation>
     </message>
     <message>
-      <location filename="../../src/edit/groupdialog.ui" line="152"/>
+      <location filename="../../src/edit/groupdialog.ui" line="154"/>
       <source>Add Group</source>
       <translation>Добавить группу</translation>
     </message>
     <message>
-      <location filename="../../src/edit/groupdialog.ui" line="171"/>
+      <location filename="../../src/edit/groupdialog.ui" line="173"/>
       <source>Detele</source>
       <translation type="unfinished">Detele</translation>
     </message>
@@ -300,22 +300,22 @@
       <translation>Свернуть в лоток</translation>
     </message>
     <message>
-      <location filename="../../src/mainwindow.cc" line="29"/>
+      <location filename="../../src/mainwindow.cc" line="30"/>
       <source>Restore</source>
       <translation type="unfinished">Restore</translation>
     </message>
     <message>
-      <location filename="../../src/mainwindow.cc" line="60"/>
+      <location filename="../../src/mainwindow.cc" line="62"/>
       <source>Please enter the server address</source>
       <translation>Пожалуйста, введите адрес сервера</translation>
     </message>
     <message>
-      <location filename="../../src/mainwindow.cc" line="74"/>
+      <location filename="../../src/mainwindow.cc" line="76"/>
       <source>Error</source>
       <translation>Ошибка</translation>
     </message>
     <message>
-      <location filename="../../src/mainwindow.cc" line="74"/>
+      <location filename="../../src/mainwindow.cc" line="76"/>
       <source>Failed to initialise application.</source>
       <translation>Не удалось инициализировать приложение.</translation>
     </message>
@@ -425,6 +425,37 @@
       <location filename="../../src/preferences/preferencesdialogue.cc" line="113"/>
       <source>Failed to create n-gram index.</source>
       <translation>Не удалось создать индекс n-gram.</translation>
+    </message>
+  </context>
+  <context>
+    <name>SelectDictionaryDialog</name>
+    <message>
+      <location filename="../../src/edit/selectdictionarydialog.ui" line="14"/>
+      <source>Dialog</source>
+      <translation type="unfinished">Dialog</translation>
+    </message>
+    <message>
+      <location filename="../../src/edit/selectdictionarydialog.cc" line="10"/>
+      <source>Select Dictionaries</source>
+      <translation type="unfinished">Select Dictionaries</translation>
+    </message>
+  </context>
+  <context>
+    <name>SourceDialog</name>
+    <message>
+      <location filename="../../src/edit/sourcedialog.ui" line="14"/>
+      <source>Dialog</source>
+      <translation type="unfinished">Dialog</translation>
+    </message>
+    <message>
+      <location filename="../../src/edit/sourcedialog.ui" line="26"/>
+      <source>Scan</source>
+      <translation type="unfinished">Scan</translation>
+    </message>
+    <message>
+      <location filename="../../src/edit/sourcedialog.ui" line="39"/>
+      <source>Add Source</source>
+      <translation type="unfinished">Add Source</translation>
     </message>
   </context>
 </TS>
