@@ -36,11 +36,8 @@ private slots:
 	void manageGroups();
 	void openPreferencesDialogue();
 	void manageSources();
-
-	void connectActions();
-
-private slots:
-	void editDictionary();
+	void openAboutDialogue();
+	void openAboutQtDialogue();
 
 public:
 	explicit MainWindow(QWidget * parent = nullptr);

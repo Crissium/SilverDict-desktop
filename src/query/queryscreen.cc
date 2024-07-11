@@ -2,6 +2,13 @@
 #include "ui_queryscreen.h"
 
 #include "articleview.h"
+#ifdef _WIN32
+#include <windows.h>
+#endif
+
+#include <QClipboard>
+
+const qsizetype QueryScreen::ClipboardLengthMax = 40; // arbitrary
 
 void QueryScreen::selectFirstWord() const
 {
@@ -213,6 +220,22 @@ void QueryScreen::openLinkInNewTab(const QUrl & url)
 	getCurrentWebView()->load(url);
 }
 
+void QueryScreen::searchForClipboardContent()
+{
+	const QString clipboardContent = QApplication::clipboard()->text();
+	if (!clipboardContent.isEmpty() && clipboardContent.length() <= ClipboardLengthMax)
+	{
+		ui->searchTermEdit->setText(clipboardContent);
+		getCurrentArticleView()->lookup(clipboardContent);
+		// Grab global focus
+		this->raise();
+		this->activateWindow();
+#ifdef _WIN32
+		SetForegroundWindow(reinterpret_cast<HWND>(this->winId()));
+#endif
+	}
+}
+
 QueryScreen::QueryScreen(QWidget * parent)
 	: QWidget(parent)
 	, ui(new Ui::QueryScreen)
@@ -221,17 +244,23 @@ QueryScreen::QueryScreen(QWidget * parent)
 	, wordListModel(new WordListModel(this))
 	, groupListModel(nullptr)
 	, dictListModel(new QStringListModel(this))
+	, clipboardHotkey(
+		  new QHotkey(
+			  QKeySequence(Qt::CTRL | Qt::Key_C | Qt::Key_C), // Deprecated but works
+			  true,
+			  this))
 {
 	ui->setupUi(this);
 	groupListModel = ui->dictSelectionBox->model();
 	ui->dictListView->setModel(dictListModel.get());
 
-	connect(ui->searchTermEdit, &QLineEdit::textEdited, this, &QueryScreen::onSearchTermChanged);
+	connect(ui->searchTermEdit, &QLineEdit::textChanged, this, &QueryScreen::onSearchTermChanged);
 	connect(ui->searchTermEdit, &QLineEdit::returnPressed, this, &QueryScreen::onReturnPressed);
 	connect(ui->wordListView, &QListView::clicked, this, &QueryScreen::onWordClicked);
 	connect(ui->dictSelectionBox, &QComboBox::currentIndexChanged, this, &QueryScreen::onActiveGroupChanged);
 	connect(ui->dictListView, &QListView::clicked, this, &QueryScreen::onDictionaryClicked);
 	connect(ui->tabWidget, &QTabWidget::tabCloseRequested, this, &QueryScreen::closeTab);
+	connect(clipboardHotkey.get(), &QHotkey::activated, this, &QueryScreen::searchForClipboardContent);
 }
 
 QueryScreen::~QueryScreen()

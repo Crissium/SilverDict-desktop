@@ -11,81 +11,81 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>New Dictionary</string>
   </property>
-     <layout class="QVBoxLayout" name="verticalLayout">
-         <item>
-             <widget class="QLineEdit" name="nameLineEdit">
-                 <property name="sizePolicy">
-                     <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-                         <horstretch>0</horstretch>
-                         <verstretch>0</verstretch>
-                     </sizepolicy>
-                 </property>
-                 <property name="placeholderText">
-                     <string>Name</string>
-                 </property>
-             </widget>
-         </item>
-         <item>
-             <widget class="QLineEdit" name="filenameLineEdit">
-                 <property name="sizePolicy">
-                     <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-                         <horstretch>0</horstretch>
-                         <verstretch>0</verstretch>
-                     </sizepolicy>
-                 </property>
-                 <property name="placeholderText">
-                     <string>Filename</string>
-                 </property>
-             </widget>
-         </item>
-         <item>
-             <widget class="QComboBox" name="formatComboBox">
-                 <property name="sizePolicy">
-                     <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-                         <horstretch>0</horstretch>
-                         <verstretch>0</verstretch>
-                     </sizepolicy>
-                 </property>
-                 <property name="currentIndex">
-                     <number>-1</number>
-                 </property>
-                 <property name="maxVisibleItems">
-                     <number>10</number>
-                 </property>
-                 <property name="insertPolicy">
-                     <enum>QComboBox::InsertAfterCurrent</enum>
-                 </property>
-                 <property name="placeholderText">
-                     <string>Format</string>
-                 </property>
-             </widget>
-         </item>
-         <item>
-             <widget class="QComboBox" name="groupComboBox">
-                 <property name="sizePolicy">
-                     <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-                         <horstretch>0</horstretch>
-                         <verstretch>0</verstretch>
-                     </sizepolicy>
-                 </property>
-                 <property name="placeholderText">
-                     <string>Group</string>
-                 </property>
-             </widget>
-         </item>
-         <item>
-             <widget class="QDialogButtonBox" name="buttonBox">
-                 <property name="orientation">
-                     <enum>Qt::Horizontal</enum>
-                 </property>
-                 <property name="standardButtons">
-                     <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
-                 </property>
-             </widget>
-         </item>
-     </layout>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QLineEdit" name="nameLineEdit">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="placeholderText">
+      <string>Name</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLineEdit" name="filenameLineEdit">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="placeholderText">
+      <string>Filename</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QComboBox" name="formatComboBox">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="currentIndex">
+      <number>-1</number>
+     </property>
+     <property name="maxVisibleItems">
+      <number>10</number>
+     </property>
+     <property name="insertPolicy">
+      <enum>QComboBox::InsertAfterCurrent</enum>
+     </property>
+     <property name="placeholderText">
+      <string>Format</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QComboBox" name="groupComboBox">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="placeholderText">
+      <string>Group</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+     </property>
+    </widget>
+   </item>
+  </layout>
  </widget>
  <resources/>
  <connections>

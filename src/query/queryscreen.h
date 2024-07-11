@@ -5,6 +5,7 @@
 #include "wordlistmodel.h"
 #include "../remote/remoterepository.h"
 
+#include <QHotkey>
 #include <QStringListModel>
 #include <QtWebEngineWidgets/QWebEngineView>
 
@@ -17,12 +18,14 @@ class QueryScreen : public QWidget
 {
 	Q_OBJECT
 private:
+	static const qsizetype ClipboardLengthMax;
 	Ui::QueryScreen * ui;
 	RemoteRepository * remoteRepository;
 	Preferences * preferences;
 	QScopedPointer<WordListModel> wordListModel;
 	QAbstractItemModel * groupListModel; // within the combo box
 	QScopedPointer<QStringListModel> dictListModel;
+	QScopedPointer<QHotkey> clipboardHotkey; // Ctrl + C + C
 
 	void selectFirstWord() const;
 	void setDictionaries(const QList<const Dictionary *> & dictionaries) const;
@@ -49,6 +52,8 @@ private slots:
 	void addTab();
 	void closeTab(int i) const;
 	void openLinkInNewTab(const QUrl & url);
+
+	void searchForClipboardContent();
 
 public:
 	explicit QueryScreen(QWidget * parent = nullptr);

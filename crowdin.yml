@@ -1,0 +1,5 @@
+files:
+  - source: /data/translations/SilverDict_en_GB.ts
+    translation: /data/translations/SilverDict_%locale_with_underscore%.ts
+pull_request_title: "New translations from Crowdin"
+commit_message: "New translations {languageName}"

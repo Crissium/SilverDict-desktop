@@ -10,7 +10,6 @@ AddDictionaryDialog::AddDictionaryDialog(QWidget * parent,
 
 	setRemoteRepository(repo);
 
-	this->setWindowTitle(tr("New dictionary"));
 	this->addFormatItem();
 	this->addGroupItem();
 

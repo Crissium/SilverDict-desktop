@@ -18,9 +18,13 @@ set(CMAKE_AUTORCC ON)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(QT_DEFAULT_MAJOR_VERSION 6)
 
 find_package(QT NAMES Qt6 REQUIRED COMPONENTS Widgets LinguistTools Network Concurrent WebEngineWidgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets LinguistTools Network Concurrent WebEngineWidgets)
+
+add_subdirectory(src/qhotkey)
+include_directories(src/qhotkey/QHotkey)
 
 set(TS_FILES
 	data/translations/${PROJECT_NAME}_en_GB.ts
@@ -67,13 +71,16 @@ qt_add_executable(SilverDict
 	src/edit/addgroupdialog.h
 	src/edit/addgroupdialog.cc
 	src/edit/addgroupdialog.ui
-        src/edit/selectdictionarydialog.h
-        src/edit/selectdictionarydialog.cc
-        src/edit/selectdictionarydialog.ui
-        src/edit/sourcedialog.h
-        src/edit/sourcedialog.cc
-        src/edit/sourcedialog.ui
-        ${QM_FILES}
+  src/edit/selectdictionarydialog.h
+  src/edit/selectdictionarydialog.cc
+  src/edit/selectdictionarydialog.ui  
+  src/edit/sourcedialog.h
+  src/edit/sourcedialog.cc
+  src/edit/sourcedialog.ui
+	src/about/aboutdialogue.h
+	src/about/aboutdialogue.cc
+	src/about/aboutdialogue.ui
+	${QM_FILES}
 )
 
 qt_add_lupdate(SilverDict TS_FILES ${TS_FILES})
@@ -88,7 +95,8 @@ target_link_libraries(SilverDict PRIVATE
 	Qt${QT_VERSION_MAJOR}::Widgets
 	Qt${QT_VERSION_MAJOR}::Network
 	Qt${QT_VERSION_MAJOR}::Concurrent
-        Qt${QT_VERSION_MAJOR}::WebEngineWidgets
+	Qt${QT_VERSION_MAJOR}::WebEngineWidgets
+	qhotkey
 )
 
 set_target_properties(SilverDict PROPERTIES

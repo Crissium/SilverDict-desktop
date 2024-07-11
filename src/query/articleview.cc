@@ -8,6 +8,8 @@
 #include <QFileDialog>
 #include <QMenu>
 #include <QMessageBox>
+#include <QPrintDialog>
+#include <QPrintPreviewDialog>
 #include <QSaveFile>
 #include <QStandardPaths>
 #include <QTabWidget>
@@ -82,6 +84,9 @@ ArticleView::ArticleView(QWidget * parent)
 	, ui(new Ui::ArticleView)
 	, remoteRepository(nullptr)
 	, preferences(nullptr)
+	, printer(new QPrinter())
+	, waitForPrintResult(new QEventLoop(this))
+	, inPrintPreview(false)
 {
 	ui->setupUi(this);
 }
@@ -266,6 +271,51 @@ void ArticleView::createContextMenu(const QPoint & pos)
 	}
 }
 
+void ArticleView::printArticle(QPrinter * printer) const
+{
+	ui->webView->print(printer);
+	// User input in the print preview dialog while we're waiting on a print task
+	// can mess up the internal state and cause a crash.
+	waitForPrintResult->exec(QEventLoop::ExcludeUserInputEvents);
+}
+
+void ArticleView::createPrintDialogue()
+{
+	QPrintDialog dialogue(printer.data(), this);
+	if (dialogue.exec() != QPrintDialog::Accepted)
+	{
+		return;
+	}
+	printArticle(printer.data());
+}
+
+void ArticleView::createPrintPreviewDialogue()
+{
+	if (inPrintPreview)
+	{
+		return;
+	}
+
+	inPrintPreview = true;
+	QPrintPreviewDialog dialogue(printer.data(), this);
+	connect(&dialogue, &QPrintPreviewDialog::paintRequested, this, &ArticleView::printArticle);
+	dialogue.exec();
+	inPrintPreview = false;
+}
+
+void ArticleView::onPrintFinished(bool success)
+{
+	if (!success)
+	{
+		QMessageBox::critical(
+			this,
+			tr("Error"),
+			tr("Failed to print article."));
+	}
+
+	waitForPrintResult->quit();
+}
+
 void ArticleView::setup(RemoteRepository * repo, Preferences * preferences)
 {
 	remoteRepository = repo;
@@ -283,6 +333,8 @@ void ArticleView::setup(RemoteRepository * repo, Preferences * preferences)
 	// connect(ui->webView, &QWebEngineView::loadStarted, this, &ArticleView::onLoadStarted);
 	connect(ui->webView, &QWebEngineView::loadFinished, this, &ArticleView::onLoadFinished);
 	connect(ui->webView, &QWebEngineView::customContextMenuRequested, this, &ArticleView::createContextMenu);
+	connect(ui->webView, &QWebEngineView::printRequested, this, &ArticleView::createPrintPreviewDialogue);
+	connect(ui->webView, &QWebEngineView::printFinished, this, &ArticleView::onPrintFinished);
 
 	connect(ui->backwardsButton, &QToolButton::clicked, ui->webView, &QWebEngineView::back);
 	connect(ui->forwardsButton, &QToolButton::clicked, ui->webView, &QWebEngineView::forward);
@@ -290,6 +342,8 @@ void ArticleView::setup(RemoteRepository * repo, Preferences * preferences)
 	connect(ui->zoomOutButton, &QToolButton::clicked, this, &ArticleView::zoomOut);
 	connect(ui->resetZoomButton, &QToolButton::clicked, this, &ArticleView::zoomReset);
 	connect(ui->playAudioButton, &QToolButton::clicked, this, &ArticleView::playFirstAudio);
+	connect(ui->printButton, &QToolButton::clicked, this, &ArticleView::createPrintDialogue);
+	connect(ui->printPreviewButton, &QToolButton::clicked, this, &ArticleView::createPrintPreviewDialogue);
 }
 
 QWebEngineView * ArticleView::getWebView() const
