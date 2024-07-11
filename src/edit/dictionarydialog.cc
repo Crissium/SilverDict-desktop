@@ -55,7 +55,8 @@ void DictionaryDialog::populateListWidget()
 
 void DictionaryDialog::onListWidgetItemClicked(QListWidgetItem * item)
 {
-	if(item){
+	if (item)
+	{
 		currentDictionary = item->data(Qt::UserRole).value<QSharedPointer<Dictionary>>();
 		updateTableWidget();
 	}
@@ -79,10 +80,11 @@ void DictionaryDialog::updateTableWidget()
 	ui->tableWidget->setItem(3, 1, countItem);
 
 	remoteRepository->getHeadwordCount(currentDictionary.data())
-		.then([=](qsizetype headwordCount) {
-			qDebug() << QString::number(headwordCount);
-			ui->tableWidget->setItem(3,1,new QTableWidgetItem(QString::number(headwordCount)));
-		});
+		.then([=](qsizetype headwordCount)
+			  {
+				  qDebug() << QString::number(headwordCount);
+				  ui->tableWidget->setItem(3, 1, new QTableWidgetItem(QString::number(headwordCount)));
+			  });
 
 	ui->tableWidget->resizeColumnsToContents();
 	ui->tableWidget->resizeRowsToContents();
@@ -96,7 +98,7 @@ void DictionaryDialog::onRenameButtonClicked()
 
 	if (ok && !newName.isEmpty())
 	{
-		QFutureWatcher<bool> *watcher = new QFutureWatcher<bool>(this);
+		QFutureWatcher<bool> * watcher = new QFutureWatcher<bool>(this);
 		connect(watcher, &QFutureWatcher<bool>::finished, watcher, &QFutureWatcher<bool>::deleteLater);
 		QFuture<bool> future = remoteRepository->renameDictionary(currentDictionary.data(), newName);
 		watcher->setFuture(future);
@@ -126,16 +128,17 @@ void DictionaryDialog::onDeleteButtonClicked()
 		if (ret == QMessageBox::Ok)
 		{
 			remoteRepository->deleteDictionary(currentDictionary.data())
-				.then([=](bool result) {
-					if (result)
-					{
-						ui->listWidget->takeItem(ui->listWidget->currentRow());
-						for (int row = 0; row < ui->tableWidget->rowCount(); ++row)
-						{
-							ui->tableWidget->item(row, 1)->setText("");
-						}
-					}
-				});
+				.then([=](bool result)
+					  {
+						  if (result)
+						  {
+							  ui->listWidget->takeItem(ui->listWidget->currentRow());
+							  for (int row = 0; row < ui->tableWidget->rowCount(); ++row)
+							  {
+								  ui->tableWidget->item(row, 1)->setText("");
+							  }
+						  }
+					  });
 		}
 	}
 }
@@ -150,12 +153,13 @@ void DictionaryDialog::onAddButtonClicked()
 		Group * selectGroup = addDialog->getSelectedGroup();
 
 		remoteRepository->addDictionary(newDictionary, selectGroup)
-			.then([=](bool result) {
-				if (result)
-				{
-					populateListWidget();
-				}
-			});
+			.then([=](bool result)
+				  {
+					  if (result)
+					  {
+						  populateListWidget();
+					  }
+				  });
 	}
 	delete addDialog;
 }

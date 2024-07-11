@@ -13,7 +13,6 @@ SelectDictionaryDialog::SelectDictionaryDialog(QWidget * parent, RemoteRepositor
 	setCurrentGroup(cGroup);
 
 	showDictionaries();
-
 }
 
 SelectDictionaryDialog::~SelectDictionaryDialog()
@@ -26,7 +25,8 @@ void SelectDictionaryDialog::setRemoteRepository(RemoteRepository * repo)
 	remoteRepository = repo;
 }
 
-void SelectDictionaryDialog::setCurrentGroup(QSharedPointer<Group> cGroup){
+void SelectDictionaryDialog::setCurrentGroup(QSharedPointer<Group> cGroup)
+{
 	currentGroup = cGroup;
 }
 
@@ -37,7 +37,6 @@ const QSet<const Dictionary *> SelectDictionaryDialog::getGroupDictionaries()
 	const QSet<const Dictionary *> & groupDictionaries = it.value();
 	return groupDictionaries;
 }
-
 
 void SelectDictionaryDialog::onUpdateDictionaries(QList<QSharedPointer<Dictionary>> selectedDictionaries)
 {
@@ -65,22 +64,24 @@ void SelectDictionaryDialog::onUpdateDictionaries(QList<QSharedPointer<Dictionar
 	for (const QSharedPointer<Dictionary> & dict : toAdd)
 	{
 		remoteRepository->addDictionaryToGroup(dict.data(), currentGroup.data())
-			.then([=](bool result) {
-				emit updateTableWidget();
-			});
+			.then([=](bool result)
+				  {
+					  emit updateTableWidget();
+				  });
 	}
 
 	for (const QSharedPointer<Dictionary> & dict : toRemove)
 	{
 		remoteRepository->removeDictionaryFromGroup(dict.data(), currentGroup.data())
-			.then([=](bool result) {
-				emit updateTableWidget();
-			});
+			.then([=](bool result)
+				  {
+					  emit updateTableWidget();
+				  });
 	}
-
 }
 
-void SelectDictionaryDialog::showDictionaries(){
+void SelectDictionaryDialog::showDictionaries()
+{
 	QGridLayout * layout = new QGridLayout(ui->scrollAreaWidgetContents);
 	QList<QCheckBox *> checkBoxes;
 
@@ -103,30 +104,32 @@ void SelectDictionaryDialog::showDictionaries(){
 			checkBox->setChecked(true);
 		}
 
-		layout->addWidget(checkBox,row, column);
+		layout->addWidget(checkBox, row, column);
 		checkBoxes.append(checkBox);
 		column++;
-		if (column == 3) {
+		if (column == 3)
+		{
 			row++;
 			column = 0;
 		}
 	}
 
-	connect(ui->buttonBox, &QDialogButtonBox::accepted, this, [this, checkBoxes] {
-		QList<QSharedPointer<Dictionary>> selectedDictionaries;
-		foreach(QCheckBox * checkBox, checkBoxes)
-		{
-			if (checkBox->isChecked())
+	connect(ui->buttonBox, &QDialogButtonBox::accepted, this, [this, checkBoxes]
 			{
-				QVariant dictVariant = checkBox->property("dictionaryPointer");
-				if (dictVariant.canConvert<QSharedPointer<Dictionary>>())
+				QList<QSharedPointer<Dictionary>> selectedDictionaries;
+				foreach(QCheckBox * checkBox, checkBoxes)
 				{
-					selectedDictionaries.append(dictVariant.value<QSharedPointer<Dictionary>>());
+					if (checkBox->isChecked())
+					{
+						QVariant dictVariant = checkBox->property("dictionaryPointer");
+						if (dictVariant.canConvert<QSharedPointer<Dictionary>>())
+						{
+							selectedDictionaries.append(dictVariant.value<QSharedPointer<Dictionary>>());
+						}
+					}
 				}
-			}
-		}
-		onUpdateDictionaries(selectedDictionaries);
-	});
+				onUpdateDictionaries(selectedDictionaries);
+			});
 
 	connect(ui->buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
 }

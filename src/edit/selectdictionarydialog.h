@@ -1,11 +1,11 @@
 #ifndef SELECTDICTIONARYDIALOG_H
 #define SELECTDICTIONARYDIALOG_H
 
-#include <QDialog>
-#include <QCheckBox>
-
 #include "remote/models.h"
 #include "remote/remoterepository.h"
+
+#include <QCheckBox>
+#include <QDialog>
 
 namespace Ui
 {
@@ -17,7 +17,7 @@ class SelectDictionaryDialog : public QDialog
 	Q_OBJECT
 
 public:
-	explicit SelectDictionaryDialog(QWidget * parent, RemoteRepository *repo, QSharedPointer<Group> cGroup);
+	explicit SelectDictionaryDialog(QWidget * parent, RemoteRepository * repo, QSharedPointer<Group> cGroup);
 	~SelectDictionaryDialog();
 	void setCurrentGroup(QSharedPointer<Group> currentGroup);
 
@@ -32,11 +32,8 @@ private:
 	void showDictionaries();
 	void onUpdateDictionaries(QList<QSharedPointer<Dictionary>> selectedDictionaries);
 
-
 signals:
 	void updateTableWidget();
 };
-
-
 
 #endif // SELECTDICTIONARYDIALOG_H

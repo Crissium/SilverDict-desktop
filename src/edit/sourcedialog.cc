@@ -48,9 +48,10 @@ void SourceDialog::populateListWidget()
 		QListWidgetItem * listWidgetItem = new QListWidgetItem(ui->listWidget);
 		ui->listWidget->setItemWidget(listWidgetItem, itemWidget);
 
-		connect(deleteButton, &QPushButton::clicked, this, [=]() {
-			onDeleteButtonClicked(source, listWidgetItem);
-		});
+		connect(deleteButton, &QPushButton::clicked, this, [=]()
+				{
+					onDeleteButtonClicked(source, listWidgetItem);
+				});
 	}
 }
 
@@ -72,24 +73,26 @@ void SourceDialog::addSourceItem(const QString & source)
 	QListWidgetItem * listWidgetItem = new QListWidgetItem(ui->listWidget);
 	ui->listWidget->setItemWidget(listWidgetItem, itemWidget);
 
-	connect(deleteButton, &QPushButton::clicked, this, [=]() {
-		onDeleteButtonClicked(source, listWidgetItem);
-	});
+	connect(deleteButton, &QPushButton::clicked, this, [=]()
+			{
+				onDeleteButtonClicked(source, listWidgetItem);
+			});
 }
 
 void SourceDialog::onScanButtonClicked()
 {
 	remoteRepository->rescanSources()
-		.then([=](bool result) {
-			if (result)
-			{
-				emit this->updateUISignal();
-			}
-			else
-			{
-				qDebug() << "scan error";
-			}
-		});
+		.then([=](bool result)
+			  {
+				  if (result)
+				  {
+					  emit this->updateUISignal();
+				  }
+				  else
+				  {
+					  qDebug() << "scan error";
+				  }
+			  });
 }
 
 void SourceDialog::onAddButtonClicked()
@@ -100,18 +103,19 @@ void SourceDialog::onAddButtonClicked()
 	if (ok && !newSource.isEmpty())
 	{
 		remoteRepository->addSource(newSource)
-			.then([=](bool result) {
-				if (result)
-				{
-					qDebug() << newSource;
-					emit this->updateUISignal();
-				}
-				else
-				{
-					QMessageBox::warning(this, QStringLiteral("Add Source Failed"),
-										 QStringLiteral("The route is incorrect."));
-				}
-			});
+			.then([=](bool result)
+				  {
+					  if (result)
+					  {
+						  qDebug() << newSource;
+						  emit this->updateUISignal();
+					  }
+					  else
+					  {
+						  QMessageBox::warning(this, QStringLiteral("Add Source Failed"),
+											   QStringLiteral("The route is incorrect."));
+					  }
+				  });
 	}
 }
 
@@ -123,8 +127,9 @@ void SourceDialog::onDeleteButtonClicked(const QString & source, QListWidgetItem
 	if (reply == QMessageBox::Yes)
 	{
 		remoteRepository->deleteSource(source)
-			.then([=](bool result) {
-				emit this->updateUISignal();
+			.then([=](bool result)
+				  {
+					  emit this->updateUISignal();
 			});
 	}
 }

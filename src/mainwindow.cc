@@ -76,7 +76,7 @@ MainWindow::MainWindow(QWidget * parent)
 		QMessageBox::critical(this, tr("Error"), tr("Failed to initialise application."));
 		close();
 	}
-	// ui->queryScreen->setup(remoteRepository.data(), preferences.data());
+	ui->queryScreen->setup(remoteRepository.data(), preferences.data());
 }
 
 MainWindow::~MainWindow()

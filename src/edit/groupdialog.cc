@@ -150,17 +150,17 @@ void GroupDialog::onRenameButtonClicked()
 	if (ok && !newName.isEmpty())
 	{
 		remoteRepository->renameGroup(currentGroup.data(), newName)
-			.then([=](bool result) {
-				if (result)
-				{
-					ui->listWidget->currentItem()->setText(newName);
-					QTableWidgetItem * nameItem = new QTableWidgetItem(newName);
-					ui->tableWidget->setItem(0, 1, nameItem);
-				}
-			});
+			.then([=](bool result)
+				  {
+					  if (result)
+					  {
+						  ui->listWidget->currentItem()->setText(newName);
+						  QTableWidgetItem * nameItem = new QTableWidgetItem(newName);
+						  ui->tableWidget->setItem(0, 1, nameItem);
+					  }
+				  });
 	}
 }
-
 
 void GroupDialog::onEditLanguageButtonClicked()
 {
@@ -171,25 +171,26 @@ void GroupDialog::onEditLanguageButtonClicked()
 	if (ok && !newLanguage.isEmpty())
 	{
 		remoteRepository->changeGroupLanguages(currentGroup.data(), languages)
-			.then([=](bool result) {
-				if (result)
-				{
-					QStringList languageStrings;
-					for (QLocale::Language language : languages)
-					{
-						languageStrings.append(QLocale::languageToString(language));
-					}
-					QTableWidgetItem * languageItem = new QTableWidgetItem(languageStrings.join(", "));
-					ui->tableWidget->setItem(1, 1, languageItem);
-				}
-			});
+			.then([=](bool result)
+				  {
+					  if (result)
+					  {
+						  QStringList languageStrings;
+						  for (QLocale::Language language : languages)
+						  {
+							  languageStrings.append(QLocale::languageToString(language));
+						  }
+						  QTableWidgetItem * languageItem = new QTableWidgetItem(languageStrings.join(", "));
+						  ui->tableWidget->setItem(1, 1, languageItem);
+					  }
+				  });
 	}
 }
 
 void GroupDialog::onEditDictionaryButtonClicked()
 {
 	SelectDictionaryDialog * selectDictionaryDialog = new SelectDictionaryDialog(this, remoteRepository, currentGroup);
-	connect(selectDictionaryDialog, &SelectDictionaryDialog::updateTableWidget,this, &GroupDialog::updateTableWidget);
+	connect(selectDictionaryDialog, &SelectDictionaryDialog::updateTableWidget, this, &GroupDialog::updateTableWidget);
 	selectDictionaryDialog->exec();
 }
 
@@ -205,16 +206,17 @@ void GroupDialog::onDeleteButtonClicked()
 	if (ret == QMessageBox::Ok)
 	{
 		remoteRepository->deleteGroup(currentGroup.data())
-			.then([=](bool result) {
-				if (result)
-				{					
-					emit updateListSignal();
-					for (int row = 0; row < ui->tableWidget->rowCount(); ++row)
-					{
-						ui->tableWidget->item(row, 1)->setText("");
-					}
-				}
-			});
+			.then([=](bool result)
+				  {
+					  if (result)
+					  {
+						  emit updateListSignal();
+						  for (int row = 0; row < ui->tableWidget->rowCount(); ++row)
+						  {
+							  ui->tableWidget->item(row, 1)->setText("");
+						  }
+					  }
+				  });
 	}
 }
 
@@ -232,12 +234,13 @@ void GroupDialog::onAddButtonClicked()
 			getLanguageSetFromString(groupLanguages)};
 
 		remoteRepository->addGroup(newGroup)
-			.then([=](bool result) {
-				if (result)
-				{
-					emit updateListSignal();
-				}
-			});
+			.then([=](bool result)
+				  {
+					  if (result)
+					  {
+						  emit updateListSignal();
+					  }
+				  });
 	}
 	delete addDialog;
 }
