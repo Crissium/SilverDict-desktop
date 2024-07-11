@@ -35,6 +35,7 @@ private slots:
 	void manageDictionaries();
 	void manageGroups();
 	void openPreferencesDialogue();
+	void manageSources();
 	void openAboutDialogue();
 	void openAboutQtDialogue();
 

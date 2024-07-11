@@ -1,18 +1,18 @@
 #ifndef GROUPDIALOG_H
 #define GROUPDIALOG_H
 
-#include <QDialog>
-#include <QListWidget>
-#include <QTableWidget>
-#include <QLineEdit>
-#include <QInputDialog>
-#include <QFutureWatcher>
-#include <QDialogButtonBox>
-#include <QCheckBox>
-#include <QMessageBox>
-
-#include "remote/remoterepository.h"
 #include "addgroupdialog.h"
+#include "selectdictionarydialog.h"
+#include "remote/remoterepository.h"
+
+#include <QCheckBox>
+#include <QDialog>
+#include <QDialogButtonBox>
+#include <QFutureWatcher>
+#include <QInputDialog>
+#include <QLineEdit>
+#include <QListWidget>
+#include <QMessageBox>
 
 namespace Ui
 {
@@ -24,12 +24,15 @@ class GroupDialog : public QDialog
 	Q_OBJECT
 
 public:
-	explicit GroupDialog(QWidget * parent = nullptr, RemoteRepository *repo = nullptr);
+	explicit GroupDialog(QWidget * parent = nullptr, RemoteRepository * repo = nullptr);
 	~GroupDialog();
+
+signals:
+	void updateListSignal();
+	void updateTableSignal();
 
 private slots:
 	void updateTableWidget();
-	void onUpdateDictionaries();
 
 	void onEditLanguageButtonClicked();
 	void onEditDictionaryButtonClicked();
@@ -37,19 +40,17 @@ private slots:
 	void onDeleteButtonClicked();
 	void onAddButtonClicked();
 
-
 private:
 	Ui::GroupDialog * ui;
-	RemoteRepository* remoteRepository;
+	RemoteRepository * remoteRepository;
 	QSharedPointer<Group> currentGroup;
 	void setRemoteRepository(RemoteRepository * repo);
 	QString getDictionariesName();
-	QSet<const Dictionary *> getGroupDictionaries();
-	QList<QSharedPointer<Dictionary>> selectedDictionaries;
+	const QSet<const Dictionary *> getGroupDictionaries();
 	QSet<QLocale::Language> getLanguageSetFromString(QString languageString);
 
 	void populateListWidget();
-	void onListWidgetItemClicked(QListWidgetItem* item);
+	void onListWidgetItemClicked(QListWidgetItem * item);
 };
 
 #endif // GROUPDIALOG_H

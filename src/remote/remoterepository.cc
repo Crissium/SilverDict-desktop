@@ -746,6 +746,7 @@ bool RemoteRepository::setApiPrefix(const QUrl & url)
 	return true;
 }
 
+
 QFuture<Suggestions> RemoteRepository::getSuggestions(const QString & key) const
 {
 	return get(suggestionsEndpoint(activeGroup->name, key))
@@ -842,7 +843,7 @@ QFuture<bool> RemoteRepository::renameDictionary(
 	const Dictionary * dictionary,
 	const QString & newDisplayName)
 {
-	QJsonObject obj;
+	QJsonObject obj;	
 	obj["name"] = dictionary->name;
 	obj["display"] = newDisplayName;
 	return put(dictionaryRenameEndpoint(), QJsonDocument(obj))

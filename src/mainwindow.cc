@@ -5,6 +5,7 @@
 #include "edit/dictionarydialog.h"
 #include "edit/groupdialog.h"
 #include "preferences/preferencesdialogue.h"
+#include "edit/sourcedialog.h"
 
 #include <QCloseEvent>
 
@@ -39,6 +40,7 @@ MainWindow::MainWindow(QWidget * parent)
 	connect(ui->actionDictionaries, &QAction::triggered, this, &MainWindow::manageDictionaries);
 	connect(ui->actionGroups, &QAction::triggered, this, &MainWindow::manageGroups);
 	connect(ui->actionPreferences, &QAction::triggered, this, &MainWindow::openPreferencesDialogue);
+	connect(ui->actionSources, &QAction::triggered, this, &MainWindow::manageSources);
 	connect(ui->actionAbout, &QAction::triggered, this, &MainWindow::openAboutDialogue);
 	connect(ui->actionAboutQt, &QAction::triggered, this, &MainWindow::openAboutQtDialogue);
 
@@ -74,7 +76,7 @@ MainWindow::MainWindow(QWidget * parent)
 		QMessageBox::critical(this, tr("Error"), tr("Failed to initialise application."));
 		close();
 	}
-	ui->queryScreen->setup(remoteRepository.data(), preferences.data());
+	// ui->queryScreen->setup(remoteRepository.data(), preferences.data());
 }
 
 MainWindow::~MainWindow()
@@ -116,4 +118,11 @@ void MainWindow::openAboutDialogue()
 void MainWindow::openAboutQtDialogue()
 {
 	QMessageBox::aboutQt(this);
+}
+
+void MainWindow::manageSources()
+{
+	SourceDialog * sourceDialog =
+		new SourceDialog(this, this->getRemoteRepository());
+	sourceDialog->exec();
 }

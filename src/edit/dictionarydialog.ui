@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-       <width>764</width>
-       <height>723</height>
+    <width>800</width>
+    <height>600</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -22,217 +22,237 @@
   <property name="sizeGripEnabled">
    <bool>false</bool>
   </property>
-     <layout class="QGridLayout" name="gridLayout" rowstretch="1,0,0">
-         <item row="0" column="1">
-             <widget class="QTableWidget" name="tableWidget">
-                 <property name="editTriggers">
-                     <set>QAbstractItemView::NoEditTriggers</set>
-                 </property>
-                 <property name="selectionMode">
-                     <enum>QAbstractItemView::SingleSelection</enum>
-                 </property>
-                 <property name="selectionBehavior">
-                     <enum>QAbstractItemView::SelectRows</enum>
-                 </property>
-                 <property name="iconSize">
-                     <size>
-                         <width>0</width>
-                         <height>0</height>
-                     </size>
-                 </property>
-                 <property name="showGrid">
-                     <bool>false</bool>
-                 </property>
-                 <property name="gridStyle">
-                     <enum>Qt::SolidLine</enum>
-                 </property>
-                 <property name="sortingEnabled">
-                     <bool>false</bool>
-                 </property>
-                 <property name="rowCount">
-                     <number>4</number>
-                 </property>
-                 <property name="columnCount">
-                     <number>2</number>
-                 </property>
-                 <attribute name="horizontalHeaderVisible">
-                     <bool>false</bool>
-                 </attribute>
-                 <attribute name="verticalHeaderVisible">
-                     <bool>false</bool>
-                 </attribute>
-                 <attribute name="verticalHeaderCascadingSectionResizes">
-                     <bool>false</bool>
-                 </attribute>
-                 <attribute name="verticalHeaderDefaultSectionSize">
-                     <number>30</number>
-                 </attribute>
-                 <attribute name="verticalHeaderHighlightSections">
-                     <bool>true</bool>
-                 </attribute>
-                 <row/>
-                 <row/>
-                 <row/>
-                 <row/>
-                 <column/>
-                 <column/>
-                 <item row="0" column="0">
-                     <property name="text">
-                         <string>Name</string>
-                     </property>
-                     <property name="flags">
-                         <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled
-                         </set>
-                     </property>
-                 </item>
-                 <item row="0" column="1">
-                     <property name="text">
-                         <string/>
-                     </property>
-                     <property name="flags">
-                         <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled
-                         </set>
-                     </property>
-                 </item>
-                 <item row="1" column="0">
-                     <property name="text">
-                         <string>Filename</string>
-                     </property>
-                     <property name="flags">
-                         <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled
-                         </set>
-                     </property>
-                 </item>
-                 <item row="1" column="1">
-                     <property name="text">
-                         <string/>
-                     </property>
-                     <property name="flags">
-                         <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled
-                         </set>
-                     </property>
-                 </item>
-                 <item row="2" column="0">
-                     <property name="text">
-                         <string>Format</string>
-                     </property>
-                     <property name="flags">
-                         <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled
-                         </set>
-                     </property>
-                 </item>
-                 <item row="2" column="1">
-                     <property name="text">
-                         <string/>
-                     </property>
-                     <property name="flags">
-                         <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled
-                         </set>
-                     </property>
-                 </item>
-                 <item row="3" column="0">
-                     <property name="text">
-                         <string>Headword Count</string>
-                     </property>
-                     <property name="flags">
-                         <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled
-                         </set>
-                     </property>
-                 </item>
-                 <item row="3" column="1">
-                     <property name="text">
-                         <string/>
-                     </property>
-                     <property name="flags">
-                         <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled
-                         </set>
-                     </property>
-                 </item>
-             </widget>
-         </item>
-         <item row="1" column="1">
-             <widget class="QPushButton" name="renameButton">
-                 <property name="minimumSize">
-                     <size>
-                         <width>0</width>
-                         <height>30</height>
-                     </size>
-                 </property>
-                 <property name="text">
-                     <string>Rename</string>
-                 </property>
-             </widget>
-         </item>
-         <item row="2" column="0">
-             <widget class="QPushButton" name="addButton">
-                 <property name="enabled">
-                     <bool>true</bool>
-                 </property>
-                 <property name="sizePolicy">
-                     <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-                         <horstretch>0</horstretch>
-                         <verstretch>0</verstretch>
-                     </sizepolicy>
-                 </property>
-                 <property name="minimumSize">
-                     <size>
-                         <width>0</width>
-                         <height>30</height>
-                     </size>
-                 </property>
-                 <property name="text">
-                     <string>Add Dictionary</string>
-                 </property>
-                 <property name="iconSize">
-                     <size>
-                         <width>12</width>
-                         <height>12</height>
-                     </size>
-                 </property>
-                 <property name="autoDefault">
-                     <bool>true</bool>
-                 </property>
-             </widget>
-         </item>
-         <item row="2" column="1">
-             <widget class="QPushButton" name="deleteButton">
-                 <property name="minimumSize">
-                     <size>
-                         <width>0</width>
-                         <height>30</height>
-                     </size>
-                 </property>
-                 <property name="text">
-                     <string>Delete</string>
-                 </property>
-             </widget>
-         </item>
-         <item row="0" column="0" rowspan="2">
-             <widget class="QListWidget" name="listWidget">
-                 <property name="dragEnabled">
-                     <bool>true</bool>
-                 </property>
-                 <property name="dragDropMode">
-                     <enum>QAbstractItemView::InternalMove</enum>
-                 </property>
-                 <property name="defaultDropAction">
-                     <enum>Qt::MoveAction</enum>
-                 </property>
-                 <property name="spacing">
-                     <number>0</number>
-                 </property>
-                 <property name="gridSize">
-                     <size>
-                         <width>0</width>
-                         <height>20</height>
-                     </size>
-                 </property>
-                 <property name="batchSize">
-                     <number>100</number>
-                 </property>
-             </widget>
-         </item>
-     </layout>
+  <layout class="QGridLayout" name="gridLayout" rowstretch="10,1,1">
+   <item row="2" column="0">
+    <widget class="QPushButton" name="addButton">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>30</height>
+      </size>
+     </property>
+     <property name="text">
+      <string>Add Dictionary</string>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>12</width>
+       <height>12</height>
+      </size>
+     </property>
+     <property name="autoDefault">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="QPushButton" name="renameButton">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>30</height>
+      </size>
+     </property>
+     <property name="text">
+      <string>Rename</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1">
+    <widget class="QPushButton" name="deleteButton">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>30</height>
+      </size>
+     </property>
+     <property name="text">
+      <string>Delete</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="QTableWidget" name="tableWidget">
+     <property name="font">
+      <font>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="editTriggers">
+      <set>QAbstractItemView::NoEditTriggers</set>
+     </property>
+     <property name="selectionMode">
+      <enum>QAbstractItemView::SingleSelection</enum>
+     </property>
+     <property name="selectionBehavior">
+      <enum>QAbstractItemView::SelectRows</enum>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="showGrid">
+      <bool>false</bool>
+     </property>
+     <property name="gridStyle">
+      <enum>Qt::SolidLine</enum>
+     </property>
+     <property name="sortingEnabled">
+      <bool>false</bool>
+     </property>
+     <property name="rowCount">
+      <number>4</number>
+     </property>
+     <property name="columnCount">
+      <number>2</number>
+     </property>
+     <attribute name="horizontalHeaderVisible">
+      <bool>false</bool>
+     </attribute>
+     <attribute name="verticalHeaderVisible">
+      <bool>false</bool>
+     </attribute>
+     <attribute name="verticalHeaderCascadingSectionResizes">
+      <bool>false</bool>
+     </attribute>
+     <attribute name="verticalHeaderDefaultSectionSize">
+      <number>30</number>
+     </attribute>
+     <attribute name="verticalHeaderHighlightSections">
+      <bool>true</bool>
+     </attribute>
+     <row/>
+     <row/>
+     <row/>
+     <row/>
+     <column/>
+     <column/>
+     <item row="0" column="0">
+      <property name="text">
+       <string>Name</string>
+      </property>
+      <property name="flags">
+       <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+      </property>
+     </item>
+     <item row="0" column="1">
+      <property name="text">
+       <string/>
+      </property>
+      <property name="flags">
+       <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+      </property>
+     </item>
+     <item row="1" column="0">
+      <property name="text">
+       <string>Filename</string>
+      </property>
+      <property name="flags">
+       <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+      </property>
+     </item>
+     <item row="1" column="1">
+      <property name="text">
+       <string/>
+      </property>
+      <property name="flags">
+       <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+      </property>
+     </item>
+     <item row="2" column="0">
+      <property name="text">
+       <string>Format</string>
+      </property>
+      <property name="flags">
+       <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+      </property>
+     </item>
+     <item row="2" column="1">
+      <property name="text">
+       <string/>
+      </property>
+      <property name="flags">
+       <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+      </property>
+     </item>
+     <item row="3" column="0">
+      <property name="text">
+       <string>Headword Count</string>
+      </property>
+      <property name="flags">
+       <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+      </property>
+     </item>
+     <item row="3" column="1">
+      <property name="text">
+       <string/>
+      </property>
+      <property name="flags">
+       <set>ItemIsSelectable|ItemIsDragEnabled|ItemIsDropEnabled|ItemIsUserCheckable|ItemIsEnabled</set>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item row="0" column="0" rowspan="2">
+    <widget class="QListWidget" name="listWidget">
+     <property name="font">
+      <font>
+       <pointsize>12</pointsize>
+      </font>
+     </property>
+     <property name="dragEnabled">
+      <bool>true</bool>
+     </property>
+     <property name="dragDropMode">
+      <enum>QAbstractItemView::InternalMove</enum>
+     </property>
+     <property name="defaultDropAction">
+      <enum>Qt::MoveAction</enum>
+     </property>
+     <property name="layoutMode">
+      <enum>QListView::Batched</enum>
+     </property>
+     <property name="spacing">
+      <number>0</number>
+     </property>
+     <property name="gridSize">
+      <size>
+       <width>0</width>
+       <height>25</height>
+      </size>
+     </property>
+     <property name="batchSize">
+      <number>100</number>
+     </property>
+     <property name="sortingEnabled">
+      <bool>false</bool>
+     </property>
+    </widget>
+   </item>
+  </layout>
  </widget>
  <resources/>
  <connections/>

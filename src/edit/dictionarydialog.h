@@ -1,5 +1,5 @@
-#ifndef EDITDICTIONARY_H
-#define EDITDICTIONARY_H
+#ifndef DICTIONARYDIALOG_H
+#define DICTIONARYDIALOG_H
 
 #include "edit/adddictionarydialog.h"
 #include "remote/remoterepository.h"
