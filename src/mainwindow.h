@@ -33,8 +33,9 @@ protected:
 private slots:
 	void onQuit() const;
 	void manageDictionaries();
-  void manageGroups();
+	void manageGroups();
 	void openPreferencesDialogue();
+	void manageSources();
 
 	void connectActions();
 

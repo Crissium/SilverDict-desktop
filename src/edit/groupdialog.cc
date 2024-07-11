@@ -23,6 +23,7 @@ GroupDialog::GroupDialog(QWidget * parent, RemoteRepository * repo)
 			&GroupDialog::onDeleteButtonClicked);
 	connect(ui->addButton, &QPushButton::clicked, this,
 			&GroupDialog::onAddButtonClicked);
+	connect(this, &GroupDialog::updateListSignal, this, &GroupDialog::populateListWidget);
 }
 
 GroupDialog::~GroupDialog()
@@ -47,6 +48,9 @@ void GroupDialog::populateListWidget()
 		nameItem->setData(Qt::UserRole, QVariant::fromValue(group));
 		ui->listWidget->addItem(nameItem);
 	}
+
+	ui->tableWidget->resizeColumnsToContents();
+	ui->tableWidget->resizeRowsToContents();
 }
 
 void GroupDialog::onListWidgetItemClicked(QListWidgetItem * item)
@@ -130,54 +134,12 @@ QSet<QLocale::Language> GroupDialog::getLanguageSetFromString(QString languageSt
 	return languages;
 }
 
-QSet<const Dictionary *> GroupDialog::getGroupDictionaries()
+const QSet<const Dictionary *> GroupDialog::getGroupDictionaries()
 {
 	const Groupings & groupings = remoteRepository->getGroupings();
 	auto it = groupings.find(currentGroup.data());
 	const QSet<const Dictionary *> & groupDictionaries = it.value();
 	return groupDictionaries;
-}
-
-void GroupDialog::onUpdateDictionaries()
-{
-	const QSet<const Dictionary *> & groupDictionaries = getGroupDictionaries();
-
-	QList<QSharedPointer<Dictionary>> toAdd;
-	QList<QSharedPointer<Dictionary>> toRemove;
-
-	for (const QSharedPointer<Dictionary> & selectedDict : selectedDictionaries)
-	{
-		if (!groupDictionaries.contains(selectedDict.data()))
-		{
-			toAdd.append(selectedDict);
-		}
-	}
-
-	for (const Dictionary * groupDict : groupDictionaries)
-	{
-		if (!selectedDictionaries.contains(groupDict))
-		{
-			toRemove.append(QSharedPointer<Dictionary>(const_cast<Dictionary *>(groupDict)));
-		}
-	}
-
-	for (const QSharedPointer<Dictionary> & dict : toAdd)
-	{
-		remoteRepository->addDictionaryToGroup(dict.data(), currentGroup.data())
-			.then([=](bool result) {
-				updateTableWidget();
-			});
-	}
-
-	for (const QSharedPointer<Dictionary> & dict : toRemove)
-	{
-		remoteRepository->removeDictionaryFromGroup(dict.data(), currentGroup.data())
-			.then([=](bool result) {
-				updateTableWidget();
-			});
-	}
-
-	selectedDictionaries.clear();
 }
 
 void GroupDialog::onRenameButtonClicked()
@@ -226,52 +188,9 @@ void GroupDialog::onEditLanguageButtonClicked()
 
 void GroupDialog::onEditDictionaryButtonClicked()
 {
-	QDialog * dialog = new QDialog(this);
-	dialog->setWindowTitle("Select Dictionaries");
-
-	QVBoxLayout * layout = new QVBoxLayout(dialog);
-	QList<QCheckBox *> checkBoxes;
-
-	const QSet<const Dictionary *> & groupDictionaries = getGroupDictionaries();
-	const QList<QSharedPointer<Dictionary>> & dictionaries = remoteRepository->getDictionaries();
-
-	for (const QSharedPointer<Dictionary> & dictionarySharedPtr : dictionaries)
-	{
-		QCheckBox * checkBox = new QCheckBox(dictionarySharedPtr->displayName, dialog);
-		checkBox->setProperty("dictionaryPointer", QVariant::fromValue(dictionarySharedPtr));
-
-		if (groupDictionaries.contains(dictionarySharedPtr.data()))
-		{
-			checkBox->setChecked(true);
-		}
-
-		layout->addWidget(checkBox);
-		checkBoxes.append(checkBox);
-	}
-
-	QDialogButtonBox * buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
-	layout->addWidget(buttonBox);
-
-	connect(buttonBox, &QDialogButtonBox::accepted, this, [this, dialog, checkBoxes] {
-		foreach(QCheckBox * checkBox, checkBoxes)
-		{
-			if (checkBox->isChecked())
-			{
-				QVariant dictVariant = checkBox->property("dictionaryPointer");
-				if (dictVariant.canConvert<QSharedPointer<Dictionary>>())
-				{
-					selectedDictionaries.append(dictVariant.value<QSharedPointer<Dictionary>>());
-				}
-			}
-		}
-		onUpdateDictionaries();
-		dialog->accept();
-	});
-
-	connect(buttonBox, &QDialogButtonBox::rejected, dialog, &QDialog::reject);
-
-	dialog->exec();
-	delete dialog;
+	SelectDictionaryDialog * selectDictionaryDialog = new SelectDictionaryDialog(this, remoteRepository, currentGroup);
+	connect(selectDictionaryDialog, &SelectDictionaryDialog::updateTableWidget,this, &GroupDialog::updateTableWidget);
+	selectDictionaryDialog->exec();
 }
 
 void GroupDialog::onDeleteButtonClicked()
@@ -288,8 +207,8 @@ void GroupDialog::onDeleteButtonClicked()
 		remoteRepository->deleteGroup(currentGroup.data())
 			.then([=](bool result) {
 				if (result)
-				{
-					ui->listWidget->takeItem(ui->listWidget->currentRow());
+				{					
+					emit updateListSignal();
 					for (int row = 0; row < ui->tableWidget->rowCount(); ++row)
 					{
 						ui->tableWidget->item(row, 1)->setText("");
@@ -308,7 +227,7 @@ void GroupDialog::onAddButtonClicked()
 		QString groupName = addDialog->getGroupName();
 		QString groupLanguages = addDialog->getGroupLanguages();
 
-		Group newGroup = {
+		const Group newGroup = {
 			groupName,
 			getLanguageSetFromString(groupLanguages)};
 
@@ -316,7 +235,7 @@ void GroupDialog::onAddButtonClicked()
 			.then([=](bool result) {
 				if (result)
 				{
-					populateListWidget();
+					emit updateListSignal();
 				}
 			});
 	}
