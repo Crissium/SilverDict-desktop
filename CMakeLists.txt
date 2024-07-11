@@ -54,8 +54,6 @@ qt_add_executable(SilverDict
         src/query/queryscreen.ui
         src/query/wordlistmodel.h
         src/query/wordlistmodel.cc
-        src/query/querymodel.h
-        src/query/querymodel.cc
         src/query/articleview.h
         src/query/articleview.cc
         src/query/articleview.ui
@@ -71,12 +69,12 @@ qt_add_executable(SilverDict
 	src/edit/addgroupdialog.h
 	src/edit/addgroupdialog.cc
 	src/edit/addgroupdialog.ui
-  src/edit/selectdictionarydialog.h
-  src/edit/selectdictionarydialog.cc
-  src/edit/selectdictionarydialog.ui  
-  src/edit/sourcedialog.h
-  src/edit/sourcedialog.cc
-  src/edit/sourcedialog.ui
+	src/edit/selectdictionarydialog.h
+	src/edit/selectdictionarydialog.cc
+	src/edit/selectdictionarydialog.ui  
+	src/edit/sourcedialog.h
+	src/edit/sourcedialog.cc
+	src/edit/sourcedialog.ui
 	src/about/aboutdialogue.h
 	src/about/aboutdialogue.cc
 	src/about/aboutdialogue.ui
