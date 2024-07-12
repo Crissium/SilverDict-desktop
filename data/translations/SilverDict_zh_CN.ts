@@ -21,7 +21,7 @@
     <message>
       <location filename="../../src/about/aboutdialogue.ui" line="78"/>
       <source>&lt;a href=&quot;https://silverdict.lecoteauverdoyant.co.uk/&quot;&gt;Official website&lt;/a&gt;</source>
-      <translation>&lt;a href=&quot;https://silverdict.lecoteauverdoyant.co.uk/&quot;&gt; 官网&lt;/a&gt;</translation>
+      <translation>&lt;a href=&quot;https://silverdict.lecoteauverdoyant.co.uk/&quot;&gt;官网&lt;/a&gt;</translation>
     </message>
   </context>
   <context>
@@ -414,7 +414,7 @@
     <message>
       <location filename="../../src/preferences/preferencesdialogue.cc" line="80"/>
       <source>Text Files (*.txt)</source>
-      <translation>文本文件（*.txt）</translation>
+      <translation>文本文件 (*.txt)</translation>
     </message>
     <message>
       <location filename="../../src/preferences/preferencesdialogue.cc" line="93"/>
